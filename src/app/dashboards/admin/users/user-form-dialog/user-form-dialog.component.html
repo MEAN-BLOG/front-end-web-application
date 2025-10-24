@@ -1,0 +1,95 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Edit User' : 'Create New User' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <div class="user-avatar-container">
+      <div class="user-avatar">
+        {{ avatarText || 'US' }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="name" (input)="onNameChange($event.target.value)" required>
+        <mat-icon matSuffix>person</mat-icon>
+        <mat-error *ngIf="f['name'].hasError('required')">
+          Name is required
+        </mat-error>
+        <mat-error *ngIf="f['name'].hasError('minlength')">
+          Name must be at least 2 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" required>
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-error *ngIf="f['email'].hasError('required')">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="f['email'].hasError('email')">
+          Please enter a valid email
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role" required>
+          <mat-option *ngFor="let role of roles" [value]="role">
+            {{ role }}
+          </mat-option>
+        </mat-select>
+        <mat-error>Role is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field" *ngIf="isEditMode">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let status of statuses" [value]="status.value">
+            {{ status.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ isEditMode ? 'New Password' : 'Password' }}</mat-label>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" [required]="!isEditMode">
+        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-hint *ngIf="isEditMode">Leave blank to keep current password</mat-hint>
+        <mat-error *ngIf="f['password'].hasError('required')">
+          Password is required
+        </mat-error>
+        <mat-error *ngIf="f['password'].hasError('minlength')">
+          Password must be at least 6 characters
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" class="form-field full-width">
+      <mat-label>Bio</mat-label>
+      <textarea matInput formControlName="bio" rows="3"></textarea>
+      <mat-hint>A short bio about the user (optional)</mat-hint>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
+    Cancel
+  </button>
+  <button 
+    mat-flat-button 
+    color="primary" 
+    (click)="onSubmit()" 
+    [disabled]="userForm.invalid || isSubmitting"
+    [class.spinner]="isSubmitting">
+    {{ isEditMode ? 'Update' : 'Create' }} User
+  </button>
+</mat-dialog-actions>

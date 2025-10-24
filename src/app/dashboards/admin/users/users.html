@@ -1,0 +1,162 @@
+<div class="users-container">
+  <!-- Header with title and create button -->
+  <div class="header">
+    <h1>Users</h1>
+  </div>
+
+  <!-- Data Table -->
+  <app-data-table 
+    [data]="users" 
+    [loading]="isLoading"
+    [selectable]="true"
+    [pagination]="true"
+    [pageSize]="pageSize"
+    [pageIndex]="pageIndex"
+    [totalItems]="totalItems"
+    [pageSizeOptions]="pageSizeOptions"
+    (rowClick)="onRowClick($event)"
+    (selectionChange)="onSelectionChange($event)"
+    (pageChange)="onPageChange($event)">
+    
+    <!-- Column Definitions -->
+    <app-data-table-column columnDef="fullName" header="Full Name">
+      <ng-template #cellTemplate let-user>
+        <div class="user-cell">
+          <div class="user-info">
+            <span class="user-name">{{ user.firstName }} {{ user.lastName }}</span>
+          </div>
+        </div>
+      </ng-template>
+    </app-data-table-column>
+    
+    <app-data-table-column columnDef="email" header="Email">
+      <ng-template #cellTemplate let-user>
+        <span class="email-badge">
+          {{ user.email }}
+        </span>
+      </ng-template>
+    </app-data-table-column>
+    
+    <app-data-table-column columnDef="role" header="Role">
+      <ng-template #cellTemplate let-user>
+        <div class="role-selector">
+          <button mat-button [matMenuTriggerFor]="roleMenu" (click)="$event.stopPropagation()">
+            {{ getRoleLabel(user.role) }}
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #roleMenu="matMenu" class="role-menu">
+            <button mat-menu-item *ngFor="let role of filterOptions.role" 
+                    (click)="updateUserRole(user._id, role.value)">
+              <mat-icon [class.selected]="user.role === role.value">
+                {{ user.role === role.value ? 'check_circle' : 'radio_button_unchecked' }}
+              </mat-icon>
+              <span>{{ role.label }}</span>
+            </button>
+          </mat-menu>
+        </div>
+      </ng-template>
+    </app-data-table-column>
+    <app-data-table-column columnDef="updatedAt" header="Last Updated">
+      <ng-template #cellTemplate let-user>
+        {{ formatDate(user.updatedAt) }}
+      </ng-template>
+    </app-data-table-column>
+    
+    <!-- Bulk Actions -->
+    <app-data-table-bulk-actions
+      *ngIf="selection.selected.length > 0"
+      [selectedCount]="selection.selected.length"
+      [actions]="bulkActions"
+      (action)="onBulkAction($event)"
+      (clear)="clearSelection()">
+    </app-data-table-bulk-actions>
+
+    <!-- Filters -->
+    <app-data-table-filter
+      [searchable]="true"
+      [filters]="[
+        { key: 'role', label: 'Role', options: filterOptions.role }
+      ]"
+      (searchChange)="onSearch($event)"
+      (filterChanged)="onFilterChange($event)">
+    </app-data-table-filter>
+
+  </app-data-table>
+</div>
+
+<!-- Styles -->
+<style>
+  .user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3f51b5;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .user-name {
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .user-email {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.2;
+  }
+
+  .role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    background-color: #e0e0e0;
+  }
+
+  .role-admin {
+    background-color: #f3e5f5;
+    color: #8e24aa;
+  }
+
+  .role-editor {
+    background-color: #e3f2fd;
+    color: #1976d2;
+  }
+
+  .role-writer {
+    background-color: #e8f5e9;
+    color: #388e3c;
+  }
+
+  .role-guest {
+    background-color: #f5f5f5;
+    color: #616161;
+  }
+
+  .actions-cell {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .delete-action {
+    color: #f44336;
+  }
+</style>

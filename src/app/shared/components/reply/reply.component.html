@@ -1,0 +1,87 @@
+<div class="replies-container">
+  <!-- Toggle replies button -->
+  <button mat-button color="primary" class="toggle-replies" (click)="toggleReplies()">
+    <mat-icon>{{ showReplies ? 'expand_less' : 'chat_bubble_outline' }}</mat-icon>
+    <span>{{ showReplies ? 'Hide replies' : 'Replies' }} ({{ totalReplies }})</span>
+  </button>
+
+  <!-- Replies list -->
+  <div class="replies-list" *ngIf="showReplies">
+    <!-- Loading indicator -->
+    <div class="loading-indicator" *ngIf="isLoading && replies.length === 0">
+      <mat-spinner diameter="24"></mat-spinner>
+      <span>Loading replies...</span>
+    </div>
+
+    <!-- No replies message -->
+    <div class="no-replies" *ngIf="!isLoading && replies.length === 0">
+      <mat-icon>forum</mat-icon>
+      <p>No replies yet. Be the first to reply!</p>
+    </div>
+
+    <!-- Replies -->
+    <div class="reply" *ngFor="let reply of replies">
+      <div class="reply-avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="reply-content">
+        <div class="reply-header">
+          <span class="author">{{ getAuthorName(reply.userId) }}</span>
+          <span class="date">{{ formatDate(reply.createdAt) }}</span>
+        </div>
+        <div class="reply-text">{{ reply.content }}</div>
+      </div>
+    </div>
+
+    <!-- Load more button -->
+    <div class="load-more" *ngIf="hasMore && !isLoading">
+      <button mat-button (click)="loadReplies(true)">
+        <mat-icon>expand_more</mat-icon>
+        <span>Load more replies</span>
+      </button>
+    </div>
+
+    <!-- Reply form -->
+    <div class="reply-form" *ngIf="isAuthenticated()">
+      <button mat-button *ngIf="!showReplyForm" (click)="showReplyForm = true">
+        <mat-icon>reply</mat-icon>
+        <span>Reply</span>
+      </button>
+
+      <form [formGroup]="replyForm" (ngSubmit)="onAddReply()" *ngIf="showReplyForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Write a reply...</mat-label>
+          <textarea 
+            matInput 
+            formControlName="content" 
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="2"
+            cdkAutosizeMaxRows="5"
+          ></textarea>
+          <mat-error *ngIf="replyForm.get('content')?.hasError('required')">
+            Reply cannot be empty
+          </mat-error>
+        </mat-form-field>
+        <div class="form-actions">
+          <button 
+            mat-button 
+            type="button" 
+            (click)="showReplyForm = false"
+            [disabled]="isAddingReply"
+          >
+            Cancel
+          </button>
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="replyForm.invalid || isAddingReply"
+          >
+            <span *ngIf="!isAddingReply">Post Reply</span>
+            <mat-spinner *ngIf="isAddingReply" diameter="20"></mat-spinner>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,185 @@
+@use '@angular/material' as mat;
+@use './styles/variables' as *;
+
+/* -------------------------------------------
+   BASE COLORS
+------------------------------------------- */
+$primary: #3f51b5;
+$accent: #ff4081;
+$warn: #f44336;
+
+/* -------------------------------------------
+   GLOBAL CSS VARIABLES
+------------------------------------------- */
+:root {
+  --color-bg: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #1f2937;
+  --color-subtext: #4b5563;
+  --color-border: #e5e7eb;
+  --color-primary: #3f51b5;
+  --color-accent: #ff4081;
+  --color-warn: #f44336;
+  --color-shadow: rgba(0, 0, 0, 0.05);
+  --transition-speed: 0.3s;
+}
+
+.dark-theme {
+  --color-bg: #0d1117;
+  --color-surface: #161b22;
+  --color-text: #e5e7eb;
+  --color-subtext: #9ca3af;
+  --color-border: #2d333b;
+  --color-primary: #6573c3;
+  --color-accent: #ff79b0;
+  --color-warn: #f44336;
+  --color-shadow: rgba(0, 0, 0, 0.5);
+}
+
+/* -------------------------------------------
+   BASE STYLES
+------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Inter', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease;
+}
+
+/* Smooth theme transition */
+body {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* -------------------------------------------
+   TEXT & LINKS
+------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+p {
+  color: var(--color-subtext);
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+/* -------------------------------------------
+   CARD / SURFACE ELEMENTS
+------------------------------------------- */
+.mat-mdc-card, .mat-card, .card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--color-shadow);
+  transition: background-color var(--transition-speed) ease,
+              color var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease;
+}
+
+/* -------------------------------------------
+   INPUTS / FORM ELEMENTS
+------------------------------------------- */
+input, textarea, select {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: var(--color-primary);
+  }
+}
+
+label {
+  color: var(--color-subtext);
+}
+
+/* -------------------------------------------
+   SCROLLBAR STYLING
+------------------------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* -------------------------------------------
+   BUTTONS
+------------------------------------------- */
+button {
+  font-family: inherit;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s, color 0.25s, box-shadow 0.25s;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* -------------------------------------------
+   UTILITIES
+------------------------------------------- */
+.full {
+  width: 100%;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.shadow {
+  box-shadow: 0 4px 16px var(--color-shadow);
+}
+
+.mat-mdc-menu-content{
+  background: var(--color-surface);
+}

@@ -1,0 +1,173 @@
+// overview.component.scss
+:host {
+  display: block;
+  padding: 1rem;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f6fa;
+  color: #333;
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+// Charts Grid
+.charts-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Content Grid
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+// Loading & No Data
+.loading-container,
+.no-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: #666;
+
+  mat-spinner {
+    margin-bottom: 1rem;
+  }
+}
+
+// Material Cards
+mat-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .mat-mdc-card-header {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+    .mat-mdc-card-title {
+      margin: 0;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #222;
+    }
+  }
+
+  .mat-mdc-card-content {
+    padding: 1rem;
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      color: #111;
+    }
+
+    .stat-subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      mat-icon {
+        font-size: 18px;
+      }
+
+      .trend.positive {
+        color: #4caf50;
+      }
+      .trend.negative {
+        color: #f44336;
+      }
+    }
+  }
+}
+
+// Charts
+.chart-container {
+  position: relative;
+  height: 320px;
+  width: 100%;
+  border-radius: 12px;
+  background-color: #fff;
+  padding: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+// Tags / Chips
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  mat-chip-option {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #e0e0e0;
+
+    &:hover {
+      background-color: #d5d5d5;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Comment & Article Lists
+.list-item,
+.comment-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  .article-meta,
+  .comment-header {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #666;
+
+    mat-icon {
+      font-size: 16px;
+      vertical-align: middle;
+    }
+  }
+
+  .comment-text,
+  .article-title {
+    font-size: 0.95rem;
+    color: #333;
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 600px) {
+  .stats-grid,
+  .charts-container,
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}

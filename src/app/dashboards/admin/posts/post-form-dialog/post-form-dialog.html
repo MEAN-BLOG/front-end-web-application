@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ data.mode === 'create' ? 'Create New Post' : 'Edit Post' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="post-form">
+    <!-- Title -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required>
+      <mat-error *ngIf="postForm.get('title')?.hasError('required')">Title is required</mat-error>
+      <mat-error *ngIf="postForm.get('title')?.hasError('minlength')">Title must be at least 3 characters</mat-error>
+    </mat-form-field>
+
+    <!-- Content -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Content</mat-label>
+      <textarea matInput formControlName="content" rows="10" required></textarea>
+      <mat-error>Content is required</mat-error>
+    </mat-form-field>
+
+    <!-- Image URL -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Featured Image URL</mat-label>
+      <input matInput formControlName="image">
+      <button mat-icon-button matSuffix (click)="openMediaLibrary()" type="button" matTooltip="Select from media library">
+        <mat-icon>image</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <!-- Tags -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tags</mat-label>
+      <mat-chip-grid #chipGrid formArrayName="tags">
+        <mat-chip-row *ngFor="let tag of tagsArray.controls; let i = index" (removed)="removeTag(i)">
+          {{ tag.value }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+        <input 
+          placeholder="Add a tag..."
+          [matChipInputFor]="chipGrid"
+          [matChipInputSeparatorKeyCodes]="[13, 188]"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="addTag($event)"
+          [matAutocomplete]="auto"
+        >
+      </mat-chip-grid>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addTag($event)">
+        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+          {{ tag }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button 
+    mat-flat-button 
+    color="primary" 
+    type="submit"
+    [disabled]="postForm.invalid || isSubmitting"
+    (click)="onSubmit()"
+  >
+    <mat-icon *ngIf="isSubmitting" class="spinner">
+      <mat-spinner diameter="20"></mat-spinner>
+    </mat-icon>
+    <span>{{ isSubmitting ? 'Saving...' : 'Save Post' }}</span>
+  </button>
+</mat-dialog-actions>

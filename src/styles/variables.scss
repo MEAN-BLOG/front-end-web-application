@@ -1,0 +1,131 @@
+/* ==========================================================================
+   THEME VARIABLES — LIGHT & DARK MODE SUPPORT
+   ========================================================================== */
+
+/* -------------------------------------------
+   BASE COLORS (Primary palette)
+------------------------------------------- */
+$primary: #3f51b5;
+$primary-light: #6573c3;
+$primary-dark: #2c387e;
+$text-secondary: black;
+$accent: #ff4081;
+$accent-light: #ff79b0;
+$accent-dark: #c60055;
+$surface: #ffffff;
+
+$warn: #ec2213;
+$success: #4caf50;
+$warning: #ff9800;
+$info: #2196f3;
+$error: #dd2013;
+/* -------------------------------------------
+   LIGHT THEME COLORS
+------------------------------------------- */
+$light-theme: (
+  background: #f5f5f5,
+  surface: #ffffff,
+  text-primary: rgba(0, 0, 0, 0.87),
+  text-secondary: rgba(0, 0, 0, 0.6),
+  text-hint: rgba(0, 0, 0, 0.38),
+  border: rgba(0, 0, 0, 0.12),
+  shadow: rgba(0, 0, 0, 0.2)
+);
+
+/* -------------------------------------------
+   DARK THEME COLORS
+------------------------------------------- */
+$dark-theme: (
+  background: #121212,
+  surface: #1e1e1e,
+  text-primary: rgba(255, 255, 255, 0.87),
+  text-secondary: rgba(255, 255, 255, 0.6),
+  text-hint: rgba(255, 255, 255, 0.38),
+  border: rgba(255, 255, 255, 0.12),
+  shadow: rgba(0, 0, 0, 0.8)
+);
+
+/* -------------------------------------------
+   TYPOGRAPHY
+------------------------------------------- */
+$font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+$font-size-base: 16px;
+$line-height-base: 1.5;
+
+/* -------------------------------------------
+   SPACING
+------------------------------------------- */
+$spacing-unit: 8px;
+
+/* -------------------------------------------
+   BREAKPOINTS
+------------------------------------------- */
+$breakpoints: (
+  xs: 0,
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px
+);
+
+/* -------------------------------------------
+   Z-INDEX LAYERS
+------------------------------------------- */
+$z-index: (
+  app-bar: 1100,
+  drawer: 1200,
+  modal: 1300,
+  snackbar: 1400,
+  tooltip: 1500
+);
+
+/* -------------------------------------------
+   SHADOWS
+------------------------------------------- */
+$shadow-1: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+  0 1px 3px 0 rgba(0, 0, 0, 0.12);
+$shadow-2: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+  0 1px 5px 0 rgba(0, 0, 0, 0.12);
+$shadow-3: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+  0 1px 10px 0 rgba(0, 0, 0, 0.12);
+
+/* -------------------------------------------
+   BORDER RADIUS
+------------------------------------------- */
+$border-radius: 4px;
+$border-radius-sm: 2px;
+$border-radius-md: 4px;
+$border-radius-lg: 8px;
+
+/* -------------------------------------------
+   TRANSITIONS
+------------------------------------------- */
+$transition-short: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-standard: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-long: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+/* ==========================================================================
+   THEME MIXINS
+   ========================================================================== */
+
+/// Returns theme color by key
+@function theme-color($theme, $key) {
+  @return map-get($theme, $key);
+}
+
+/// Apply light/dark mode styles easily
+@mixin theme-styles($light, $dark) {
+  body {
+    background-color: theme-color($light, background);
+    color: theme-color($light, text-primary);
+    font-family: $font-family;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &.dark-theme {
+      background-color: theme-color($dark, background);
+      color: theme-color($dark, text-primary);
+    }
+  }
+}

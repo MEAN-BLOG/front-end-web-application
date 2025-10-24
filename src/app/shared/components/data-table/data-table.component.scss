@@ -1,0 +1,338 @@
+@use "../../../../styles/variables.scss" as *;
+.data-table-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: theme-color($light-theme, surface);
+  border-radius: $border-radius-lg;
+  border: 1px solid theme-color($light-theme, border);
+
+  .table-container {
+    position: relative;
+    min-height: 200px;
+    overflow: auto;
+    flex: 1;
+    background: theme-color($light-theme, surface);
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: theme-color($light-theme, surface);
+
+      th {
+        font-weight: 600;
+        color: theme-color($light-theme, text-primary);
+        font-size: 14px;
+        background-color: rgba(theme-color($light-theme, text-hint), 0.04);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        
+        &:first-child {
+          border-top-left-radius: $border-radius-lg - 1;
+        }
+        
+        &:last-child {
+          border-top-right-radius: $border-radius-lg - 1;
+        }
+      }
+
+      td, th {
+        padding: $spacing-unit * 1.5 $spacing-unit * 2;
+        text-align: left;
+        border-bottom: 1px solid theme-color($light-theme, border);
+        transition: all $transition-short;
+      }
+
+      tr {
+        transition: background-color $transition-standard;
+
+        &:hover:not(.mat-footer-row) {
+          background-color: rgba($primary, 0.04);
+          cursor: pointer;
+          transform: translateY(-1px);
+          box-shadow: $shadow-1;
+        }
+
+        &.row-selected {
+          background-color: rgba($primary, 0.08);
+          border-left: 3px solid $primary;
+          
+          td:first-child {
+            padding-left: $spacing-unit * 2 - 3px;
+          }
+        }
+
+        &:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+      }
+
+      // Column alignment variants
+      .text-center {
+        text-align: center;
+      }
+
+      .text-right {
+        text-align: right;
+      }
+
+      .text-uppercase {
+        text-transform: uppercase;
+      }
+
+      // Status indicators
+      .status-badge {
+        padding: $spacing-unit * 0.5 $spacing-unit;
+        border-radius: $border-radius;
+        font-size: 12px;
+        font-weight: 500;
+        text-transform: capitalize;
+        display: inline-block;
+
+        &.active, &.success, &.completed {
+          background-color: rgba($success, 0.1);
+          color: $success;
+        }
+
+        &.pending, &.warning {
+          background-color: rgba($warning, 0.1);
+          color: $warning;
+        }
+
+        &.inactive, &.error, &.failed {
+          background-color: rgba($error, 0.1);
+          color: $error;
+        }
+
+        &.info {
+          background-color: rgba($info, 0.1);
+          color: $info;
+        }
+      }
+
+      // Action buttons container
+      .actions-cell {
+        white-space: nowrap;
+        
+        button {
+          margin-right: $spacing-unit;
+          
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .loading-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing-unit * 3;
+    color: theme-color($light-theme, text-secondary);
+    background: theme-color($light-theme, surface);
+
+    mat-spinner {
+      margin-right: $spacing-unit;
+    }
+
+    .loading-text {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .no-data {
+    text-align: center;
+    padding: $spacing-unit * 5;
+    color: theme-color($light-theme, text-secondary);
+    background: theme-color($light-theme, surface);
+
+    .no-data-message {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing-unit;
+      max-width: 300px;
+      margin: 0 auto;
+
+      mat-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 64px;
+        opacity: 0.4;
+        color: theme-color($light-theme, text-hint);
+      }
+
+      .no-data-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: theme-color($light-theme, text-primary);
+        margin-bottom: $spacing-unit * 0.5;
+      }
+
+      .no-data-subtitle {
+        font-size: 14px;
+        color: theme-color($light-theme, text-secondary);
+        line-height: 1.4;
+      }
+    }
+  }
+
+  mat-paginator {
+    border-top: 1px solid theme-color($light-theme, border);
+    background: transparent;
+    border-bottom-left-radius: $border-radius-lg;
+    border-bottom-right-radius: $border-radius-lg;
+  }
+
+  // Dark theme support
+  :host-context(.dark-theme) & {
+    background: theme-color($dark-theme, surface);
+    border-color: theme-color($dark-theme, border);
+
+    .table-container {
+      background: theme-color($dark-theme, surface);
+
+      table {
+        background: theme-color($dark-theme, surface);
+
+        th {
+          color: theme-color($dark-theme, text-primary);
+          background-color: rgba(theme-color($dark-theme, text-hint), 0.08);
+        }
+
+        td, th {
+          border-bottom-color: theme-color($dark-theme, border);
+          color: theme-color($dark-theme, text-primary);
+        }
+
+        tr {
+          &:hover:not(.mat-footer-row) {
+            background-color: rgba($primary-light, 0.08);
+          }
+
+          &.row-selected {
+            background-color: rgba($primary-light, 0.12);
+            border-left-color: $primary-light;
+          }
+        }
+      }
+    }
+
+    .loading-overlay {
+      background: theme-color($dark-theme, surface);
+      color: theme-color($dark-theme, text-secondary);
+    }
+
+    .no-data {
+      background: theme-color($dark-theme, surface);
+      color: theme-color($dark-theme, text-secondary);
+
+      .no-data-title {
+        color: theme-color($dark-theme, text-primary);
+      }
+
+      mat-icon {
+        color: theme-color($dark-theme, text-hint);
+      }
+    }
+
+    mat-paginator {
+      border-top-color: theme-color($dark-theme, border);
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: map-get($breakpoints, sm)) {
+    border-radius: $border-radius-md;
+    margin: 0 -$spacing-unit;
+    width: calc(100% + #{$spacing-unit * 2});
+
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: $border-radius-md;
+    }
+
+    table {
+      min-width: 600px; // Ensures table doesn't collapse on mobile
+    }
+
+    .no-data {
+      padding: $spacing-unit * 3;
+      
+      .no-data-message {
+        max-width: 250px;
+        
+        mat-icon {
+          width: 48px;
+          height: 48px;
+          font-size: 48px;
+        }
+      }
+    }
+
+    td, th {
+      padding: $spacing-unit $spacing-unit * 1.5 !important;
+    }
+  }
+
+  @media (max-width: map-get($breakpoints, xs)) {
+    .loading-overlay {
+      padding: $spacing-unit * 2;
+      
+      .loading-text {
+        font-size: 12px;
+      }
+    }
+
+    .no-data {
+      padding: $spacing-unit * 2;
+    }
+  }
+
+  // Print styles
+  @media print {
+    border: none;
+    box-shadow: none;
+    
+    .table-container {
+      overflow: visible;
+    }
+    
+    table {
+      box-shadow: none;
+    }
+    
+    mat-paginator {
+      display: none;
+    }
+  }
+}
+
+// Animation for row selection
+@keyframes rowSelect {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba($primary, 0.15);
+  }
+  100% {
+    background-color: rgba($primary, 0.08);
+  }
+}
+
+.row-selected {
+  animation: rowSelect $transition-standard;
+}

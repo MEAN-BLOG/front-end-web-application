@@ -1,0 +1,80 @@
+.role-selector {
+  display: flex;
+  align-items: center;
+  
+  button[mat-button] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+    text-transform: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-left: 4px;
+    }
+  }
+
+  .mat-mdc-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    line-height: 1.5;
+
+    .mat-icon {
+      margin: 0;
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      color: #3f51b5;
+      opacity: 0;
+      transition: opacity 0.2s;
+
+      &.selected {
+        opacity: 1;
+      }
+    }
+
+    &:hover .mat-icon:not(.selected) {
+      opacity: 0.5;
+    }
+  }
+}
+
+// Status badges
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+
+  &.active {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+  }
+
+  &.inactive {
+    background-color: #fff3e0;
+    color: #e65100;
+  }
+
+  &.suspended {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+}

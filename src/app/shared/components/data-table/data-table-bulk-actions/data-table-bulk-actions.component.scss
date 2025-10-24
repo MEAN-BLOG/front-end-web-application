@@ -1,0 +1,336 @@
+@use "../../../../../styles/variables.scss" as *;
+.bulk-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-unit $spacing-unit * 2;
+  background: linear-gradient(135deg, 
+    rgba($primary, 0.04) 0%, 
+    rgba($primary-light, 0.02) 100%);
+  border-bottom: 1px solid theme-color($light-theme, border);
+  min-height: 56px;
+  box-sizing: border-box;
+  backdrop-filter: blur(8px);
+  position: relative;
+  transition: all $transition-standard;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $primary, $accent);
+    opacity: 0.8;
+  }
+
+  .selected-info {
+    display: flex;
+    align-items: center;
+    gap: $spacing-unit;
+    flex: 1;
+
+    .selected-count {
+      font-size: 14px;
+      color: theme-color($light-theme, text-primary);
+      font-weight: 600;
+      background: rgba($primary, 0.1);
+      padding: $spacing-unit * 0.5 $spacing-unit;
+      border-radius: $border-radius;
+      border: 1px solid rgba($primary, 0.2);
+      
+      .count-number {
+        color: $primary;
+        font-weight: 700;
+        margin-right: $spacing-unit * 0.5;
+      }
+    }
+
+    .clear-selection {
+      color: theme-color($light-theme, text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color $transition-short;
+      
+      &:hover {
+        color: theme-color($light-theme, text-primary);
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: $spacing-unit;
+    flex-wrap: wrap;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: $spacing-unit * 0.5;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: $spacing-unit $spacing-unit * 1.5;
+      border-radius: $border-radius;
+      transition: all $transition-standard;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, 
+          transparent, 
+          rgba(255, 255, 255, 0.4), 
+          transparent);
+        transition: left $transition-long;
+      }
+
+      &:hover::before {
+        left: 100%;
+      }
+
+      &.primary-action {
+        background: linear-gradient(135deg, $primary, $primary-dark);
+        color: white;
+        box-shadow: $shadow-1;
+
+        &:hover {
+          box-shadow: $shadow-2;
+          transform: translateY(-1px);
+        }
+
+        &:active {
+          transform: translateY(0);
+          box-shadow: $shadow-1;
+        }
+      }
+
+      &.secondary-action {
+        background: theme-color($light-theme, surface);
+        color: theme-color($light-theme, text-primary);
+        border: 1px solid theme-color($light-theme, border);
+
+        &:hover {
+          background: rgba(theme-color($light-theme, text-primary), 0.04);
+          border-color: theme-color($light-theme, text-secondary);
+        }
+      }
+
+      &.danger-action {
+        background: rgba($error, 0.1);
+        color: $error;
+        border: 1px solid rgba($error, 0.3);
+
+        &:hover {
+          background: rgba($error, 0.15);
+          border-color: $error;
+        }
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+        transition: transform $transition-short;
+      }
+
+      &:hover mat-icon {
+        transform: scale(1.1);
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+        
+        &::before {
+          display: none;
+        }
+      }
+    }
+
+    .mat-divider-vertical {
+      height: 24px;
+      margin: 0 $spacing-unit;
+      background-color: theme-color($light-theme, border);
+    }
+
+    // Quick actions menu
+    .quick-actions-menu {
+      display: flex;
+      align-items: center;
+      gap: $spacing-unit * 0.5;
+
+      button {
+        min-width: auto;
+        padding: $spacing-unit;
+        
+        mat-icon {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  // Progress indicator for long-running actions
+  .action-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $primary, $accent);
+    transition: width $transition-standard;
+  }
+
+  // Dark theme support
+  :host-context(.dark-theme) & {
+    background: linear-gradient(135deg, 
+      rgba($primary-light, 0.08) 0%, 
+      rgba($primary, 0.04) 100%);
+    border-bottom-color: theme-color($dark-theme, border);
+
+    .selected-info {
+      .selected-count {
+        color: theme-color($dark-theme, text-primary);
+        background: rgba($primary-light, 0.15);
+        border-color: rgba($primary-light, 0.3);
+        
+        .count-number {
+          color: $primary-light;
+        }
+      }
+
+      .clear-selection {
+        color: theme-color($dark-theme, text-secondary);
+        
+        &:hover {
+          color: theme-color($dark-theme, text-primary);
+        }
+      }
+    }
+
+    .action-buttons {
+      button {
+        &.secondary-action {
+          background: theme-color($dark-theme, surface);
+          color: theme-color($dark-theme, text-primary);
+          border-color: theme-color($dark-theme, border);
+
+          &:hover {
+            background: rgba(theme-color($dark-theme, text-primary), 0.08);
+            border-color: theme-color($dark-theme, text-secondary);
+          }
+        }
+
+        &::before {
+          background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.1), 
+            transparent);
+        }
+      }
+
+      .mat-divider-vertical {
+        background-color: theme-color($dark-theme, border);
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: map-get($breakpoints, sm)) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $spacing-unit;
+    padding: $spacing-unit * 1.5;
+    min-height: auto;
+
+    .selected-info {
+      justify-content: space-between;
+      order: 2;
+      
+      .selected-count {
+        font-size: 13px;
+      }
+    }
+
+    .action-buttons {
+      order: 1;
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: $spacing-unit * 0.5;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      button {
+        flex-shrink: 0;
+        font-size: 12px;
+        padding: $spacing-unit * 0.75 $spacing-unit;
+        
+        mat-icon {
+          font-size: 16px;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .quick-actions-menu {
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  @media (max-width: map-get($breakpoints, xs)) {
+    padding: $spacing-unit;
+
+    .selected-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: $spacing-unit * 0.5;
+    }
+
+    .action-buttons {
+      gap: $spacing-unit * 0.5;
+      
+      button {
+        font-size: 11px;
+        letter-spacing: 0.25px;
+      }
+    }
+  }
+
+  // Animation for appearance
+  @keyframes slideInBulkActions {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &:not(.hidden) {
+    animation: slideInBulkActions $transition-standard;
+  }
+}
+
+// Utility class for hiding bulk actions
+.bulk-actions.hidden {
+  display: none;
+}

@@ -1,0 +1,41 @@
+<div class="filter-container">
+  <!-- Search Input -->
+  <mat-form-field appearance="outline" class="search-field" *ngIf="searchable">
+    <mat-label>{{ searchLabel || 'Search' }}</mat-label>
+    <input 
+      matInput 
+      [placeholder]="searchPlaceholder || 'Search...'"
+      [formControl]="searchControl"
+      (keyup.enter)="onSearch()">
+    <mat-icon matSuffix (click)="onSearch()">search</mat-icon>
+  </mat-form-field>
+
+  <!-- Filter Chips -->
+  <div class="filter-chips" *ngIf="filters?.length">
+    <ng-container *ngFor="let filter of filters">
+      <div class="filter-group" *ngIf="filter.options?.length">
+        <span class="filter-label">{{ filter.label }}:</span>
+        <mat-chip-listbox multiple>
+          <mat-chip-option 
+            *ngFor="let option of filter.options"
+            [value]="option.value"
+            [selected]="isSelected(filter.key, option.value)"
+            (selectionChange)="onFilterChange(filter.key, option.value, $event.selected)">
+            {{ option.label }}
+          </mat-chip-option>
+        </mat-chip-listbox>
+      </div>
+    </ng-container>
+
+    <!-- Clear Filters Button -->
+    <button 
+      mat-button 
+      color="primary" 
+      *ngIf="hasActiveFilters()"
+      (click)="clearAllFilters()"
+      class="clear-filters">
+      <mat-icon>filter_alt_off</mat-icon>
+      Clear Filters
+    </button>
+  </div>
+</div>

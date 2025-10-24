@@ -1,0 +1,116 @@
+<div class="blog-detail-container">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading post...</p>
+  </div>
+
+  <div>
+    <button mat-raised-button color="primary" routerLink="/blog">
+      <mat-icon>arrow_back</mat-icon>
+      Back to Blog
+    </button>
+  </div>
+
+  <!-- Post Content -->
+  <div *ngIf="post && !isLoading" class="post-container">
+    <article class="blog-post">
+      <!-- Post Header -->
+      <header class="post-header">
+        <h1 class="post-title">{{ post?.title || 'No title' }}</h1>
+        
+        <!-- Post Meta -->
+        <div class="post-meta">
+          <div class="meta-item" *ngIf="post?.author">
+            <mat-icon class="meta-icon">person</mat-icon>
+            <span class="meta-text">
+              {{ post.author?.fullName || post.author?.email || 'Unknown Author' }}
+            </span>
+          </div>
+          
+          <div class="meta-item" *ngIf="post?.updatedAt">
+            <mat-icon class="meta-icon">update</mat-icon>
+            <span class="meta-text">
+              Updated {{ formatDate(post.updatedAt) }}
+            </span>
+          </div>
+          
+          <div class="meta-item" *ngIf="post?.createdAt && post.updatedAt !== post.createdAt">
+            <mat-icon class="meta-icon">schedule</mat-icon>
+            <span class="meta-text">
+              Published {{ formatDate(post.createdAt) }}
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Featured Image -->
+      <div class="featured-image" *ngIf="post?.image">
+        <img [src]="getFeaturedImage(post)" [alt]="post?.title || 'Blog post'" class="post-image">
+      </div>
+
+      <!-- Post Content -->
+      <div class="post-content" [innerHTML]="post?.content || 'No content available'">
+      </div>
+      <div class="post-tags" *ngIf="post?.tags?.length">
+        <span class="tag" *ngFor="let tag of post.tags">#{{ tag }}</span>
+      </div>
+      <!-- Post Footer -->
+      <footer class="post-footer">
+        <div class="comments-section">
+          <h3 class="comments-title">
+            <mat-icon>comment</mat-icon>
+            {{ post.commentIds?.length || 'No' }} Comment{{ post.commentIds?.length !== 1 ? 's' : '' }}
+          </h3>
+          
+          <!-- Comments List -->
+          <div class="comments-list" *ngIf="post.commentIds?.length">
+            <div class="comment" *ngFor="let comment of post.commentIds">
+              <div class="comment-header">
+                <div class="comment-author">
+                  <mat-icon class="comment-avatar">account_circle</mat-icon>
+                  <span class="author-name">
+                    {{ getAuthorName(comment.userId) }}
+                  </span>
+                </div>
+                <span class="comment-date">
+                  {{ formatDate(comment.createdAt) }}
+                </span>
+              </div>
+              <div class="comment-content">
+                {{ comment.content }}
+              </div>
+              <!-- Reply Component -->
+              <app-reply [commentId]="comment?.id || ''"></app-reply>
+            </div>
+          </div>
+          
+          <!-- Add Comment Form -->
+          <div class="add-comment">
+            <h4>Leave a Comment</h4>
+            <form (ngSubmit)="onSubmitComment()" [formGroup]="commentForm">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Your Comment</mat-label>
+                <textarea matInput formControlName="content" rows="3" required></textarea>
+                <mat-error *ngIf="commentForm.get('content')?.hasError('required')">
+                  Comment is required
+                </mat-error>
+              </mat-form-field>
+              <div class="form-actions">
+                <button 
+                  mat-raised-button 
+                  color="primary" 
+                  type="submit"
+                  [disabled]="!commentForm.valid || isSubmittingComment"
+                >
+                  <mat-icon>send</mat-icon>
+                  {{ isSubmittingComment ? 'Posting...' : 'Post Comment' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </footer>
+    </article>
+  </div>
+</div>
