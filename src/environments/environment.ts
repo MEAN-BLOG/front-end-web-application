@@ -1,12 +1,11 @@
 export const environment = {
   production: false,
-  apiUrl: process.env.API_URL,
-  socketUrl: process.env.SOCKET_URL,
-  appName: process.env.APP_NAME,
-  tokenKey: process.env.TOKEN_KEY,
-  refreshTokenKey: process.env.REFRESH_TOKEN_KEY,
-  tokenExpirationKey: process.env.TOKEN_EXPIRATION_KEY,
+  apiUrl: "http://localhost:5000/api/v1",
+  socketUrl: "http://localhost:5000/api",
+  appName: "collab-blog",
+  tokenKey: 'cb_access_token',
+  refreshTokenKey: 'cb_refresh_token'
 };
 
-export const jwtWhitelistedDomains = [process.env.BASE_URL];
+export const jwtWhitelistedDomains = ["http://localhost:5000"];
 export const jwtBlacklistedRoutes = [];
