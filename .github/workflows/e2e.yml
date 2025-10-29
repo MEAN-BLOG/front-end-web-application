@@ -1,0 +1,67 @@
+name: E2E Tests (Playwright)
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+jobs:
+  e2e-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: ⬇️ Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🛠️ Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        
+    - name: 📦 Install Dependencies
+      run: npm install
+
+    - name: 💾 Cache Playwright Browsers
+      id: cache-playwright
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
+
+    - name: 🌐 Install Playwright Browsers
+      if: steps.cache-playwright.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps
+
+    - name: 🔨 Build Angular Application
+      run: npm run build -- --configuration=production
+
+    - name: 🚀 Start Angular Server for Testing
+      run: |
+        npm run start &
+        echo $! > server_pid.txt
+        sleep 20
+
+    - name: 🧪 Run Playwright Tests (Headless)
+      run: npx playwright test
+      env:
+        PLAYWRIGHT_TEST_BASE_URL: http://localhost:4200
+
+    - name: 🧹 Stop Angular Server
+      if: always()
+      run: |
+        if [ -f server_pid.txt ]; then
+          SERVER_PID=$(cat server_pid.txt)
+          echo "Killing server process $SERVER_PID"
+          kill "$SERVER_PID"
+        fi
+    
+    - name: 🖼️ Upload Artifacts (Screenshots/Videos on failure)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30

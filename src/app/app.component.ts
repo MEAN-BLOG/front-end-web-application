@@ -18,6 +18,7 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
   styles: [`
     .main-content {
       margin: 0 auto;
+      padding-top: 60px
     }
   `]
 })
