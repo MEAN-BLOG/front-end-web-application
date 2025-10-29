@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:collab-blog": "node dist/collab-blog/server/server.mjs"
+    "serve:ssr:collab-blog": "node dist/collab-blog/server/server.mjs",
+    "e2e": "npx playwright test --headed"
   },
   "prettier": {
     "printWidth": 100,
@@ -54,6 +55,7 @@
     "@angular/build": "^20.3.6",
     "@angular/cli": "^20.3.6",
     "@angular/compiler-cli": "^20.3.0",
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.1.16",
     "@types/body-parser": "^1.19.6",
     "@types/chart.js": "^2.9.41",
