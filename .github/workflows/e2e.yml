@@ -45,7 +45,7 @@ jobs:
         sleep 20
 
     - name: 🧪 Run Playwright Tests (Headless)
-      run: npx playwright test --workers=1
+      run: npx playwright test
       env:
         PLAYWRIGHT_TEST_BASE_URL: http://localhost:4200
 
