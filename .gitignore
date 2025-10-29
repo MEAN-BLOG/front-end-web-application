@@ -29,3 +29,4 @@ yarn-error.log*
 
 node_modules/
 .vscode/
+.last-run.json
