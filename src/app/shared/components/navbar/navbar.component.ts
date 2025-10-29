@@ -13,6 +13,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../../auth/auth.service';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { User } from '../../../core/models/user.model';
+import { NotificationCenterComponent } from '../notification/notification.module';
 
 interface Notification {
   id: string;
@@ -34,7 +35,8 @@ interface Notification {
     MatMenuModule,
     MatBadgeModule,
     MatDividerModule,
-    TimeAgoPipe
+    TimeAgoPipe,
+    NotificationCenterComponent
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
@@ -42,11 +44,6 @@ interface Notification {
 export class NavbarComponent implements OnInit {
   readonly user$: Observable<User | null>;
   readonly currentUser: User | null;
-  readonly unreadNotificationsCount$: Observable<number>;
-  notifications: Notification[] = [
-    { id: '1', title: 'New Article Approved', body: 'The editor approved your article "A Taste of Tailwind".', read: false, createdAt: new Date(Date.now() - 3600000) },
-    { id: '2', title: 'Welcome!', body: 'Thank you for joining CollabBlog.', read: true, createdAt: new Date(Date.now() - 86400000) },
-  ];
   
   isScrolled = false;
   isMobileMenuOpen = false;
@@ -57,9 +54,6 @@ export class NavbarComponent implements OnInit {
   ) {
     this.user$ = this.auth.user$;
     this.currentUser = this.auth.getCurrentUser();
-    this.unreadNotificationsCount$ = this.user$.pipe(
-      map(() => this.notifications.filter(n => !n.read).length) // Count unread notifications
-    );
   }
 
   ngOnInit(): void {
@@ -88,10 +82,6 @@ export class NavbarComponent implements OnInit {
 
   search(): void {
     console.log('Search functionality executed.');
-  }
-
-  markAsRead(notification: Notification): void {
-    notification.read = true;
   }
 
   hasRole(role: string): Observable<boolean> {
