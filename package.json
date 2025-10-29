@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:collab-blog": "node dist/collab-blog/server/server.mjs",
-    "e2e": "npx playwright test --headed"
+    "e2e:test": "npx playwright test --headed",
+    "e2e": "npx playwright test"
   },
   "prettier": {
     "printWidth": 100,
