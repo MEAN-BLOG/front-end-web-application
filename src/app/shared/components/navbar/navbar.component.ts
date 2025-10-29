@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core'; // <-- Added OnInit and HostListener
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -39,11 +39,17 @@ interface Notification {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   readonly user$: Observable<User | null>;
-  readonly currentUser : User| null;
+  readonly currentUser: User | null;
   readonly unreadNotificationsCount$: Observable<number>;
-  notifications: Notification[] = [];
+  notifications: Notification[] = [
+    { id: '1', title: 'New Article Approved', body: 'The editor approved your article "A Taste of Tailwind".', read: false, createdAt: new Date(Date.now() - 3600000) },
+    { id: '2', title: 'Welcome!', body: 'Thank you for joining CollabBlog.', read: true, createdAt: new Date(Date.now() - 86400000) },
+  ];
+  
+  isScrolled = false;
+  isMobileMenuOpen = false;
 
   constructor(
     private readonly auth: AuthService,
@@ -51,9 +57,28 @@ export class NavbarComponent {
   ) {
     this.user$ = this.auth.user$;
     this.currentUser = this.auth.getCurrentUser();
-    this.unreadNotificationsCount$ = new Observable<number>(subscriber => {
-      subscriber.next(0);
-    });
+    this.unreadNotificationsCount$ = this.user$.pipe(
+      map(() => this.notifications.filter(n => !n.read).length) // Count unread notifications
+    );
+  }
+
+  ngOnInit(): void {
+    this.checkScroll(); 
+  }
+
+  @HostListener('window:scroll', [])
+  checkScroll(): void {
+    this.isScrolled = window.scrollY > 50; 
+  }
+
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    if (this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+    }
   }
 
   logout(): void {
@@ -62,7 +87,7 @@ export class NavbarComponent {
   }
 
   search(): void {
-    console.log('Search functionality to be implemented');
+    console.log('Search functionality executed.');
   }
 
   markAsRead(notification: Notification): void {
@@ -71,7 +96,7 @@ export class NavbarComponent {
 
   hasRole(role: string): Observable<boolean> {
     return this.user$.pipe(
-      map(user => Boolean(user?.role))
+      map(user => user?.role === role)
     );
   }
 }
