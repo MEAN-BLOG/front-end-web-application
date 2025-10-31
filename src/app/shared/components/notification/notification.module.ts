@@ -1,20 +1,39 @@
-import { Component, Input, Pipe, PipeTransform, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Pipe,
+  PipeTransform,
+  ChangeDetectionStrategy,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { NavigationExtras, Router, RouterModule } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
 import { User } from 'src/app/core/models/user.model';
-import { Notification } from 'src/app/core/services/notification.service';
+import { Notification, NotificationService } from './notification.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+/**
+ * Pipe to display a "time ago" format for timestamps.
+ */
 @Pipe({
   name: 'timeAgo',
   standalone: true
 })
 export class MockTimeAgoPipe implements PipeTransform {
+  /**
+   * Transforms a timestamp to a human-readable "time ago" format.
+   * 
+   * @param value The timestamp to convert (can be Date, string, or number).
+   * @returns A string representing the time ago in a human-readable format.
+   */
   transform(value: Date | string | number): string {
     const seconds = Math.floor((Date.now() - new Date(value).getTime()) / 1000);
     if (seconds < 60) return 'Just now';
@@ -27,6 +46,9 @@ export class MockTimeAgoPipe implements PipeTransform {
   }
 }
 
+/**
+ * Notification center component to manage and display user notifications.
+ */
 @Component({
   selector: 'app-notification-center',
   standalone: true,
@@ -38,33 +60,102 @@ export class MockTimeAgoPipe implements PipeTransform {
     MatMenuModule,
     MatBadgeModule,
     MatDividerModule,
-    MockTimeAgoPipe
+    MockTimeAgoPipe,
+    MatSnackBarModule
   ],
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NotificationCenterComponent {
+export class NotificationCenterComponent implements OnInit, OnDestroy {
   @Input() user$!: Observable<User | null>;
 
-  notifications: Notification[] = [
-    { id: '1', title: 'New Article Approved', body: 'The editor approved your article "A Taste of Tailwind".', read: false, createdAt: new Date(Date.now() - 3600000).toISOString() },
-    { id: '2', title: 'Welcome!', body: 'Thank you for joining CollabBlog.', read: true, createdAt: new Date(Date.now() - 86400000).toISOString() },
-  ];
-  
-  readonly unreadNotificationsCount$: Observable<number>;
+  notifications: Notification[] = [];
+  unreadCount: number = 0;
+  private sub!: Subscription;
 
-  constructor() {
-    this.unreadNotificationsCount$ = this.user$?.pipe(
-      map(() => this.notifications.filter(n => !n.read).length)
-    ) ?? new Observable<number>(observer => { observer.next(this.notifications.filter(n => !n.read).length); });
+  /**
+   * Constructs the NotificationCenterComponent.
+   * 
+   * @param notificationService - The NotificationService to handle fetching and updating notifications
+   * @param cdr - The ChangeDetectorRef to trigger change detection for OnPush strategy
+   */
+  constructor(
+    private notificationService: NotificationService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+  ) {}
+
+  /**
+   * On initialization, fetch notifications and subscribe to real-time updates.
+   */
+  ngOnInit(): void {
+    this.notificationService.getNotifications(1, 100).subscribe({
+      next: (response) => {
+        this.notifications = response.data;
+        this.unreadCount = this.notifications.filter((n) => !n.read).length;
+        console.log(`[NotificationCenter] Fetched ${response.data.length} notifications`);
+        this.cdr.markForCheck();
+      },
+      error: (error) => {
+        console.error('[NotificationCenter] Error fetching notifications:', error);
+      },
+    });
+
+    this.sub = this.notificationService.notifications$.subscribe((list) => {
+      this.notifications = list;
+      this.unreadCount = list.filter((n) => !n.read).length;
+      this.cdr.markForCheck();
+
+      console.log(`[NotificationCenter] Updated: ${list.length} notifications, ${this.unreadCount} unread`);
+    });
   }
 
-  markAsRead(notification: Notification): void {
-    notification.read = true;
+  /**
+   * Cleanup by unsubscribing from the real-time notification subscription when the component is destroyed.
+   */
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
-  trackById(index: number, notification: Notification): string {
-    return notification.id;
+  /**
+   * Marks all unread notifications as read.
+   */
+  markAllAsRead(): void {
+    this.notifications.forEach((n) => {
+      if (!n.read) this.notificationService.markAsRead(n.id);
+    });
+  }
+
+  /**
+   * Marks a specific notification as read.
+   * 
+   * @param notificationId - The ID of the notification to mark as read
+   */
+  markAsRead(notificationId: string): void {
+    this.notificationService.markAsRead(notificationId);
+  }
+
+  /**
+   * Handles the event of viewing the details of a notification.
+   * Navigates to the blog post and scrolls to the specific comment or reply.
+   * 
+   * @param notification - The notification object to view details for
+   */
+  viewNotificationDetails(notification: Notification): void {
+    const articleId = notification.metadata?.articleId;
+    const referenceId = notification?.referenceId;
+
+    if (articleId && referenceId) {
+      const navigationExtras: NavigationExtras = {
+        queryParams: { referenceId },
+      };
+
+      this.router.navigate([`/blog/${articleId}`], navigationExtras);
+    } else {
+      console.warn('[NotificationCenter] Missing articleId or referenceId in notification.');
+    }
   }
 }
