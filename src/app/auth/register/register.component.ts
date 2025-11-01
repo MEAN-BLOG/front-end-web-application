@@ -68,8 +68,7 @@ export function passwordMatchValidator(control: AbstractControl): ValidationErro
     MatProgressSpinnerModule,
     MatSnackBarModule
   ],
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  templateUrl: './register.component.html'
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;

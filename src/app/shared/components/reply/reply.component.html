@@ -1,87 +1,102 @@
-<div class="replies-container">
+<div class="ml-6 mt-4 border-l-2 border-gray-200 dark:border-gray-700 pl-4">
+
   <!-- Toggle replies button -->
-  <button mat-button color="primary" class="toggle-replies" (click)="toggleReplies()">
+  <button
+    class="flex items-center gap-2 text-sm font-medium mb-2 px-2 py-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+    (click)="toggleReplies()"
+  >
     <mat-icon>{{ showReplies ? 'expand_less' : 'chat_bubble_outline' }}</mat-icon>
     <span>{{ showReplies ? 'Hide replies' : 'Replies' }} ({{ totalReplies }})</span>
   </button>
 
   <!-- Replies list -->
-  <div class="replies-list" *ngIf="showReplies">
+  <div *ngIf="showReplies" class="space-y-3">
+
     <!-- Loading indicator -->
-    <div class="loading-indicator" *ngIf="isLoading && replies.length === 0">
+    <div *ngIf="isLoading && replies.length === 0" class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 animate-pulse">
       <mat-spinner diameter="24"></mat-spinner>
       <span>Loading replies...</span>
     </div>
 
     <!-- No replies message -->
-<div *ngIf="!isLoading && (replies?.length ?? 0) === 0">
-  <mat-icon>forum</mat-icon>
-  <p>No replies yet.</p>
-</div>
+    <div *ngIf="!isLoading && (replies?.length ?? 0) === 0" class="flex flex-col items-center text-gray-500 dark:text-gray-400 text-sm py-4 gap-1">
+      <mat-icon class="text-3xl">forum</mat-icon>
+      <p>No replies yet.</p>
+    </div>
 
     <!-- Replies -->
-    <div class="reply" *ngFor="let reply of replies">
-      <div class="reply-avatar">
-        <mat-icon>account_circle</mat-icon>
+    <div *ngFor="let reply of replies" class="flex gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition transform hover:-translate-y-0.5">
+      
+      <!-- Avatar -->
+      <div class="flex-shrink-0 text-gray-400 dark:text-gray-500">
+        <mat-icon class="text-2xl">account_circle</mat-icon>
       </div>
-      <div class="reply-content">
-        <div class="reply-header">
-          <span class="author">{{ getAuthorName(reply.userId) }}</span>
-          <span class="date">{{ formatDate(reply.createdAt) }}</span>
+
+      <!-- Content -->
+      <div class="flex-1">
+        <div class="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 mb-1">
+          <span class="font-semibold text-gray-900 dark:text-gray-100">{{ getAuthorName(reply.userId) }}</span>
+          <span>{{ formatDate(reply.createdAt) }}</span>
         </div>
-        <div class="reply-text">{{ reply.content }}</div>
+        <div class="text-sm text-gray-700 dark:text-gray-200 whitespace-pre-wrap break-words">
+          {{ reply.content }}
+        </div>
       </div>
+
     </div>
 
     <!-- Load more button -->
-    <div class="load-more" *ngIf="hasMore && !isLoading">
-      <button mat-button (click)="loadReplies(true)">
+    <div *ngIf="hasMore && !isLoading" class="flex justify-center">
+      <button class="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition" (click)="loadReplies(true)">
         <mat-icon>expand_more</mat-icon>
         <span>Load more replies</span>
       </button>
     </div>
 
     <!-- Reply form -->
-    <div class="reply-form" *ngIf="isAuthenticated()">
-      <button mat-button *ngIf="!showReplyForm" (click)="showReplyForm = true">
+    <div *ngIf="isAuthenticated()" class="mt-3">
+
+      <!-- Show reply button -->
+      <button *ngIf="!showReplyForm" class="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition" (click)="showReplyForm = true">
         <mat-icon>reply</mat-icon>
         <span>Reply</span>
       </button>
 
-      <form [formGroup]="replyForm" (ngSubmit)="onAddReply()" *ngIf="showReplyForm">
-        <mat-form-field appearance="outline" class="full-width">
+      <!-- Form -->
+      <form *ngIf="showReplyForm" [formGroup]="replyForm" (ngSubmit)="onAddReply()" class="mt-2 space-y-2">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Write a reply...</mat-label>
-          <textarea 
-            matInput 
-            formControlName="content" 
+          <textarea
+            matInput
+            formControlName="content"
             cdkTextareaAutosize
             cdkAutosizeMinRows="2"
             cdkAutosizeMaxRows="5"
+            class="resize-none text-sm p-2 rounded border border-gray-300 dark:border-gray-600"
           ></textarea>
           <mat-error *ngIf="replyForm.get('content')?.hasError('required')">
             Reply cannot be empty
           </mat-error>
         </mat-form-field>
-        <div class="form-actions">
-          <button 
-            mat-button 
-            type="button" 
-            (click)="showReplyForm = false"
-            [disabled]="isAddingReply"
-          >
-            Cancel
-          </button>
-          <button 
-            mat-raised-button 
-            color="primary" 
+
+        <div class="flex justify-end gap-2">
+          <button
             type="submit"
-            [disabled]="replyForm.invalid || isAddingReply"
+            color="primary"
+  class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
+         shadow-md transition-all duration-500 ease-in-out
+         focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
+         bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
+         hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
+         disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"            [disabled]="replyForm.invalid || isAddingReply"
           >
             <span *ngIf="!isAddingReply">Post Reply</span>
             <mat-spinner *ngIf="isAddingReply" diameter="20"></mat-spinner>
           </button>
         </div>
       </form>
+
     </div>
+
   </div>
 </div>
