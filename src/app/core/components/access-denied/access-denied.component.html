@@ -1,0 +1,35 @@
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-red-100 via-red-50 to-red-200 dark:from-red-900 dark:via-red-800 dark:to-red-900 px-4 transition-colors duration-500">
+  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 max-w-md w-full text-center animate-fadeIn">
+    <div class="mb-6 text-white">
+      <mat-icon class="text-6xl text-blue-500 dark:text-red-400 animate-bounce">block</mat-icon>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold mb-4 dark:text-white">
+      Access Denied
+    </h1>
+    <p class="dark:text-white mb-2">
+      {{ errorMessage }}
+    </p>
+    <p *ngIf="returnUrl" class="dark:text-white mb-6">
+      You were trying to access: <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">{{ returnUrl }}</code>
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-4">
+      <button 
+        color="primary" 
+        (click)="goToHome()" 
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg transition transform hover:-translate-y-1 hover:shadow-lg"
+      >
+        Go to Home
+      </button>
+
+      <button 
+        mat-button 
+        (click)="goToLogin()" 
+        *ngIf="!isLoggedIn"
+        class=" dark:text-white font-semibold px-6 py-2 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900 transition transform hover:-translate-y-1"
+      >
+        Log In
+      </button>
+    </div>
+  </div>
+</div>
