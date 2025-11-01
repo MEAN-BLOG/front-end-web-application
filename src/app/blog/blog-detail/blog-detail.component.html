@@ -24,7 +24,7 @@
           <div class="meta-item" *ngIf="post?.author">
             <mat-icon class="meta-icon">person</mat-icon>
             <span class="meta-text">
-              {{ post.author?.fullName || post.author?.email || 'Unknown Author' }}
+              {{ post.author?.firstName || post.author?.email || 'Unknown Author' }}
             </span>
           </div>
           
@@ -64,26 +64,26 @@
           </h3>
           
           <!-- Comments List -->
-          <div class="comments-list" *ngIf="post.commentIds?.length">
-            <div class="comment" *ngFor="let comment of post.commentIds">
-              <div class="comment-header">
-                <div class="comment-author">
-                  <mat-icon class="comment-avatar">account_circle</mat-icon>
-                  <span class="author-name">
-                    {{ getAuthorName(comment.userId) }}
-                  </span>
-                </div>
-                <span class="comment-date">
-                  {{ formatDate(comment.createdAt) }}
-                </span>
-              </div>
-              <div class="comment-content">
-                {{ comment.content }}
-              </div>
-              <!-- Reply Component -->
-              <app-reply [commentId]="comment?.id || ''"></app-reply>
-            </div>
-          </div>
+<div class="comments-list" *ngIf="post.commentIds?.length">
+<div class="comment" *ngFor="let comment of post.commentIds" [id]="comment?._id">
+    <div class="comment-header">
+      <div class="comment-author">
+        <mat-icon class="comment-avatar">account_circle</mat-icon>
+        <span class="author-name">
+          {{ getAuthorName(comment.userId) }}
+        </span>
+      </div>
+      <span class="comment-date">
+        {{ formatDate(comment.createdAt) }}
+      </span>
+    </div>
+    <div class="comment-content">
+      {{ comment.content }}
+    </div>
+    <!-- Reply Component -->
+    <app-reply [commentId]="comment._id"></app-reply>
+  </div>
+</div>
           
           <!-- Add Comment Form -->
           <div class="add-comment">

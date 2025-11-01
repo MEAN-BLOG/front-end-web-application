@@ -27,7 +27,7 @@ import { CreateReplyData, Reply } from '../../../core/models/reply.model';
 })
 export class ReplyComponent implements OnInit {
   @Input() commentId!: string;
-  
+
   replies: Reply[] = [];
   isLoading = false;
   isAddingReply = false;
@@ -99,7 +99,6 @@ export class ReplyComponent implements OnInit {
       commentId: this.commentId,
       content: this.replyForm.get('content')?.value
     };
-
     this.replyService.addReply(replyData).subscribe({
       next: (response) => {
         if (response.success) {

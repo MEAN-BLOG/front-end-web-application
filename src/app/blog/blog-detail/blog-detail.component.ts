@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { PostService } from '../../shared/services/post.service';
 import { Post, CommentResponse } from '../../core/models/post.model';
-import { Comment } from '../../core/models/comment.model';
 import { AuthService } from '../../core/services/auth.service';
 import { ReplyComponent } from '../../shared/components/reply/reply.component';
 
@@ -53,15 +52,16 @@ export class BlogDetailComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    const postId = this.route.snapshot.paramMap.get('id');
-    if (postId) {
-      this.loadPost(postId);
-    } else {
-      this.error = 'No post ID provided';
-      this.isLoading = false;
-    }
+ngOnInit(): void {
+  const postId = this.route.snapshot.paramMap.get('id');
+  if (postId) {
+    this.loadPost(postId);
+
+  } else {
+    this.error = 'No post ID provided';
+    this.isLoading = false;
   }
+}
 
   private loadPost(id: string): void {
     this.isLoading = true;
@@ -69,7 +69,6 @@ export class BlogDetailComponent implements OnInit {
 
     this.postService.getPostById(id).subscribe({
       next: (response: any) => {
-        console.log('Post response:', response); // Debug log
         if (response?.success && response.data) {
           this.post = response.data;
         } else {
@@ -143,4 +142,27 @@ export class BlogDetailComponent implements OnInit {
     const name = [firstName, lastName].filter(Boolean).join(' ');
     return name || email || 'Anonymous';
   }
+
+  ngAfterViewInit(): void {
+  const referenceId = this.route.snapshot.queryParamMap.get('referenceId');
+  if (referenceId) {
+    setTimeout(() => {
+      this.scrollToComment(referenceId);
+    }, 2000); // Slightly longer delay
+  }
+}
+
+scrollToComment(referenceId?: string): void {
+  if (!referenceId) {
+    return;
+  }
+  const element = document.getElementById(referenceId);
+
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    element.style.backgroundColor = 'yellow'; // Optional for visual debug
+  } else {
+    console.warn('No comment or reply found with referenceId:', referenceId);
+  }
+}
 }
