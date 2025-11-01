@@ -35,7 +35,7 @@ export class NotificationService implements OnDestroy {
 
   private readonly socketUrl = environment.socketUrl;
   private readonly user: User | null;
-
+  private audio = new Audio();
   /**
    * Constructor for NotificationService.
    * Initializes socket connection and retrieves the current user.
@@ -50,6 +50,8 @@ export class NotificationService implements OnDestroy {
   ) {
     this.connect();
     this.user = this.auth.getCurrentUser();
+    this.audio.src = 'sounds/notification.wav'; 
+    this.audio.load();
   }
 
   /**
@@ -82,6 +84,7 @@ export class NotificationService implements OnDestroy {
       const notification: Notification = this.mapNotification(data);
       this.showSnackBar(notification);
       this.refreshNotifications();
+      this.playNotificationSound();
       this._hasUnread$.next(true);
     });
 
@@ -213,6 +216,16 @@ export class NotificationService implements OnDestroy {
   ngOnDestroy(): void {
     if (this.socket) {
       this.socket.disconnect();
+    }
+  }
+
+    /**Play sound when a new notification arrives */
+  private playNotificationSound(): void {
+    try {
+      this.audio.currentTime = 0;
+      this.audio.play().catch(err => console.warn('[NotificationService] Audio play blocked:', err));
+    } catch (e) {
+      console.error('[NotificationService] Error playing notification sound:', e);
     }
   }
 }
