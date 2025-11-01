@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
+const BASE_URL = process.env.PLAYWRIGHT_TEST_BASE_URL!;
 
 /**
  * Set up the environment for each test in this suite.
  * Navigates to the base application URL before running a test.
  */
 test.beforeEach(async ({ page }) => {
-  await page.goto('http://localhost:4200/'); 
+  await page.goto(BASE_URL); 
 });
 
 /**
