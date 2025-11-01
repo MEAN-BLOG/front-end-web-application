@@ -480,27 +480,16 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
               if (this.paginator) {
                 this.dataSource.paginator = this.paginator;
               }
-              
-              console.log('Users data loaded:', this.users);
-              
+                            
               // Update pagination info if available
               if (response.data.pagination) {
                 this.totalItems = response.data.pagination.total || 0;
                 // Convert from 1-based to 0-based for Material paginator
                 this.pageIndex = response.data.pagination.page ? response.data.pagination.page - 1 : 0;
                 this.pageSize = response.data.pagination.limit || this.pageSize;
-                
-                console.log('Pagination updated:', {
-                  totalItems: this.totalItems,
-                  pageIndex: this.pageIndex,
-                  pageSize: this.pageSize
-                });
               } else {
                 this.totalItems = this.users.length;
-                console.log('No pagination data, using array length:', this.totalItems);
               }
-              
-              console.log(`Successfully loaded ${this.users.length} users.`);
             } else {
               console.warn('Unexpected API response format:', response);
               this.users = [];
@@ -544,7 +533,6 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPageChange(event: PageEvent): void {
-    console.log('Page changed:', event);
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
     this.loadUsers();
