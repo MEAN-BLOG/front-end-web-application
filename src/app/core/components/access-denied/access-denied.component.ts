@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
+/**
+ * Component displayed when a user tries to access a page they do not have permission for.
+ * Provides options to go back home or log in if not authenticated.
+ */
 @Component({
   selector: 'app-access-denied',
   standalone: true,
@@ -11,47 +16,19 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     RouterModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule
   ],
-  template: `
-    <div class="access-denied-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Access Denied</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ errorMessage }}</p>
-          <p *ngIf="returnUrl">You were trying to access: <code>{{ returnUrl }}</code></p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-raised-button color="primary" (click)="goToHome()">Go to Home</button>
-          <button mat-button (click)="goToLogin()" *ngIf="!isLoggedIn">Log In</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  `,
-  styles: [`
-    .access-denied-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      padding: 20px;
-    }
-    mat-card {
-      max-width: 500px;
-      width: 100%;
-      text-align: center;
-    }
-    mat-card-actions {
-      justify-content: center;
-      gap: 10px;
-    }
-  `]
+  templateUrl: './access-denied.component.html'
 })
 export class AccessDeniedComponent implements OnInit {
+  /** Message describing the reason for access denial */
   errorMessage = 'You do not have permission to access this page.';
+
+  /** The URL the user originally attempted to access */
   returnUrl: string | null = null;
+
+  /** Indicates if the user is logged in */
   isLoggedIn = false;
 
   constructor(
@@ -59,7 +36,10 @@ export class AccessDeniedComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit() {
+  /**
+   * Initializes component and reads query parameters for returnUrl, message, and login status.
+   */
+  ngOnInit(): void {
     this.route.queryParamMap.subscribe(params => {
       this.returnUrl = params.get('returnUrl');
       const message = params.get('message');
@@ -70,15 +50,19 @@ export class AccessDeniedComponent implements OnInit {
     });
   }
 
-  goToHome() {
+  /**
+   * Navigates the user to the home page.
+   */
+  goToHome(): void {
     this.router.navigate(['/']);
   }
 
-  goToLogin() {
+  /**
+   * Navigates the user to the login page, preserving the returnUrl.
+   */
+  goToLogin(): void {
     this.router.navigate(['/auth/login'], { 
-      queryParams: { 
-        returnUrl: this.returnUrl || '/'
-      } 
+      queryParams: { returnUrl: this.returnUrl || '/' } 
     });
   }
 }
