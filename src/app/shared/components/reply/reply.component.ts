@@ -22,8 +22,7 @@ import { CreateReplyData, Reply } from '../../../core/models/reply.model';
     MatInputModule,
     MatProgressSpinnerModule
   ],
-  templateUrl: './reply.component.html',
-  styleUrls: ['./reply.component.scss']
+  templateUrl: './reply.component.html'
 })
 export class ReplyComponent implements OnInit {
   @Input() commentId!: string;
