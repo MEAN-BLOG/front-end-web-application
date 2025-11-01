@@ -13,76 +13,18 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
   </a>
 
   <!-- Desktop Navigation -->
-  <nav class="hidden lg:flex items-center ml-8 space-x-4">
-    <a
-      routerLink="/articles"
-      routerLinkActive="text-primary-600 dark:text-accent-400"
-      class="relative px-2 py-1 font-medium text-black dark:text-white transition-colors duration-200
-             before:content-[''] before:absolute before:left-1/2 before:bottom-0 before:w-0 before:h-[2px]
-             before:rounded before:bg-primary-600 before:transition-all before:duration-300 before:ease-in-out
-             hover:before:w-1/2 hover:before:left-1/4 focus:before:w-1/2 focus:before:left-1/4"
-      (click)="closeMobileMenu()"
-    >
-      <mat-icon class="mr-1">article</mat-icon>
-      <span>Articles</span>
-    </a>
-
-    <ng-container *ngIf="user$ | async as user">
-      <a
-        routerLink="/writer"
-        *ngIf="hasRole('Writer') | async"
-        routerLinkActive="text-primary-600 dark:text-accent-400"
-        class="relative px-2 py-1 font-medium text-black dark:text-white transition-colors duration-200
-               before:content-[''] before:absolute before:left-1/2 before:bottom-0 before:w-0 before:h-[2px]
-               before:rounded before:bg-primary-600 before:transition-all before:duration-300 before:ease-in-out
-               hover:before:w-1/2 hover:before:left-1/4 focus:before:w-1/2 focus:before:left-1/4"
-        (click)="closeMobileMenu()"
-      >
-        <mat-icon class="mr-1">edit_note</mat-icon>
-        <span>Writer</span>
-      </a>
-
-      <a
-        routerLink="/editor"
-        *ngIf="hasRole('Editor') | async"
-        routerLinkActive="text-primary-600 dark:text-accent-400"
-        class="relative px-2 py-1 font-medium text-black dark:text-white transition-colors duration-200
-               before:content-[''] before:absolute before:left-1/2 before:bottom-0 before:w-0 before:h-[2px]
-               before:rounded before:bg-primary-600 before:transition-all before:duration-300 before:ease-in-out
-               hover:before:w-1/2 hover:before:left-1/4 focus:before:w-1/2 focus:before:left-1/4"
-        (click)="closeMobileMenu()"
-      >
-        <mat-icon class="mr-1">rate_review</mat-icon>
-        <span>Editor</span>
-      </a>
-
-      <a
-        routerLink="/admin"
-        *ngIf="hasRole('Admin') | async"
-        routerLinkActive="text-primary-600 dark:text-accent-400"
-        class="relative px-2 py-1 font-medium text-black dark:text-white transition-colors duration-200
-               before:content-[''] before:absolute before:left-1/2 before:bottom-0 before:w-0 before:h-[2px]
-               before:rounded before:bg-primary-600 before:transition-all before:duration-300 before:ease-in-out
-               hover:before:w-1/2 hover:before:left-1/4 focus:before:w-1/2 focus:before:left-1/4"
-        (click)="closeMobileMenu()"
-      >
-        <mat-icon class="mr-1">admin_panel_settings</mat-icon>
-        <span>Admin</span>
-      </a>
-    </ng-container>
-  </nav>
 
   <span class="flex-grow"></span>
 
   <!-- Right side -->
-  <div class="hidden lg:flex items-center space-x-2">
+  <div class="flex items-center space-x-2">
     <app-notification-center *ngIf="user$ | async as user" [user$]="user$"></app-notification-center>
   </div>
 
   <!-- Mobile Menu Button -->
   <button
     mat-icon-button
-    class="ml-auto lg:hidden"
+    class="ml-auto"
     (click)="toggleMobileMenu()"
     aria-label="Toggle navigation menu"
   >
@@ -91,7 +33,7 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
 
   <!-- Mobile Menu -->
   <div
-    class="bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 fixed top-16 right-0 w-full dark:bg-gray-900/95 z-[1100] transform transition-transform duration-300 ease-in-out overflow-y-auto h-[calc(100vh-4rem)] lg:hidden"
+    class="bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 fixed top-16 right-0 w-full dark:bg-gray-900/95  transform transition-transform duration-300 ease-in-out overflow-y-auto h-[calc(100vh-4rem)]"
     [ngClass]="{ 'translate-x-0': isMobileMenuOpen, 'translate-x-full': !isMobileMenuOpen }"
   >
     <div>
@@ -103,15 +45,15 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
       <ng-container *ngIf="user$ | async as user; else guestMobile">
         <div class="flex flex-col gap-2">
           <mat-divider></mat-divider>
-          <a *ngIf="hasRole('Writer') | async" routerLink="/writer" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a *ngIf="hasRole('writer') | async" routerLink="/writer" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
             <mat-icon>edit_note</mat-icon>
             Writer Dashboard
           </a>
-          <a *ngIf="hasRole('Editor') | async" routerLink="/editor" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a *ngIf="hasRole('editor') | async" routerLink="/editor" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
             <mat-icon>rate_review</mat-icon>
             Editor Dashboard
           </a>
-          <a *ngIf="hasRole('Admin') | async" routerLink="/admin" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a *ngIf="hasRole('admin') | async" routerLink="/admin" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
             <mat-icon>admin_panel_settings</mat-icon>
             Admin Dashboard
           </a>

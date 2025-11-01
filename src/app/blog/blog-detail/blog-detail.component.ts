@@ -30,8 +30,7 @@ import { ReplyComponent } from '../../shared/components/reply/reply.component';
     MatSnackBarModule,
     ReplyComponent
   ],
-  templateUrl: './blog-detail.component.html',
-  styleUrls: ['./blog-detail.component.scss']
+  templateUrl: './blog-detail.component.html'
 })
 export class BlogDetailComponent implements OnInit {
   post: Post | null = null;
@@ -165,4 +164,8 @@ scrollToComment(referenceId?: string): void {
     console.warn('No comment or reply found with referenceId:', referenceId);
   }
 }
+  handleImageError(event: Event): void {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = '/images/blog.jpg';
+  }
 }
