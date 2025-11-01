@@ -27,7 +27,7 @@ import { CreateReplyData, Reply } from '../../../core/models/reply.model';
 })
 export class ReplyComponent implements OnInit {
   @Input() commentId!: string;
-  
+
   replies: Reply[] = [];
   isLoading = false;
   isAddingReply = false;
@@ -50,7 +50,6 @@ export class ReplyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Load initial replies when component initializes
     this.loadReplies();
   }
 
@@ -70,23 +69,22 @@ export class ReplyComponent implements OnInit {
     }
 
     this.isLoading = true;
-    this.replyService.getReplies(this.commentId, this.page, this.limit)
-      .subscribe({
-        next: (response) => {
-          if (response.success) {
-            this.replies = loadMore 
-              ? [...this.replies, ...response.data.replies]
-              : response.data.replies;
-            this.totalReplies = response.data.total;
-            this.hasMore = this.page < response.data.totalPages;
-          }
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Error loading replies:', error);
-          this.isLoading = false;
-        }
-      });
+this.replyService.getReplies(this.commentId, this.page, this.limit).subscribe({
+  next: (response) => {
+    if (response.success) {
+      const fetchedReplies = Array.isArray(response.data) ? response.data : [];
+      this.replies = loadMore ? [...this.replies, ...fetchedReplies] : fetchedReplies;
+      this.totalReplies = fetchedReplies.length;
+      this.hasMore = fetchedReplies.length >= this.limit;
+    }
+    this.isLoading = false;
+  },
+  error: (error) => {
+    console.error('Error loading replies:', error);
+    this.isLoading = false;
+    this.replies = [];
+  }
+});
   }
 
   onAddReply(): void {
@@ -99,7 +97,6 @@ export class ReplyComponent implements OnInit {
       commentId: this.commentId,
       content: this.replyForm.get('content')?.value
     };
-
     this.replyService.addReply(replyData).subscribe({
       next: (response) => {
         if (response.success) {

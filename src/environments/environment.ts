@@ -1,11 +1,11 @@
 export const environment = {
   production: false,
-  apiUrl: "http://localhost:5000/api/v1",
-  socketUrl: "http://localhost:5000/api",
+  apiUrl: "https://blog-back-end-4f1o.onrender.com/api/v1",
+  socketUrl: "https://blog-back-end-4f1o.onrender.com",
   appName: "collab-blog",
   tokenKey: 'cb_access_token',
   refreshTokenKey: 'cb_refresh_token'
 };
 
-export const jwtWhitelistedDomains = ["http://localhost:5000"];
+export const jwtWhitelistedDomains = ["https://blog-back-end-4f1o.onrender.com"];
 export const jwtBlacklistedRoutes = [];

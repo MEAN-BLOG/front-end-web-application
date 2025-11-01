@@ -1,116 +1,158 @@
-<mat-toolbar color="primary" class="navbar">
-  <!-- Logo -->
-  <a routerLink="/" class="logo" aria-label="Home">
-    <img src="/assets/images/logo.svg" alt="Logo" class="logo-img" *ngIf="false">
-    <span class="logo-text">CollabBlog</span>
+<mat-toolbar
+  [color]="isScrolled ? undefined : 'primary'"
+  class="mb-20 fixed top-0 left-0 right-0 z-[1200] h-16 px-4 md:px-8 flex items-center transition-all duration-300 ease-in-out"
+  [ngClass]="{
+    'bg-white/80 backdrop-blur-lg shadow-md text-gray-800 dark:bg-gray-900/80 dark:text-white': isScrolled,
+    'bg-primary-600 text-white shadow-lg': !isScrolled
+  }"
+>
+  <a
+    routerLink="/"
+    class="flex items-center text-lg font-semibold tracking-wide select-none"
+    aria-label="Home"
+    (click)="closeMobileMenu()"
+  >
+    <img src="/images/blog.jpg" alt="Logo" class="h-8 w-auto mr-2" />
+    <span class="font-roboto">CollabBlog</span>
   </a>
 
-  <!-- Navigation Links -->
-  <nav class="nav-links">
-    <a mat-button routerLink="/articles" routerLinkActive="active">
-      <mat-icon>article</mat-icon>
+  <nav class="hidden lg:flex items-center ml-8 space-x-1">
+    <a
+      mat-button
+      routerLink="/articles"
+      routerLinkActive="active"
+      class="nav-link"
+      (click)="closeMobileMenu()"
+    >
+      <mat-icon class="mr-1">article</mat-icon>
       <span>Articles</span>
     </a>
 
-    <ng-container *ngIf="user$ | async as user; else guestLinks">
-      <!-- Writer Dashboard -->
-      <a mat-button routerLink="/writer" routerLinkActive="active" *ngIf="hasRole('Writer') | async">
-        <mat-icon>edit_note</mat-icon>
+    <ng-container *ngIf="user$ | async as user">
+      <a
+        mat-button
+        routerLink="/writer"
+        routerLinkActive="active"
+        *ngIf="hasRole('Writer') | async"
+        class="nav-link"
+        (click)="closeMobileMenu()"
+      >
+        <mat-icon class="mr-1">edit_note</mat-icon>
         <span>Writer</span>
       </a>
 
-      <!-- Editor Dashboard -->
-      <a mat-button routerLink="/editor" routerLinkActive="active" *ngIf="hasRole('Editor') | async">
-        <mat-icon>rate_review</mat-icon>
+      <a
+        mat-button
+        routerLink="/editor"
+        routerLinkActive="active"
+        *ngIf="hasRole('Editor') | async"
+        class="nav-link"
+        (click)="closeMobileMenu()"
+      >
+        <mat-icon class="mr-1">rate_review</mat-icon>
         <span>Editor</span>
       </a>
 
-      <!-- Admin Dashboard -->
-      <a mat-button routerLink="/admin" routerLinkActive="active" *ngIf="hasRole('Admin') | async">
-        <mat-icon>admin_panel_settings</mat-icon>
+      <a
+        mat-button
+        routerLink="/admin"
+        routerLinkActive="active"
+        *ngIf="hasRole('Admin') | async"
+        class="nav-link"
+        (click)="closeMobileMenu()"
+      >
+        <mat-icon class="mr-1">admin_panel_settings</mat-icon>
         <span>Admin</span>
       </a>
     </ng-container>
   </nav>
 
-  <!-- Spacer to push user controls to the right -->
-  <span class="spacer"></span>
+  <span class="flex-grow"></span>
 
-  <!-- User Controls -->
-  <div class="user-controls" routerLinkActive="active">
-    <!-- Notifications -->
-    <div class="notifications">
-      <button mat-icon-button [matMenuTriggerFor]="notificationsMenu" (click)="$event.stopPropagation()" 
-              [matBadge]="(unreadNotificationsCount$ | async) || ''" matBadgeColor="warn" 
-              matBadgeSize="small" aria-label="Notifications">
-        <mat-icon>notifications</mat-icon>
-      </button>
-      
-      <mat-menu #notificationsMenu="matMenu" class="notifications-menu">
-        <div class="notifications-header">
-          <h3>Notifications</h3>
-          <button mat-icon-button (click)="$event.stopPropagation()">
-            <mat-icon>settings</mat-icon>
-          </button>
-        </div>
-        
-        <div class="notifications-list">
-          <div *ngFor="let notification of notifications" 
-               class="notification-item" 
-               [class.unread]="!notification.read"
-               (click)="markAsRead(notification)">
-            <div class="notification-icon">
-              <mat-icon>notifications</mat-icon>
-            </div>
-            <div class="notification-content">
-              <div class="notification-title">{{ notification.title }}</div>
-              <div class="notification-body">{{ notification.body }}</div>
-              <div class="notification-time">{{ notification.createdAt | timeAgo }}</div>
-            </div>
-          </div>
-          
-          <div *ngIf="notifications.length === 0" class="no-notifications">
-            <mat-icon>notifications_off</mat-icon>
-            <p>No new notifications</p>
-          </div>
-        </div>
-        
-        <div class="notifications-footer">
-          <a mat-button routerLink="/notifications" (click)="$event.stopPropagation()">
-            View All Notifications
-          </a>
-        </div>
-      </mat-menu>
-    </div>
+  <div class="lg:flex items-center space-x-2"> 
 
-    <!-- User Menu -->
-    <div class="user-menu">
-      <button mat-button [matMenuTriggerFor]="userMenu" *ngIf="user$ | async as user">
-        <span class="user-name">{{ currentUser?.firstName || 'User' }}</span>
-        <mat-icon>arrow_drop_down</mat-icon>
-      </button>
-      
-      <mat-menu #userMenu="matMenu" class="user-dropdown">
-        <button mat-menu-item routerLink="/profile">
-          <mat-icon>account_circle</mat-icon>
-          <span>Profile</span>
-        </button>
-        <button mat-menu-item routerLink="/settings">
-          <mat-icon>settings</mat-icon>
-          <span>Settings</span>
-        </button>
-        <mat-divider></mat-divider>
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Logout</span>
-        </button>
-      </mat-menu>
-    </div>
+    <app-notification-center [user$]="user$"></app-notification-center>
 
-    <!-- Guest Buttons -->
-    <ng-template #guestLinks>
-      <a mat-button routerLink="/auth/login" class="login-button">Login</a>
-      <a mat-raised-button color="accent" routerLink="/auth/register" class="signup-button">Sign Up</a>
-    </ng-template>
   </div>
+  
+  <ng-template #guestLinks>
+    <div class="flex flex-col items-start space-x-3 text-inherit">
+      <a mat-button routerLink="/auth/login" class="self-start py-2 px-4 rounded-full font-semibold transition-colors duration-200 hover:bg-white/15 dark:hover:bg-gray-700" (click)="closeMobileMenu()">Login</a>
+      <a mat-raised-button color="accent" routerLink="/auth/register" class="self-start py-2 px-4 rounded-full font-semibold bg-accent-500 text-white hover:bg-accent-600 dark:bg-accent-600 dark:hover:bg-accent-700" (click)="closeMobileMenu()">Sign Up</a>
+    </div>
+  </ng-template>
+
+
+  <div
+    class="fixed top-16 right-0 w-full bg-white/95 dark:bg-gray-900/95 z-[1100] transform transition-transform duration-300 ease-in-out overflow-y-auto h-[calc(100vh-4rem)]"
+    [ngClass]="{ 'translate-x-0': isMobileMenuOpen, 'translate-x-full': !isMobileMenuOpen }"
+  >
+    <div class="p-6 space-y-3">
+      <a routerLink="/blog" class="mobile-link" (click)="closeMobileMenu()">
+        <mat-icon class="mr-2">article</mat-icon>
+        Articles
+      </a>
+
+      <ng-container *ngIf="user$ | async as user; else guestMobile" class="flex flex-col">
+        <div class="flex flex-col gap-4">
+
+        <div class="flex flex-col gap-2">
+        <mat-divider></mat-divider>
+<div class="flex flex-col gap-2">
+          <a *ngIf="hasRole('writer') | async" routerLink="/writer" class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon class="mr-2">edit_note</mat-icon>
+          Writer Dashboard
+        </a>
+        <a *ngIf="hasRole('editor') | async" routerLink="/editor" class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon class="mr-2">rate_review</mat-icon>
+          Editor Dashboard
+        </a>
+        <a *ngIf="hasRole('admin') | async" routerLink="/admin" class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon class="mr-2">admin_panel_settings</mat-icon>
+          Admin Dashboard
+        </a>
+</div>
+        <a routerLink="/profile" class="mobile-link" (click)="closeMobileMenu()">
+          <mat-icon class="mr-2">account_circle</mat-icon>
+          Profile
+        </a>
+        </div>
+
+        <div class="flex flex-col gap-2">
+        <mat-divider></mat-divider>
+        <button (click)="logout()" class="mobile-link text-red-600 dark:text-red-400 self-start">
+          <mat-icon class="mr-2">logout</mat-icon>
+          Logout
+        </button>
+        </div>
+
+        </div>
+
+      </ng-container>
+
+      <ng-template #guestMobile>
+                <mat-divider></mat-divider>
+        <div class="flex flex-col gap-2 w-full my-2">
+        <a routerLink="/auth/login" class="w-full  rounded-lg text-white bg-accent-500 hover:bg-accent-600 self-start" (click)="closeMobileMenu()">
+          <mat-icon >login</mat-icon>
+          Login
+        </a>
+                <a routerLink="/auth/register" class="w-full  rounded-lg text-white bg-accent-500 hover:bg-accent-600 self-start" (click)="closeMobileMenu()">
+          <mat-icon >person_add</mat-icon>
+          Sign Up
+        </a>
+        </div>
+
+
+      </ng-template>
+    </div>
+  </div>
+    <button
+    mat-icon-button
+    class="ml-auto text-inherit"
+    (click)="toggleMobileMenu()"
+    aria-label="Toggle navigation menu"
+  >
+    <mat-icon>{{ isMobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
+  </button>
 </mat-toolbar>

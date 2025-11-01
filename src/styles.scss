@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
 @use './styles/variables' as *;
+@use "tailwindcss";
 
 /* -------------------------------------------
    BASE COLORS
@@ -182,4 +183,78 @@ button {
 
 .mat-mdc-menu-content{
   background: var(--color-surface);
+}
+
+::ng-deep .mat-snack-bar-container {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  transform: translateX(120%) !important;
+  opacity: 0;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease-in-out;
+}
+
+/* Animate the snackbar in from the right */
+::ng-deep .mat-snack-bar-container.show {
+  transform: translateX(0%) !important;
+  opacity: 1;
+}
+
+/* Snackbar content (modern look) */
+::ng-deep .snackbar-toast {
+  background: linear-gradient(135deg, #222, #555);
+  color: #fff;
+  border-radius: 10px;
+  padding: 14px 22px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 380px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Close button */
+::ng-deep .snackbar-toast .mat-button {
+  color: #fff;
+  font-size: 18px;
+  margin-left: 10px;
+  background: transparent;
+  transition: color 0.3s;
+}
+::ng-deep .snackbar-toast .mat-button:hover {
+  color: #ff4081;
+}
+
+/* Text */
+::ng-deep .snackbar-toast p {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Keyframes for fade in/out (optional) */
+@keyframes fadeIn {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(40px);
+    opacity: 0;
+  }
 }

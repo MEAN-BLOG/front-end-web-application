@@ -64,21 +64,13 @@ export class BlogListComponent implements OnInit {
 
   loadPosts(): void {
     this.isLoading = true;
-    const searchTerm = this.searchControl.value || '';
-    
-    console.log('Loading posts with params:', {
-      page: this.pageIndex + 1,
-      limit: this.pageSize,
-      search: searchTerm
-    });
-    
+    const searchTerm = this.searchControl.value || '';    
     this.postService.getPosts({
       page: this.pageIndex + 1,
       limit: this.pageSize,
       search: searchTerm
     }).subscribe({
       next: (response: any) => {
-        console.log('API Response:', response);
         this.posts = response.data || [];
         // Update pagination
         this.totalItems = response.pagination?.total || response.total || 0;

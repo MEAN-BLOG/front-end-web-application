@@ -14,10 +14,10 @@
     </div>
 
     <!-- No replies message -->
-    <div class="no-replies" *ngIf="!isLoading && replies.length === 0">
-      <mat-icon>forum</mat-icon>
-      <p>No replies yet. Be the first to reply!</p>
-    </div>
+<div *ngIf="!isLoading && (replies?.length ?? 0) === 0">
+  <mat-icon>forum</mat-icon>
+  <p>No replies yet.</p>
+</div>
 
     <!-- Replies -->
     <div class="reply" *ngFor="let reply of replies">
