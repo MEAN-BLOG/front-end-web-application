@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 
 import { AuthService } from '../../../auth/auth.service';
-import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 import { User } from '../../../core/models/user.model';
 import { NotificationCenterComponent } from '../notification/notification.module';
 
@@ -23,7 +22,6 @@ import { NotificationCenterComponent } from '../notification/notification.module
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
-    TimeAgoPipe,
     NotificationCenterComponent
   ],
   templateUrl: './navbar.component.html',

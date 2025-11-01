@@ -10,13 +10,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+  },
+  {
     path: 'blog',
     loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule),
     data: { title: 'Blog' }
-  },
-  {
-    path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
   },
   {
     path: "admin",

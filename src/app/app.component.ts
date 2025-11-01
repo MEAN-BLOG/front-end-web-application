@@ -10,15 +10,18 @@ import { NavbarComponent } from './shared/components/navbar/navbar.component';
     NavbarComponent
   ],
   template: `
+  <div class="min-h-screen">
     <app-navbar></app-navbar>
     <div class="main-content">
       <router-outlet></router-outlet>
     </div>
+  </div>
   `,
   styles: [`
     .main-content {
       margin: 0 auto;
-      margin-top: 60px
+      margin-top: 60px;
+      min-height: 94vh;
     }
   `]
 })

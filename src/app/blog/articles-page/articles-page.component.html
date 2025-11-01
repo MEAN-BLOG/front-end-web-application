@@ -1,0 +1,110 @@
+<div class="min-h-screen flex flex-col justify-around mx-auto p-6 md:p-8 dark:text-white bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+
+  <!-- Search Bar -->
+  <div class="mb-8 flex justify-center">
+    <mat-form-field appearance="outline" class="w-full max-w-md">
+      <mat-label>Search articles...</mat-label>
+      <input matInput [formControl]="searchControl" placeholder="Search by title or content">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Loading Skeleton Grid -->
+  <div *ngIf="isLoading" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+    <mat-card *ngFor="let _ of skeletonArray" class="bg-gray-100 dark:bg-gray-800 rounded-xl shadow animate-pulse">
+      <div class="flex flex-col gap-2">
+      <div class="h-48 bg-gray-300 dark:bg-gray-700 rounded-t-xl my-4"></div>
+      <mat-card-content class="p-4 space-y-3 gap-2">
+        <div class="h-4 w-3/4 bg-gray-300 dark:bg-gray-600 rounded"></div>
+        <div class="flex flex-col gap-1 mt-4">
+          <div class="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+          <div class="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+          <div class="h-4 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+          <div class="h-4 w-10 bg-gray-300 dark:bg-gray-600 rounded"></div>
+        </div>
+        <div class="flex flex-col gap-1">
+                <div class="h-1 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+        <div class="flex justify-between gap-1">
+          <div class="h-4 w-20 bg-gray-300 dark:bg-gray-600 rounded"></div>
+          <div class="h-4 w-20 bg-gray-300 dark:bg-gray-600 rounded"></div>
+        </div>
+        </div>
+      </mat-card-content>
+        <div class="h-8 w-full bg-gray-300 dark:bg-gray-600 rounded"></div>
+      </div>
+
+    </mat-card>
+  </div>
+
+<!-- Blog Posts Grid -->
+<div *ngIf="!isLoading" class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+  <mat-card *ngFor="let post of posts" 
+    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm 
+           hover:shadow-xl transform transition duration-300 hover:-translate-y-1 cursor-pointer overflow-hidden">
+    
+    <!-- Card Image -->
+    <div class="h-full overflow-hidden rounded-t-xl bg-gray-100 mb-8">
+      <img 
+        [src]="getFeaturedImage(post)" 
+        [alt]="post.title" 
+        class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+        (error)="handleImageError($event)">
+    </div>
+
+    <!-- Card Content -->
+    <mat-card-content class="p-4 flex flex-col h-full">
+      <h2 class="text-lg font-semibold mb-2">{{ post.title }}</h2>
+      <p class=" flex-1 mb-4">
+        {{ post.content ? (post.content | slice:0:150) + (post.content.length > 150 ? '...' : '') : '' }}
+      </p>
+    </mat-card-content>
+
+    <!-- Card Actions -->
+    <div class="p-4 flex flex-col gap-4">
+      <div class="flex justify-between items-center text-sm mt-auto border-t pt-2">
+        <span class="flex items-center gap-1">
+          <mat-icon class="text-base ">schedule</mat-icon>
+          {{ post.createdAt | date:'mediumDate' }}
+        </span>
+        <span class="flex items-center gap-1" *ngIf="post.author">
+          <mat-icon class="text-base ">person</mat-icon>
+          {{ 'firstName' in post.author ? post.author.firstName : 'Unknown' }}
+        </span>
+      </div>
+      <button  color="primary" 
+        [routerLink]="['/blog', post._id]"
+        class=" overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
+         shadow-md transition-all duration-500 ease-in-out
+         focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
+         bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
+         hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]">
+        Read More
+        <mat-icon class="text-base">arrow_forward</mat-icon>
+      </button>
+    </div>
+
+  </mat-card>
+</div>
+
+
+  <!-- No Results -->
+  <div *ngIf="!isLoading && posts.length === 0" class="text-center py-16">
+    <mat-icon class="text-6xl mb-4">search_off</mat-icon>
+    <h3 class="text-xl font-semibold mb-2">No articles found</h3>
+    <p >Try adjusting your search or filter to find what you're looking for.</p>
+  </div>
+
+  <!-- Pagination -->
+  <div class="mt-8">
+    <mat-paginator 
+      [length]="totalItems"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      (page)="onPageChange($event)"
+      showFirstLastButtons
+      aria-label="Select page of posts">
+    </mat-paginator>
+  </div>
+
+</div>
