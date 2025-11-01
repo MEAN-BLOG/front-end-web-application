@@ -1,5 +1,5 @@
 <div
-  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 transition-colors duration-500"
+  class="min-h-screen dark:text-white flex items-center justify-center bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 transition-colors duration-500"
 >
   <div
     class="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
@@ -90,7 +90,7 @@
           </mat-error>
         </mat-form-field>
 
-<!-- Submit -->
+<!-- Submit Button -->
 <button
   color="primary"
   type="submit"
@@ -102,15 +102,29 @@
          hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
          disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
 >
-  <!-- Shimmer overlay on hover -->
+  <!-- Shimmer overlay -->
   <span
     class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition duration-300"
   ></span>
 
-  <mat-icon *ngIf="!loading" class="animate-fadeIn">login</mat-icon>
-  <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-  <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
+  <!-- Smooth spinner / icon switch -->
+  <div class="flex items-center justify-center gap-2 animate-fadeIn">
+    <ng-container *ngIf="loading; else normalState">
+      <mat-spinner
+        diameter="20"
+        strokeWidth="3"
+        class="!text-white !fill-transparent"
+      ></mat-spinner>
+      <span>Loading...</span>
+    </ng-container>
+
+    <ng-template #normalState>
+      <mat-icon class="animate-fadeIn">login</mat-icon>
+      <span>Sign In</span>
+    </ng-template>
+  </div>
 </button>
+
 
       </form>
     </div>
