@@ -185,57 +185,76 @@ button {
   background: var(--color-surface);
 }
 
-/* Snackbar Toast Modern Style */
-.snackbar-toast {
-  background-color: #333; /* Dark background */
-  color: #fff; /* White text */
-  border-radius: 8px; /* Softer, rounded corners */
-  padding: 12px 20px; /* Adequate padding */
-  font-size: 14px; /* Slightly larger font size for readability */
-  font-weight: 400; /* Lighter font weight */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  display: flex;
-  justify-content: space-between; /* Space between message and action */
-  align-items: center; /* Vertically center the items */
-  max-width: 380px; /* Restrict width for better layout control */
-  position: relative; /* Required for positioning the close button */
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out; /* Smooth animation */
+::ng-deep .mat-snack-bar-container {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  transform: translateX(120%) !important;
+  opacity: 0;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease-in-out;
 }
 
-/* Close button style */
-.snackbar-toast .mat-button {
-  background: transparent;
-  border: none;
+/* Animate the snackbar in from the right */
+::ng-deep .mat-snack-bar-container.show {
+  transform: translateX(0%) !important;
+  opacity: 1;
+}
+
+/* Snackbar content (modern look) */
+::ng-deep .snackbar-toast {
+  background: linear-gradient(135deg, #222, #555);
+  color: #fff;
+  border-radius: 10px;
+  padding: 14px 22px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 380px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Close button */
+::ng-deep .snackbar-toast .mat-button {
   color: #fff;
   font-size: 18px;
-  cursor: pointer;
+  margin-left: 10px;
+  background: transparent;
   transition: color 0.3s;
 }
-
-.snackbar-toast .mat-button:hover {
+::ng-deep .snackbar-toast .mat-button:hover {
   color: #ff4081;
 }
 
-/* Snackbar enter/exit animations */
-.snackbar-toast.ng-enter, .snackbar-toast.ng-leave {
-  opacity: 0;
-  transform: translateY(10px); /* Subtle move up effect */
-}
-
-.snackbar-toast.ng-enter-active, .snackbar-toast.ng-leave-active {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Custom background gradient effect for a more modern look */
-.snackbar-toast {
-  background: linear-gradient(135deg, #333, #555);
-}
-
-/* If you want to make the text look cleaner and sharper */
-.snackbar-toast p {
-  font-family: 'Roboto', sans-serif; /* Modern font */
-  font-size: 14px;
-  line-height: 20px;
+/* Text */
+::ng-deep .snackbar-toast p {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
   letter-spacing: 0.02em;
+}
+
+/* Keyframes for fade in/out (optional) */
+@keyframes fadeIn {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(40px);
+    opacity: 0;
+  }
 }

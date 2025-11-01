@@ -148,7 +148,11 @@ export class NotificationCenterComponent implements OnInit, OnDestroy {
   viewNotificationDetails(notification: Notification): void {
     const articleId = notification.metadata?.articleId;
     const referenceId = notification?.referenceId;
-    this.markAsRead(notification._id)
+    this.markAsRead(notification._id);
+    this.notificationService.refreshNotifications(1, 100);
+    this.unreadCount = this.notifications.filter(n => !n.read).length;
+    this.hasNewRealtimeNotif = this.unreadCount > 0;
+    this.cdr.markForCheck();
     if (articleId && referenceId) {
       const navigationExtras: NavigationExtras = {
         queryParams: { referenceId },
