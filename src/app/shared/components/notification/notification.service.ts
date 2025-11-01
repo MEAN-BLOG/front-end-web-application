@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
  * Represents a notification object.
  */
 export interface Notification {
+  _id: string;
   id: string;
   userId: string;
   type: string;
@@ -30,6 +31,7 @@ export class NotificationService implements OnDestroy {
   private socket!: Socket;
   private readonly _notifications$ = new BehaviorSubject<Notification[]>([]);
   readonly notifications$: Observable<Notification[]> = this._notifications$.asObservable();
+  private readonly _hasUnread$ = new BehaviorSubject<boolean>(false);
 
   private readonly socketUrl = environment.socketUrl;
   private readonly user: User | null;
@@ -80,6 +82,7 @@ export class NotificationService implements OnDestroy {
       const notification: Notification = this.mapNotification(data);
       this.showSnackBar(notification);
       this.refreshNotifications();
+      this._hasUnread$.next(true);
     });
 
     this.socket.on('connect_error', (err) => {
@@ -87,6 +90,10 @@ export class NotificationService implements OnDestroy {
     });
   }
 
+    /** Mark notifications as read */
+  markAsReadReal(): void {
+    this._hasUnread$.next(false);
+  }
   /**
    * Maps the incoming data to a Notification object.
    * @param data - The raw notification data from the server.
@@ -94,6 +101,7 @@ export class NotificationService implements OnDestroy {
    */
   private mapNotification(data: any): Notification {
     return {
+      _id: data.id || data._id?.toString(),
       id: data.id || data._id?.toString(),
       userId: data.userId?.toString() || data.userId,
       type: data.type,
@@ -175,11 +183,10 @@ export class NotificationService implements OnDestroy {
    * @param notificationId - The ID of the notification to be marked as read.
    */
   markAsRead(notificationId: string): void {
-    const updatedNotifications = this._notifications$.getValue().map(n =>
+    this._notifications$.getValue().map(n =>
       n.id === notificationId ? { ...n, read: true } : n
     );
-    this._notifications$.next(updatedNotifications);
-    this.http.patch(`${environment.apiUrl}/notifications/${notificationId}/read`, {}, this.getAuthHeaders()).subscribe();
+    this.http.patch(`${environment.apiUrl}/notifications/${notificationId}`, {}, this.getAuthHeaders()).subscribe();
   }
 
   /**
