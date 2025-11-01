@@ -33,8 +33,7 @@ declare const globalThis: Window;
     MatProgressSpinnerModule,
     MatSnackBarModule
   ],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login.component.html'
 })
 export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;

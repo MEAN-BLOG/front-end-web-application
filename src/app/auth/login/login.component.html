@@ -1,68 +1,145 @@
-<div class="auth-container">
-  <mat-card class="auth-card">
-    <!-- Header -->
-    <mat-card-header>
-      <div mat-card-avatar class="logo">
-        <mat-icon>article</mat-icon>
-      </div>
-      <mat-card-title>Welcome Back</mat-card-title>
-      <mat-card-subtitle>Sign in to your Blog account</mat-card-subtitle>
-    </mat-card-header>
+<div
+  class="min-h-screen dark:text-white flex items-center justify-center bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 transition-colors duration-500"
+>
+  <div
+    class="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
+  >
+    <!-- Animated background glow -->
+    <div
+      class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-sky-400 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-30 transition duration-700"
+    ></div>
 
-    <!-- Content / Form -->
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
-        <!-- Email Field -->
-        <mat-form-field appearance="outline" class="full">
+    <!-- Header -->
+    <div
+      class="relative z-10 bg-gradient-to-r from-[#1976d2] to-blue-500 text-white text-center py-10 px-6 rounded-t-2xl"
+    >
+      <div
+        class="mx-auto w-16 h-16 flex items-center justify-center bg-white/20 rounded-full mb-4 animate-pulse"
+      >
+        <mat-icon class="text-4xl">article</mat-icon>
+      </div>
+      <h2 class="text-3xl font-semibold tracking-tight mb-1 animate-fadeIn">
+        Welcome Back
+      </h2>
+      <p class="text-white/80 text-sm animate-fadeIn delay-100">
+        Sign in to your Blog account
+      </p>
+    </div>
+
+    <!-- Form -->
+    <div class="relative z-10 p-6">
+      <form
+        [formGroup]="form"
+        (ngSubmit)="submit()"
+        class="flex flex-col gap-5 animate-fadeInUp"
+      >
+
+        <!-- Error -->
+        <div
+          *ngIf="error"
+          class="flex items-center gap-2 bg-red-500/90 text-white text-sm p-3 rounded-md animate-shake"
+        >
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ error }}</span>
+        </div>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Email</mat-label>
-          <input matInput formControlName="email" type="email" placeholder="Enter your email" required>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            placeholder="Enter your email"
+            required
+          />
           <mat-icon matSuffix>email</mat-icon>
-          <mat-error *ngIf="form.get('email')?.hasError('required')">
+          <mat-error class="!text-red-500" *ngIf="form.get('email')?.hasError('required')">
             Email is required
           </mat-error>
-          <mat-error *ngIf="form.get('email')?.hasError('email')">
+          <mat-error class="!text-red-500" *ngIf="form.get('email')?.hasError('email')">
             Please enter a valid email
           </mat-error>
         </mat-form-field>
 
-        <!-- Password Field -->
-        <mat-form-field appearance="outline" class="full">
+        <!-- Password -->
+        <mat-form-field appearance="outline" class="w-full">
           <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Enter your password" required>
-          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Enter your password"
+            required
+          />
+          <button
+            type="button"
+            mat-icon-button
+            matSuffix
+            (click)="hidePassword = !hidePassword"
+          >
+            <mat-icon>{{
+              hidePassword ? 'visibility_off' : 'visibility'
+            }}</mat-icon>
           </button>
-          <mat-error *ngIf="form.get('password')?.hasError('required')">
+          <mat-error class="!text-red-500" *ngIf="form.get('password')?.hasError('required')">
             Password is required
           </mat-error>
-          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+          <mat-error class="!text-red-500" *ngIf="form.get('password')?.hasError('minlength')">
             Password must be at least 6 characters
           </mat-error>
         </mat-form-field>
 
-        <!-- Submit Button -->
-        <button mat-raised-button 
-                color="primary" 
-                type="submit" 
-                [disabled]="loading || form.invalid" 
-                class="full submit-button">
-          <mat-icon *ngIf="!loading">login</mat-icon>
-          <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
-          <span>{{ loading ? 'Signing in...' : 'Sign In' }}</span>
-        </button>
+<!-- Submit Button -->
+<button
+  color="primary"
+  type="submit"
+  [disabled]="loading || form.invalid"
+  class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
+         shadow-md transition-all duration-500 ease-in-out
+         focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
+         bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
+         hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
+         disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+>
+  <!-- Shimmer overlay -->
+  <span
+    class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition duration-300"
+  ></span>
 
-        <!-- Error Message -->
-        <div *ngIf="error" class="error-message">
-          <mat-icon>error_outline</mat-icon>
-          <span>{{ error }}</span>
-        </div>
+  <!-- Smooth spinner / icon switch -->
+  <div class="flex items-center justify-center gap-2 animate-fadeIn">
+    <ng-container *ngIf="loading; else normalState">
+      <mat-spinner
+        diameter="20"
+        strokeWidth="3"
+        class="!text-white !fill-transparent"
+      ></mat-spinner>
+      <span>Loading...</span>
+    </ng-container>
+
+    <ng-template #normalState>
+      <mat-icon class="animate-fadeIn">login</mat-icon>
+      <span>Sign In</span>
+    </ng-template>
+  </div>
+</button>
+
+
       </form>
-    </mat-card-content>
+    </div>
 
     <!-- Footer -->
-    <mat-card-actions class="auth-footer">
+    <div
+      class="relative z-10 py-5 px-6 text-center text-sm text-gray-600 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700"
+    >
       <span>Don't have an account?</span>
-      <a mat-button color="primary" routerLink="/auth/register">Create an account</a>
-    </mat-card-actions>
-  </mat-card>
+      <a
+        routerLink="/auth/register"
+        class="ml-1 font-medium text-[#1976d2] hover:text-blue-600 hover:underline transition-colors duration-200"
+      >
+        Create an account
+      </a>
+    </div>
+  </div>
 </div>
