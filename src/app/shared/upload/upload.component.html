@@ -1,3 +1,9 @@
+<!--
+  Dropzone UI for uploading a single image.
+  - Supports click-to-select
+  - Supports drag & drop
+  - Shows loading text while upload in progress
+-->
 <div
   class="border-2 border-dashed rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer transition
          hover:border-blue-500 hover:bg-blue-50"
@@ -6,8 +12,17 @@
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave()"
 >
-  <input type="file" accept="image/*" (change)="fileChange($event)" class="hidden" #fileInput>
 
+  <!-- Native file input (hidden) triggered programmatically -->
+  <input
+    type="file"
+    accept="image/*"
+    (change)="fileChange($event)"
+    class="hidden"
+    #fileInput
+  >
+
+  <!-- Manual trigger button -->
   <button
     class="text-sm font-medium underline"
     (click)="fileInput.click()"
@@ -16,8 +31,12 @@
     Select image
   </button>
 
-  <div class="mt-3 text-gray-500">or drag & drop</div>
+  <!-- Alternative text for drag & drop -->
+  <div class="mt-3 text-gray-500">
+    or drag & drop
+  </div>
 
+  <!-- Uploading indicator -->
   <div *ngIf="loading" class="mt-3 text-sm animate-pulse">
     uploading...
   </div>
