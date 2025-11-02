@@ -23,6 +23,7 @@ import { Observable, map, startWith } from 'rxjs';
 import { Post } from '../../../../core/models/post.model';
 import { PostService } from '../../../../shared/services/post.service';
 import { CommonModule } from '@angular/common';
+import { UploadComponent } from 'src/app/shared/upload/upload.component';
 
 export interface PostFormData {
   mode: 'create' | 'edit';
@@ -43,10 +44,10 @@ export interface PostFormData {
     MatChipsModule,
     MatTooltipModule,
     MatAutocompleteModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    UploadComponent
   ],
-  templateUrl: './post-form-dialog.html',
-  styleUrls: ['./post-form-dialog.scss']
+  templateUrl: './post-form-dialog.html'
 })
 export class PostFormDialogComponent implements OnInit {
   postForm: FormGroup;
@@ -282,4 +283,9 @@ export class PostFormDialogComponent implements OnInit {
       ]));
     }
   }
+  onImageUploaded(url: string) {
+  this.postForm.patchValue({
+    image: url
+  });
+}
 }
