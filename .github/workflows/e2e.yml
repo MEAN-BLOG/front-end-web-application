@@ -47,8 +47,9 @@ jobs:
     - name: 🧪 Run Playwright Tests (Headless)
       run: npx playwright test
       env:
-        PLAYWRIGHT_TEST_BASE_URL: http://localhost:4200
-
+        PLAYWRIGHT_TEST_BASE_URL: ${{secrets.PLAYWRIGHT_TEST_BASE_URL}}
+        ADMIN_EMAIL: ${{ secrets.ADMIN_EMAIL }}
+        ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
     - name: 🧹 Stop Angular Server
       if: always()
       run: |

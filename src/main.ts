@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { environment } from './environments/environment';
+import { firebaseProviders } from './app/core/services/firebase';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -24,8 +25,9 @@ bootstrapApplication(AppComponent, {
       MatButtonModule,
       MatFormFieldModule,
       MatCardModule,
-      MatSnackBarModule
+      MatSnackBarModule,
     ),
+    firebaseProviders,
     { provide: 'API_BASE_URL', useValue: environment.apiUrl}
   ]
 });
