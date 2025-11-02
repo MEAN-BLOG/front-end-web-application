@@ -74,7 +74,6 @@ const materialModules = [
     RouterModule.forChild(routes),
     SharedModule,
     ...materialModules,
-    // Import standalone components
     PostsComponent,
     PostFormDialogComponent
   ],

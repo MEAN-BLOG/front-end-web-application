@@ -16,7 +16,6 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { loadingInterceptor } from './core/interceptors/loading.interceptor';
 
-// Configure CORS options
 const corsOptions = {
   allowedHeaders: [
     'Origin',
