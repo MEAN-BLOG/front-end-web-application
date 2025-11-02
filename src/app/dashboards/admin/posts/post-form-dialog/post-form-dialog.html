@@ -1,112 +1,126 @@
+<!--
+  Blog Post Form Dialog Template
+  - supports create & edit modes
+  - uses reactive form (postForm)
+  - shows upload component, tag input, and validation errors
+-->
+
 <div class="flex flex-col gap-4">
 
-<h2 mat-dialog-title class="text-xl font-semibold">
-  {{ data.mode === 'create' ? 'Create New Post' : 'Edit Post' }}
-</h2>
+  <!-- Dialog Title (dynamic create/edit label) -->
+  <h2 mat-dialog-title class="text-xl font-semibold">
+    {{ data.mode === 'create' ? 'Create New Post' : 'Edit Post' }}
+  </h2>
 
-<mat-dialog-content>
-  <div class="p-2 space-y-10">
-  <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="space-y-6">
+  <mat-dialog-content>
+    <div class="p-2 space-y-10">
 
-    <!-- Title -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required />
-      <p class="text-red-500" *ngIf="postForm.get('title')?.hasError('required')">Title is required</p>
-      <p class="text-red-500" *ngIf="postForm.get('title')?.hasError('minlength')">Title must be at least 3 characters</p>
-    </mat-form-field>
+      <!-- Main Form Container -->
+      <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="space-y-6">
 
-    <!-- Content -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Content</mat-label>
-      <textarea matInput rows="8" formControlName="content" required></textarea>
-      <p class="text-red-500"*ngIf="postForm.get('content')?.hasError('required')">Content is required</p>
-      <p class="text-red-500" *ngIf="postForm.get('content')?.hasError('minlength')">Content is too small</p>
-    </mat-form-field>
+        <!-- TITLE INPUT -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" required />
+          <p class="text-red-500" *ngIf="postForm.get('title')?.hasError('required')">Title is required</p>
+          <p class="text-red-500" *ngIf="postForm.get('title')?.hasError('minlength')">Title must be at least 3 characters</p>
+        </mat-form-field>
 
-    <!-- Featured Image Upload -->
-    <div class="space-y-3 flex flex-col gap-2">
-      <app-upload (fileUploaded)="onImageUploaded($event)"></app-upload>
+        <!-- CONTENT INPUT -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Content</mat-label>
+          <textarea matInput rows="8" formControlName="content" required></textarea>
+          <p class="text-red-500" *ngIf="postForm.get('content')?.hasError('required')">Content is required</p>
+          <p class="text-red-500" *ngIf="postForm.get('content')?.hasError('minlength')">Content is too small</p>
+        </mat-form-field>
 
-      <img *ngIf="postForm.get('image')?.value"
-           [src]="postForm.get('image')?.value"
-           class="w-full rounded-xl border shadow-sm" />
+        <!-- FEATURED IMAGE UPLOAD -->
+        <!-- UploadComponent emits URL which is set to form.image -->
+        <div class="space-y-3 flex flex-col gap-2">
+          <app-upload (fileUploaded)="onImageUploaded($event)"></app-upload>
+
+          <img *ngIf="postForm.get('image')?.value"
+               [src]="postForm.get('image')?.value"
+               class="w-full rounded-xl border shadow-sm" />
+        </div>
+
+        <!-- TAGS INPUT -->
+        <!-- Uses MatChip + autocomplete to add/remove tags (FormArray) -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Tags</mat-label>
+
+          <mat-chip-grid #chipGrid formArrayName="tags">
+            <mat-chip-row *ngFor="let tag of tagsArray.controls; let i=index" (removed)="removeTag(i)">
+              {{ tag.value }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+
+            <input
+              placeholder="Add a tag..."
+              [matChipInputFor]="chipGrid"
+              [matChipInputSeparatorKeyCodes]="[13,188]"
+              [matChipInputAddOnBlur]="true"
+              (matChipInputTokenEnd)="addTag($event)"
+              [matAutocomplete]="auto"
+            />
+          </mat-chip-grid>
+
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addTag($event)">
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{ tag }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+      </form>
     </div>
+  </mat-dialog-content>
 
-    <!-- Tags -->
-    <mat-form-field appearance="outline" class="w-full">
-      <mat-label>Tags</mat-label>
-      <mat-chip-grid #chipGrid formArrayName="tags">
-        <mat-chip-row *ngFor="let tag of tagsArray.controls; let i=index" (removed)="removeTag(i)">
-          {{ tag.value }}
-          <button matChipRemove>
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-chip-row>
+  <!-- ACTIONS SECTION -->
+  <!-- Cancel + Submit buttons with gradients and disabled states -->
+  <mat-dialog-actions align="end" class="p-3 flex flex-col gap-4">
 
-        <input
-          placeholder="Add a tag..."
-          [matChipInputFor]="chipGrid"
-          [matChipInputSeparatorKeyCodes]="[13,188]"
-          [matChipInputAddOnBlur]="true"
-          (matChipInputTokenEnd)="addTag($event)"
-          [matAutocomplete]="auto"
-        />
-      </mat-chip-grid>
+    <!-- CANCEL BUTTON -->
+    <button mat-dialog-close
+      class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
+           shadow-md transition-all duration-500 ease-in-out
+           focus:ring-2 focus:ring-red-400 focus:ring-offset-2
+           bg-gradient-to-r from-red-500 via-sky-500 to-red-600
+           hover:from-sky-500 hover:via-red-500 hover:to-[#1976d2]
+           disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+    >Cancel</button>
 
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="addTag($event)">
-        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-          {{ tag }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-
-  </form>    
-  </div>
-
-</mat-dialog-content>
-
-<mat-dialog-actions align="end" class="p-3 flex flex-col gap-4">
-  <button mat-dialog-close
-    class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
-         shadow-md transition-all duration-500 ease-in-out
-         focus:ring-2 focus:ring-red-400 focus:ring-offset-2
-         bg-gradient-to-r from-red-500 via-sky-500 to-red-600
-         hover:from-sky-500 hover:via-red-500 hover:to-[#1976d2]
-         disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
-  >Cancel</button>
-  <button
+    <!-- SUBMIT BUTTON -->
+    <button
       color="primary"
-    type="submit"
-    [disabled]="postForm.invalid || isSubmitting"
-    (click)="onSubmit()"
-  class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
-         shadow-md transition-all duration-500 ease-in-out
-         focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
-         bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
-         hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
-         disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
->
-  <span
-    class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition duration-300"
-  ></span>
+      type="submit"
+      [disabled]="postForm.invalid || isSubmitting"
+      (click)="onSubmit()"
+      class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
+           shadow-md transition-all duration-500 ease-in-out
+           focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
+           bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
+           hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
+           disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+    >
 
-  <div class="flex items-center justify-center gap-2 animate-fadeIn">
-    <ng-container *ngIf="isSubmitting; else normalRegister">
-      <mat-spinner
-        diameter="20"
-        strokeWidth="3"
-        class="!text-white !fill-transparent"
-      ></mat-spinner>
-    <span>{{ isSubmitting ? 'Saving...' : 'Save Post' }}</span>
-    </ng-container>
+      <span class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition duration-300"></span>
 
-    <ng-template #normalRegister>
-      <mat-icon>person_add</mat-icon>
-    <span>{{ isSubmitting ? 'Saving...' : 'Save Post' }}</span>
-    </ng-template>
-  </div>
-</button>
-</mat-dialog-actions>
+      <div class="flex items-center justify-center gap-2 animate-fadeIn">
+        <ng-container *ngIf="isSubmitting; else normalRegister">
+          <mat-spinner diameter="20" strokeWidth="3" class="!text-white !fill-transparent"></mat-spinner>
+          <span>{{ isSubmitting ? 'Saving...' : 'Save Post' }}</span>
+        </ng-container>
+
+        <ng-template #normalRegister>
+          <mat-icon>person_add</mat-icon>
+          <span>{{ isSubmitting ? 'Saving...' : 'Save Post' }}</span>
+        </ng-template>
+      </div>
+
+    </button>
+  </mat-dialog-actions>
 
 </div>
