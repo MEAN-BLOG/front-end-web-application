@@ -1,4 +1,6 @@
 import { test, expect } from '@playwright/test';
+require('dotenv').config();
+
 const BASE_URL = process.env.PLAYWRIGHT_TEST_BASE_URL!;
 
 /**

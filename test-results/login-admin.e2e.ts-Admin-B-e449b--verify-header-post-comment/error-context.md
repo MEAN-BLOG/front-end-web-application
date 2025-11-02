@@ -1,0 +1,63 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - link "Home" [ref=e5] [cursor=pointer]:
+      - /url: /
+      - img "Logo" [ref=e6]
+      - generic [ref=e7]: CollabBlog
+    - button "Toggle navigation menu" [ref=e8] [cursor=pointer]:
+      - img [ref=e9]: menu
+    - generic [ref=e13]:
+      - link "Articles" [ref=e14] [cursor=pointer]:
+        - /url: /blog
+        - img [ref=e15]: article
+        - text: Articles
+      - separator [ref=e16]
+      - generic [ref=e17]:
+        - link "Login" [ref=e18] [cursor=pointer]:
+          - /url: /auth/login
+          - img [ref=e19]: login
+          - text: Login
+        - link "Sign Up" [ref=e20] [cursor=pointer]:
+          - /url: /auth/register
+          - img [ref=e21]: person_add
+          - text: Sign Up
+  - generic [ref=e25]:
+    - generic [ref=e27]:
+      - img [ref=e29]: article
+      - heading "Welcome Back" [level=2] [ref=e30]
+      - paragraph [ref=e31]: Sign in to your Blog account
+    - generic [ref=e33]:
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - text: Email
+          - generic [ref=e38]: "*"
+        - textbox "Email" [ref=e40]:
+          - /placeholder: Enter your email
+          - text: raedrdhaounia@gmail.com
+        - img [ref=e42]: email
+      - generic [ref=e46]:
+        - generic [ref=e47]:
+          - text: Password
+          - generic [ref=e48]: "*"
+        - textbox "Password" [ref=e50]:
+          - /placeholder: Enter your password
+          - text: dadHH123!
+        - button [ref=e52] [cursor=pointer]:
+          - img [ref=e53]: visibility_off
+      - button "Loading..." [disabled] [ref=e57]:
+        - generic [ref=e59]:
+          - progressbar [ref=e60]:
+            - img [ref=e62]
+            - generic [ref=e65]:
+              - img [ref=e67]
+              - img [ref=e70]
+              - img [ref=e73]
+          - generic [ref=e75]: Loading...
+    - generic [ref=e76]:
+      - text: Don't have an account?
+      - link "Create an account" [ref=e77] [cursor=pointer]:
+        - /url: /auth/register
+```

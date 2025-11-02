@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+require('dotenv').config();
 
 /**
  * Base URL and admin credentials are read from environment variables
