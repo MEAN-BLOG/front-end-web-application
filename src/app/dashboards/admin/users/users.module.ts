@@ -12,11 +12,11 @@ const routes: Routes = [
     path: '',
     component: UsersComponent,
     canActivate: [AuthGuard],
-    data: { 
+    data: {
       title: 'Users Management',
-      roles: ['admin'] // Only admin can access this route
-    }
-  }
+      roles: ['admin'], // Only admin can access this route
+    },
+  },
 ];
 
 @NgModule({
@@ -25,8 +25,8 @@ const routes: Routes = [
     RouterModule, // Add RouterModule to the imports array
     RouterModule.forChild(routes),
     SharedModule,
-    UsersComponent
+    UsersComponent,
   ],
-  providers: [AuthService]
+  providers: [AuthService],
 })
-export class UsersModule { }
+export class UsersModule {}

@@ -3,7 +3,7 @@ export interface UserRef {
   email: string;
   fullName?: string;
   firstName?: string;
-  lastName?:string
+  lastName?: string;
 }
 
 export interface Comment {

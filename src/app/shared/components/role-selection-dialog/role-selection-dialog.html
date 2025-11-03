@@ -1,13 +1,14 @@
 <h2 mat-dialog-title>Select Role</h2>
 <mat-dialog-content>
   <mat-nav-list>
-    <mat-list-item 
-      *ngFor="let role of roles" 
+    <mat-list-item
+      *ngFor="let role of roles"
       (click)="selectRole(role.value)"
       [class.selected]="selectedRole === role.value"
-      class="role-item">
-      <mat-icon matListItemIcon>{{role.icon}}</mat-icon>
-      <div matListItemTitle>{{role.label}}</div>
+      class="role-item"
+    >
+      <mat-icon matListItemIcon>{{ role.icon }}</mat-icon>
+      <div matListItemTitle>{{ role.label }}</div>
     </mat-list-item>
   </mat-nav-list>
 </mat-dialog-content>

@@ -25,7 +25,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 // Pipes
 import { TimeAgoPipe } from './pipes/time-ago.pipe';
 
-
 @NgModule({
   declarations: [
     // Other components/pipes that are not standalone
@@ -34,11 +33,11 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     // Angular Modules
     CommonModule,
     RouterModule,
-    
+
     // Standalone Components
     NavbarComponent,
     TimeAgoPipe,
-    
+
     // Material Modules
     MatToolbarModule,
     MatButtonModule,
@@ -54,19 +53,19 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     MatTabsModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   exports: [
     // Components
     NavbarComponent,
-    
+
     // Pipes
     TimeAgoPipe,
-    
+
     // Re-export modules
     CommonModule,
     RouterModule,
-    
+
     // Material Modules
     MatToolbarModule,
     MatButtonModule,
@@ -76,7 +75,7 @@ import { TimeAgoPipe } from './pipes/time-ago.pipe';
     MatBadgeModule,
     MatDividerModule,
     MatTooltipModule,
-    MatProgressSpinnerModule
-  ]
+    MatProgressSpinnerModule,
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

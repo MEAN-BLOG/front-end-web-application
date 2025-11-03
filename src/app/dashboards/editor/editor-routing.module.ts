@@ -13,16 +13,16 @@ export const editorRoutes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('../admin/posts/posts.module').then(m => m.PostsModule),
-        data: { title: 'Editor Dashboard' }
+        loadChildren: () => import('../admin/posts/posts.module').then((m) => m.PostsModule),
+        data: { title: 'Editor Dashboard' },
       },
       { path: '', redirectTo: 'posts', pathMatch: 'full' },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(editorRoutes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class EditorRoutingModule { }
+export class EditorRoutingModule {}

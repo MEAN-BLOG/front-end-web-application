@@ -38,9 +38,9 @@ interface PostWithImage extends Post {
     MatInputModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  templateUrl: './articles-page.component.html'
+  templateUrl: './articles-page.component.html',
 })
 export class BlogListComponent implements OnInit {
   /** Reference to the Material paginator */
@@ -88,13 +88,12 @@ export class BlogListComponent implements OnInit {
     this.loadPosts();
 
     // Setup search with debounce
-    this.searchControl.valueChanges.pipe(
-      debounceTime(500),
-      distinctUntilChanged()
-    ).subscribe(() => {
-      this.pageIndex = 0;
-      this.loadPosts();
-    });
+    this.searchControl.valueChanges
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe(() => {
+        this.pageIndex = 0;
+        this.loadPosts();
+      });
   }
 
   /**
@@ -103,25 +102,27 @@ export class BlogListComponent implements OnInit {
   loadPosts(): void {
     this.isLoading = true;
     const searchTerm = this.searchControl.value || '';
-    this.postService.getPosts({
-      page: this.pageIndex + 1,
-      limit: this.pageSize,
-      search: searchTerm
-    }).subscribe({
-      next: (response: any) => {
-        this.posts = response.data || [];
-        this.totalItems = response.pagination?.total || response.total || 0;
-        this.pageSize = response.pagination?.limit || this.pageSize;
-        this.pageIndex = (response.pagination?.page || 1) - 1;
-        this.isLoading = false;
-      },
-      error: (error: any) => {
-        console.error('Error loading posts:', error);
-        this.isLoading = false;
-        this.posts = [];
-        this.totalPosts = 0;
-      }
-    });
+    this.postService
+      .getPosts({
+        page: this.pageIndex + 1,
+        limit: this.pageSize,
+        search: searchTerm,
+      })
+      .subscribe({
+        next: (response: any) => {
+          this.posts = response.data || [];
+          this.totalItems = response.pagination?.total || response.total || 0;
+          this.pageSize = response.pagination?.limit || this.pageSize;
+          this.pageIndex = (response.pagination?.page || 1) - 1;
+          this.isLoading = false;
+        },
+        error: (error: any) => {
+          console.error('Error loading posts:', error);
+          this.isLoading = false;
+          this.posts = [];
+          this.totalPosts = 0;
+        },
+      });
   }
 
   /**

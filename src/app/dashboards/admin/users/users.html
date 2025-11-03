@@ -5,8 +5,8 @@
   </div>
 
   <!-- Data Table -->
-  <app-data-table 
-    [data]="users" 
+  <app-data-table
+    [data]="users"
     [loading]="isLoading"
     [selectable]="true"
     [pagination]="true"
@@ -16,8 +16,8 @@
     [pageSizeOptions]="pageSizeOptions"
     (rowClick)="onRowClick($event)"
     (selectionChange)="onSelectionChange($event)"
-    (pageChange)="onPageChange($event)">
-    
+    (pageChange)="onPageChange($event)"
+  >
     <!-- Column Definitions -->
     <app-data-table-column columnDef="fullName" header="Full Name">
       <ng-template #cellTemplate let-user>
@@ -28,7 +28,7 @@
         </div>
       </ng-template>
     </app-data-table-column>
-    
+
     <app-data-table-column columnDef="email" header="Email">
       <ng-template #cellTemplate let-user>
         <span class="email-badge">
@@ -36,7 +36,7 @@
         </span>
       </ng-template>
     </app-data-table-column>
-    
+
     <app-data-table-column columnDef="role" header="Role">
       <ng-template #cellTemplate let-user>
         <div class="role-selector">
@@ -45,8 +45,11 @@
             <mat-icon>arrow_drop_down</mat-icon>
           </button>
           <mat-menu #roleMenu="matMenu" class="role-menu">
-            <button mat-menu-item *ngFor="let role of filterOptions.role" 
-                    (click)="updateUserRole(user._id, role.value)">
+            <button
+              mat-menu-item
+              *ngFor="let role of filterOptions.role"
+              (click)="updateUserRole(user._id, role.value)"
+            >
               <mat-icon [class.selected]="user.role === role.value">
                 {{ user.role === role.value ? 'check_circle' : 'radio_button_unchecked' }}
               </mat-icon>
@@ -61,26 +64,25 @@
         {{ formatDate(user.updatedAt) }}
       </ng-template>
     </app-data-table-column>
-    
+
     <!-- Bulk Actions -->
     <app-data-table-bulk-actions
       *ngIf="selection.selected.length > 0"
       [selectedCount]="selection.selected.length"
       [actions]="bulkActions"
       (action)="onBulkAction($event)"
-      (clear)="clearSelection()">
+      (clear)="clearSelection()"
+    >
     </app-data-table-bulk-actions>
 
     <!-- Filters -->
     <app-data-table-filter
       [searchable]="true"
-      [filters]="[
-        { key: 'role', label: 'Role', options: filterOptions.role }
-      ]"
+      [filters]="[{ key: 'role', label: 'Role', options: filterOptions.role }]"
       (searchChange)="onSearch($event)"
-      (filterChanged)="onFilterChange($event)">
+      (filterChanged)="onFilterChange($event)"
+    >
     </app-data-table-filter>
-
   </app-data-table>
 </div>
 

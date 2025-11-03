@@ -7,10 +7,9 @@ import { CommonModule } from '@angular/common';
   selector: 'app-upload',
   imports: [CommonModule],
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.css']
+  styleUrls: ['./upload.component.css'],
 })
 export class UploadComponent {
-
   /**
    * Emits the final public download URL returned from Firebase
    * after a successful upload.

@@ -26,5 +26,5 @@ import { environment } from 'src/environments/environment';
  */
 export const firebaseProviders = [
   provideFirebaseApp(() => initializeApp(environment.firebase)),
-  provideStorage(() => getStorage())
+  provideStorage(() => getStorage()),
 ];

@@ -18,9 +18,7 @@
       >
         <mat-icon class="text-4xl">person_add</mat-icon>
       </div>
-      <h2 class="text-3xl font-semibold tracking-tight mb-1 animate-fadeIn">
-        Create Your Account
-      </h2>
+      <h2 class="text-3xl font-semibold tracking-tight mb-1 animate-fadeIn">Create Your Account</h2>
       <p class="text-white/80 text-sm animate-fadeIn delay-100">
         Join our community of writers and readers
       </p>
@@ -33,7 +31,6 @@
         (ngSubmit)="onSubmit()"
         class="flex flex-col gap-5 animate-fadeInUp"
       >
-
         <!-- Error -->
         <div
           *ngIf="error"
@@ -54,7 +51,10 @@
             required
           />
           <mat-icon matSuffix>person</mat-icon>
-          <mat-error class="!text-red-500" *ngIf="registerForm.get('firstName')?.hasError('required')">
+          <mat-error
+            class="!text-red-500"
+            *ngIf="registerForm.get('firstName')?.hasError('required')"
+          >
             First name is required
           </mat-error>
         </mat-form-field>
@@ -70,7 +70,10 @@
             required
           />
           <mat-icon matSuffix>person_outline</mat-icon>
-          <mat-error class="!text-red-500" *ngIf="registerForm.get('lastName')?.hasError('required')">
+          <mat-error
+            class="!text-red-500"
+            *ngIf="registerForm.get('lastName')?.hasError('required')"
+          >
             Last name is required
           </mat-error>
         </mat-form-field>
@@ -101,15 +104,8 @@
             placeholder="Enter your password"
             required
           />
-          <button
-            type="button"
-            mat-icon-button
-            matSuffix
-            (click)="hidePassword = !hidePassword"
-          >
-            <mat-icon>{{
-              hidePassword ? 'visibility_off' : 'visibility'
-            }}</mat-icon>
+          <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-hint class="!text-blue-600">At least 8 characters</mat-hint>
         </mat-form-field>
@@ -130,48 +126,40 @@
             matSuffix
             (click)="hideConfirmPassword = !hideConfirmPassword"
           >
-            <mat-icon>{{
-              hideConfirmPassword ? 'visibility_off' : 'visibility'
-            }}</mat-icon>
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
           <mat-error class="!text-red-500" *ngIf="registerForm.errors?.['mismatch']">
             Passwords do not match
           </mat-error>
         </mat-form-field>
 
-<!-- Submit -->
-<button
-  color="primary"
-  type="submit"
-  [disabled]="loading || registerForm.invalid"
-  class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
-         shadow-md transition-all duration-500 ease-in-out
-         focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
-         bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
-         hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
-         disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
->
-  <span
-    class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition duration-300"
-  ></span>
+        <!-- Submit -->
+        <button
+          color="primary"
+          type="submit"
+          [disabled]="loading || registerForm.invalid"
+          class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg shadow-md transition-all duration-500 ease-in-out focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600 hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2] disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+        >
+          <span
+            class="absolute inset-0 bg-white/10 opacity-0 hover:opacity-20 transition duration-300"
+          ></span>
 
-  <div class="flex items-center justify-center gap-2 animate-fadeIn">
-    <ng-container *ngIf="loading; else normalRegister">
-      <mat-spinner
-        diameter="20"
-        strokeWidth="3"
-        class="!text-white !fill-transparent"
-      ></mat-spinner>
-      <span>Creating...</span>
-    </ng-container>
+          <div class="flex items-center justify-center gap-2 animate-fadeIn">
+            <ng-container *ngIf="loading; else normalRegister">
+              <mat-spinner
+                diameter="20"
+                strokeWidth="3"
+                class="!text-white !fill-transparent"
+              ></mat-spinner>
+              <span>Creating...</span>
+            </ng-container>
 
-    <ng-template #normalRegister>
-      <mat-icon>person_add</mat-icon>
-      <span>Create Account</span>
-    </ng-template>
-  </div>
-</button>
-
+            <ng-template #normalRegister>
+              <mat-icon>person_add</mat-icon>
+              <span>Create Account</span>
+            </ng-template>
+          </div>
+        </button>
       </form>
     </div>
 

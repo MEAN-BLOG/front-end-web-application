@@ -1,38 +1,41 @@
-<div class="h-full flex flex-col font-sans text-gray-800 dark:text-white min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 transition-colors duration-500">
-
+<div
+  class="h-full flex flex-col font-sans text-gray-800 dark:text-white min-h-screen items-center justify-center bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4 transition-colors duration-500"
+>
   <!-- Loading State -->
-<div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-  <div *ngFor="let _ of skeletonArray" class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden animate-pulse">
-    
-    <!-- Skeleton Image -->
-    <div class="w-full h-48 bg-gray-200 dark:bg-gray-700"></div>
+  <div *ngIf="isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+    <div
+      *ngFor="let _ of skeletonArray"
+      class="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden animate-pulse"
+    >
+      <!-- Skeleton Image -->
+      <div class="w-full h-48 bg-gray-200 dark:bg-gray-700"></div>
 
-    <!-- Skeleton Content -->
-    <div class="p-4 space-y-3">
-      <div class="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-      <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
-      <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
-      
-      <!-- Meta Info -->
-      <div class="flex justify-between mt-2">
-        <div class="h-4 w-1/4 bg-gray-300 dark:bg-gray-600 rounded"></div>
-        <div class="h-4 w-1/5 bg-gray-300 dark:bg-gray-600 rounded"></div>
+      <!-- Skeleton Content -->
+      <div class="p-4 space-y-3">
+        <div class="h-6 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+        <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-full"></div>
+        <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-5/6"></div>
+
+        <!-- Meta Info -->
+        <div class="flex justify-between mt-2">
+          <div class="h-4 w-1/4 bg-gray-300 dark:bg-gray-600 rounded"></div>
+          <div class="h-4 w-1/5 bg-gray-300 dark:bg-gray-600 rounded"></div>
+        </div>
+      </div>
+
+      <!-- Skeleton Button -->
+      <div class="p-4">
+        <div class="h-10 w-1/2 bg-gray-300 dark:bg-gray-600 rounded"></div>
       </div>
     </div>
-
-    <!-- Skeleton Button -->
-    <div class="p-4">
-      <div class="h-10 w-1/2 bg-gray-300 dark:bg-gray-600 rounded"></div>
-    </div>
-
   </div>
-</div>
-
 
   <!-- Post Content -->
-  <div *ngIf="post && !isLoading" class="rounded-xl shadow-md overflow-hidden mb-12 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg animate-fadeIn">
+  <div
+    *ngIf="post && !isLoading"
+    class="rounded-xl shadow-md overflow-hidden mb-12 transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg animate-fadeIn"
+  >
     <article class="p-10 md:p-12">
-
       <!-- Post Header -->
       <header class="text-center mb-10 animate-slideUp">
         <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -51,7 +54,10 @@
             Updated {{ formatDate(post.updatedAt) }}
           </div>
 
-          <div class="flex items-center gap-2" *ngIf="post?.createdAt && post.updatedAt !== post.createdAt">
+          <div
+            class="flex items-center gap-2"
+            *ngIf="post?.createdAt && post.updatedAt !== post.createdAt"
+          >
             <mat-icon class="text-gray-600 dark:text-gray-400">schedule</mat-icon>
             Published {{ formatDate(post.createdAt) }}
           </div>
@@ -59,41 +65,62 @@
       </header>
 
       <!-- Featured Image -->
-      <div *ngIf="post?.image" class="overflow-hidden rounded-xl mb-10 transform transition-transform duration-400 hover:scale-105 animate-fadeIn">
-        <img (error)="handleImageError($event)" [src]="getFeaturedImage(post)" [alt]="post?.title || 'Blog post'" class="w-full h-auto object-cover">
+      <div
+        *ngIf="post?.image"
+        class="overflow-hidden rounded-xl mb-10 transform transition-transform duration-400 hover:scale-105 animate-fadeIn"
+      >
+        <img
+          (error)="handleImageError($event)"
+          [src]="getFeaturedImage(post)"
+          [alt]="post?.title || 'Blog post'"
+          class="w-full h-auto object-cover"
+        />
       </div>
 
       <!-- Post Content -->
-      <div class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-10 animate-slideUp" [innerHTML]="post?.content || 'No content available'"></div>
+      <div
+        class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-10 animate-slideUp"
+        [innerHTML]="post?.content || 'No content available'"
+      ></div>
 
       <!-- Tags -->
-<div class="flex flex-wrap gap-2 mb-10" *ngIf="post?.tags?.length">
-  <span
-    *ngFor="let tag of post.tags; let i = index"
-    class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer  animate-fadeIn"
-    [style.animation-delay]="(i * 100) + 'ms'"
-  >
-    {{ tag }}
-  </span>
-</div>
+      <div class="flex flex-wrap gap-2 mb-10" *ngIf="post?.tags?.length">
+        <span
+          *ngFor="let tag of post.tags; let i = index"
+          class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-200 px-3 py-1 rounded-full text-sm hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer animate-fadeIn"
+          [style.animation-delay]="i * 100 + 'ms'"
+        >
+          {{ tag }}
+        </span>
+      </div>
 
       <!-- Comments Section -->
-      <footer class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 w-full animate-fadeIn">
+      <footer
+        class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700 w-full animate-fadeIn"
+      >
         <div class="w-full">
           <h3 class="flex items-center gap-2 text-lg font-semibold mb-4">
             <mat-icon>comment</mat-icon>
-            {{ post.commentIds?.length || 'No' }} Comment{{ post.commentIds?.length !== 1 ? 's' : '' }}
+            {{ post.commentIds?.length || 'No' }} Comment{{
+              post.commentIds?.length !== 1 ? 's' : ''
+            }}
           </h3>
 
           <!-- Comments List -->
           <div class="space-y-6" *ngIf="post.commentIds?.length">
-            <div *ngFor="let comment of post.commentIds" [id]="comment?._id" class="border rounded-xl p-4 dark:border-gray-700 animate-slideUp">
+            <div
+              *ngFor="let comment of post.commentIds"
+              [id]="comment?._id"
+              class="border rounded-xl p-4 dark:border-gray-700 animate-slideUp"
+            >
               <div class="flex justify-between items-start mb-2">
                 <div class="flex items-center gap-2">
                   <mat-icon class="text-2xl dark:text-gray-400">account_circle</mat-icon>
                   <span class="font-medium">{{ getAuthorName(comment.userId) }}</span>
                 </div>
-                <span class="text-gray-500 dark:text-gray-400 text-sm">{{ formatDate(comment.createdAt) }}</span>
+                <span class="text-gray-500 dark:text-gray-400 text-sm">{{
+                  formatDate(comment.createdAt)
+                }}</span>
               </div>
               <div class="text-gray-700 dark:text-gray-300">{{ comment.content }}</div>
               <!-- Reply Component -->
@@ -108,19 +135,19 @@
               <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Your Comment</mat-label>
                 <textarea matInput formControlName="content" rows="5" required></textarea>
-                <mat-error class="!text-red-500" *ngIf="commentForm.get('content')?.hasError('required')">Comment is required</mat-error>
+                <mat-error
+                  class="!text-red-500"
+                  *ngIf="commentForm.get('content')?.hasError('required')"
+                  >Comment is required</mat-error
+                >
               </mat-form-field>
-<button
-  color="primary"
-  type="submit"
-  [disabled]="!commentForm.valid || isSubmittingComment"
-  class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg
-         shadow-md transition-all duration-500 ease-in-out
-         focus:ring-2 focus:ring-blue-400 focus:ring-offset-2
-         bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600
-         hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2]
-         disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
->                <mat-icon>send</mat-icon>
+              <button
+                color="primary"
+                type="submit"
+                [disabled]="!commentForm.valid || isSubmittingComment"
+                class="relative overflow-hidden w-full h-12 flex items-center justify-center gap-2 text-white font-semibold text-base rounded-lg shadow-md transition-all duration-500 ease-in-out focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 bg-gradient-to-r from-blue-500 via-sky-500 to-blue-600 hover:from-sky-500 hover:via-blue-500 hover:to-[#1976d2] disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:from-gray-400 disabled:to-gray-400"
+              >
+                <mat-icon>send</mat-icon>
                 {{ isSubmittingComment ? 'Posting...' : 'Post Comment' }}
               </button>
             </form>

@@ -15,14 +15,14 @@ import { AuthGuard } from '../core/guards/auth.guard';
 
 /**
  * @module BlogModule
- * 
+ *
  * @description
  * Angular feature module for handling the blog section of the application.
  * It provides:
  * - A blog list view (`BlogListComponent`)
  * - A blog detail view (`BlogDetailComponent`) protected by `AuthGuard`
- * 
- * This module imports required Angular Material modules for UI components, 
+ *
+ * This module imports required Angular Material modules for UI components,
  * reactive forms for comment submission, and routing configuration for child routes.
  */
 
@@ -39,15 +39,15 @@ const routes = [
     children: [
       {
         path: '',
-        component: BlogListComponent
+        component: BlogListComponent,
       },
       {
         path: ':id',
         component: BlogDetailComponent,
-        canActivate: [AuthGuard]
-      }
-    ]
-  }
+        canActivate: [AuthGuard],
+      },
+    ],
+  },
 ];
 
 @NgModule({
@@ -63,7 +63,7 @@ const routes = [
     MatInputModule,
     ReactiveFormsModule,
     BlogListComponent,
-    BlogDetailComponent
+    BlogDetailComponent,
   ],
   /**
    * @description
@@ -71,4 +71,4 @@ const routes = [
    * this module only declares the components as part of the module imports.
    */
 })
-export class BlogModule { }
+export class BlogModule {}

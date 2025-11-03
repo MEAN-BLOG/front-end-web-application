@@ -35,15 +35,15 @@ export class AuthService {
   private readonly userKey = 'cb_user_data';
 
   constructor(
-    private readonly http: HttpClient, 
-    private readonly router: Router
+    private readonly http: HttpClient,
+    private readonly router: Router,
   ) {
     this.loadFromStorage();
   }
 
   private loadFromStorage(): void {
     const token = this.getAccessToken();
-    
+
     // If there's no token, clear any existing user data
     if (!token) {
       this.clearUserData();
@@ -53,7 +53,7 @@ export class AuthService {
     try {
       const decoded: any = jwtDecode(token);
       const currentTime = Date.now() / 1000;
-      
+
       // Check if token is expired
       if (decoded.exp && decoded.exp < currentTime) {
         this.clearUserData();
@@ -86,7 +86,7 @@ export class AuthService {
         createdAt: decoded.createdAt || new Date().toISOString(),
         updatedAt: decoded.updatedAt || new Date().toISOString(),
       };
-      
+
       this.saveUserToStorage(user);
       this.userSubject.next(user);
     } catch (error) {
@@ -96,77 +96,80 @@ export class AuthService {
   }
 
   register(registerData: RegisterRequest): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(
-      `${environment.apiUrl}/auth/register`,
-      registerData
-    ).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 400 || error.status === 409) {
-          // Return the error response for validation or conflict errors
-          return throwError(() => error);
-        }
-        // For other errors, rethrow with a generic message
-        return throwError(() => new Error('An error occurred during registration. Please try again later.'));
-      })
-    );
+    return this.http
+      .post<RegisterResponse>(`${environment.apiUrl}/auth/register`, registerData)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 400 || error.status === 409) {
+            // Return the error response for validation or conflict errors
+            return throwError(() => error);
+          }
+          // For other errors, rethrow with a generic message
+          return throwError(
+            () => new Error('An error occurred during registration. Please try again later.'),
+          );
+        }),
+      );
   }
 
-  login(email: string, password: string): Observable<{ user: User; accessToken: string; refreshToken: string }> {
+  login(
+    email: string,
+    password: string,
+  ): Observable<{ user: User; accessToken: string; refreshToken: string }> {
     // Clear any existing data before login
     this.clearUserData();
-    
-    return this.http.post<{ 
-      success: boolean; 
-      message: string; 
-      data: { 
-        user: User; 
-        accessToken: string; 
-        refreshToken: string; 
-      }; 
-    }>(
-      `${environment.apiUrl}/auth/login`,
-      { email, password }
-    ).pipe(
-      map(response => {
-        if (!response.success) {
-          throw new Error(response.message);
-        }
-        
-        const { user, accessToken, refreshToken } = response.data;
-        
-        // Update last login time
-        const updatedUser = {
-          ...user,
-          lastLoginAt: new Date().toISOString()
+
+    return this.http
+      .post<{
+        success: boolean;
+        message: string;
+        data: {
+          user: User;
+          accessToken: string;
+          refreshToken: string;
         };
-        
-        // Save tokens and user data
-        this.setTokens(accessToken, refreshToken);
-        this.saveUserToStorage(updatedUser);
-        this.userSubject.next(updatedUser);
-        
-        return { 
-          user: updatedUser, 
-          accessToken, 
-          refreshToken 
-        };
-      }),
-      catchError((error: HttpErrorResponse) => {
-        // Clear any partial data on error
-        this.clearUserData();
-        
-        let errorMessage = 'An error occurred during login';
-        if (error.status === 401) {
-          errorMessage = 'Invalid email or password';
-        } else if (error.status === 400) {
-          errorMessage = error.error?.message || 'Invalid request';
-        } else if (error.status >= 500) {
-          errorMessage = 'Server error. Please try again later.';
-        }
-        
-        return throwError(() => new Error(errorMessage));
-      })
-    );
+      }>(`${environment.apiUrl}/auth/login`, { email, password })
+      .pipe(
+        map((response) => {
+          if (!response.success) {
+            throw new Error(response.message);
+          }
+
+          const { user, accessToken, refreshToken } = response.data;
+
+          // Update last login time
+          const updatedUser = {
+            ...user,
+            lastLoginAt: new Date().toISOString(),
+          };
+
+          // Save tokens and user data
+          this.setTokens(accessToken, refreshToken);
+          this.saveUserToStorage(updatedUser);
+          this.userSubject.next(updatedUser);
+
+          return {
+            user: updatedUser,
+            accessToken,
+            refreshToken,
+          };
+        }),
+        catchError((error: HttpErrorResponse) => {
+          // Clear any partial data on error
+          this.clearUserData();
+
+          let errorMessage = 'An error occurred during login';
+          if (error.status === 401) {
+            errorMessage = 'Invalid email or password';
+          } else if (error.status === 400) {
+            errorMessage = error.error?.message || 'Invalid request';
+          } else if (error.status >= 500) {
+            errorMessage = 'Server error. Please try again later.';
+          }
+
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
   }
 
   logout(): void {
@@ -194,7 +197,7 @@ export class AuthService {
       console.error('Invalid user data provided for storage');
       return;
     }
-    
+
     try {
       localStorage.setItem(this.userKey, JSON.stringify(user));
     } catch (error) {
@@ -206,19 +209,19 @@ export class AuthService {
   private clearUserData(): void {
     // Clear the current user
     this.userSubject.next(null);
-    
+
     // Clear tokens
     this.clearTokens();
-    
+
     // Clear user data from storage
     localStorage.removeItem(this.userKey);
-    
+
     // Force clear any session data
     localStorage.removeItem('savedEmail');
-    
+
     // Clear any potential session storage
     sessionStorage.clear();
-    
+
     // Ensure we're not in an auth route to prevent redirect loops
     if (!this.router.url.startsWith('/auth')) {
       this.router.navigate(['/auth/login']);
@@ -240,8 +243,8 @@ export class AuthService {
       const res = await firstValueFrom(
         this.http.post<{ accessToken: string; refreshToken: string }>(
           `${environment.apiUrl}${environment.refreshTokenKey || '/auth/refresh'}`,
-          { refreshToken }
-        )
+          { refreshToken },
+        ),
       );
 
       if (res?.accessToken && res?.refreshToken) {
@@ -273,19 +276,22 @@ export class AuthService {
     return Boolean(user?.role);
   }
 
-  resetPassword(email: string, newPassword: string, token?: string): Observable<{ message: string }> {
+  resetPassword(
+    email: string,
+    newPassword: string,
+    token?: string,
+  ): Observable<{ message: string }> {
     const payload = { email, newPassword };
-    
+
     if (token) {
       return this.http.post<{ message: string }>(
         `${environment.apiUrl}/auth/reset-password/confirm`,
-        { ...payload, token }
+        { ...payload, token },
       );
     }
-    
-    return this.http.post<{ message: string }>(
-      `${environment.apiUrl}/auth/forgot-password`,
-      { email }
-    );
+
+    return this.http.post<{ message: string }>(`${environment.apiUrl}/auth/forgot-password`, {
+      email,
+    });
   }
 }

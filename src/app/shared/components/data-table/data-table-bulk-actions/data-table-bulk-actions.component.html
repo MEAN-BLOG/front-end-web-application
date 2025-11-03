@@ -2,26 +2,24 @@
   <span class="selected-count">
     {{ selectedCount }} {{ selectedCount === 1 ? 'item' : 'items' }} selected
   </span>
-  
+
   <div class="action-buttons">
     <ng-container *ngFor="let action of actions">
-      <button 
-        mat-button 
+      <button
+        mat-button
         (click)="onActionClick(action)"
         [color]="action.color"
         [disabled]="action.disabled"
-        [matTooltip]="action.tooltip">
+        [matTooltip]="action.tooltip"
+      >
         <mat-icon>{{ action.icon }}</mat-icon>
         {{ action.label }}
       </button>
     </ng-container>
-    
+
     <mat-divider vertical *ngIf="actions.length > 0"></mat-divider>
-    
-    <button 
-      mat-button 
-      (click)="clearSelection()"
-      matTooltip="Clear selection">
+
+    <button mat-button (click)="clearSelection()" matTooltip="Clear selection">
       <mat-icon>close</mat-icon>
       Clear
     </button>

@@ -33,7 +33,7 @@ export interface Post {
     email: string;
     fullName?: string;
     firstName?: string;
-    lastName?:string
+    lastName?: string;
   };
   createdAt: string;
   updatedAt: string;

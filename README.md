@@ -7,13 +7,13 @@ It features a modern and responsive UI, **role-based access control**, **real-ti
 
 ## 🚀 Features
 
-- 🧠 **Angular 16+** with modular architecture  
-- 🔐 **JWT Authentication** and Role-Based Access Control (RBAC)  
-- 💬 **Real-time comments** using Socket.io  
-- 📊 **Admin and Writer Dashboards**  
-- 🌐 **Responsive Material Design UI**  
-- 🧩 **Reusable shared components and pipes**  
-- 🧰 **Environment-based configuration**  
+- 🧠 **Angular 16+** with modular architecture
+- 🔐 **JWT Authentication** and Role-Based Access Control (RBAC)
+- 💬 **Real-time comments** using Socket.io
+- 📊 **Admin and Writer Dashboards**
+- 🌐 **Responsive Material Design UI**
+- 🧩 **Reusable shared components and pipes**
+- 🧰 **Environment-based configuration**
 - 🧾 **RESTful API integration** with backend services
 
 ---
@@ -31,6 +31,7 @@ npm install -D tailwindcss postcss autoprefixer
 ```
 
 ### 2. Configuration
+
 The configuration files (tailwind.config.js and postcss.config.js) are set up to:
 
 Purge CSS only used utility classes by scanning all files in the content array.
@@ -43,7 +44,7 @@ tailwind.config.js excerpt:
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // Use the 'class' strategy for manual dark mode toggling
-  darkMode: 'class', 
+  darkMode: 'class',
   content: [
     './src/**/*.{html,ts}',
     // Add other paths if necessary
@@ -53,37 +54,39 @@ module.exports = {
       colors: {
         'primary-brand': '#10b981',
         'secondary-brand': '#3b82f6',
-        'accent': '#f59e0b',
+        accent: '#f59e0b',
       },
       spacing: {
-        '128': '32rem',
-        '144': '36rem',
+        128: '32rem',
+        144: '36rem',
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'], 
+        sans: ['Inter', 'sans-serif'],
       },
     },
   },
   plugins: [],
-}
+};
 ```
+
 ### 3. Usage
+
 Utility classes are imported into the global styles file (src/styles/tailwind.css or equivalent) and applied directly to components:
 
 ```html
 <div class="p-6 bg-white dark:bg-gray-800 shadow-md rounded-lg">
-  <h2 class="text-xl font-bold text-primary-brand dark:text-emerald-400">
-    Tailwind Styled Title
-  </h2>
+  <h2 class="text-xl font-bold text-primary-brand dark:text-emerald-400">Tailwind Styled Title</h2>
 </div>
 ```
 
 ---
+
 ## 🛠️ Setup Instructions
 
 ### 1️⃣ Prerequisites
 
 Ensure you have installed:
+
 - Node.js (v18+)
 - Angular CLI (v16+)
 - npm or yarn
@@ -122,6 +125,7 @@ ng serve
 ```
 
 Then open your browser at:
+
 ```
 http://localhost:4200
 ```
@@ -132,14 +136,14 @@ http://localhost:4200
 
 These values are managed via `.env` and loaded into Angular’s `environment.ts` file.
 
-| Variable | Description | Example |
-|-----------|--------------|----------|
-| `API_URL` | Backend API base URL | `http://localhost:5000/api/v1` |
-| `SOCKET_URL` | WebSocket server URL | `http://localhost:5000` |
-| `APP_NAME` | Application name | `Collab Blog` |
-| `TOKEN_KEY` | Access token storage key | `cb_access_token` |
-| `REFRESH_TOKEN_KEY` | Refresh token storage key | `cb_refresh_token` |
-| `PRODUCTION` | Build mode flag | `false` |
+| Variable            | Description               | Example                        |
+| ------------------- | ------------------------- | ------------------------------ |
+| `API_URL`           | Backend API base URL      | `http://localhost:5000/api/v1` |
+| `SOCKET_URL`        | WebSocket server URL      | `http://localhost:5000`        |
+| `APP_NAME`          | Application name          | `Collab Blog`                  |
+| `TOKEN_KEY`         | Access token storage key  | `cb_access_token`              |
+| `REFRESH_TOKEN_KEY` | Refresh token storage key | `cb_refresh_token`             |
+| `PRODUCTION`        | Build mode flag           | `false`                        |
 
 ---
 
@@ -239,8 +243,10 @@ Software Engineer • Angular & Node.js Developer
 ## 🪪 License
 
 This project is licensed under the **MIT License** — see the [LICENSE](./LICENSE) file for details.
-```
+
+``````
 
 ---
 
 If you want, I can **also give you a ready-to-run terminal command** to create this `.md` file with all ````` code blocks in one shot. Do you want me to do that?
+``````

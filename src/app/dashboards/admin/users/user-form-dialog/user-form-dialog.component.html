@@ -11,11 +11,14 @@
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Full Name</mat-label>
-        <input matInput formControlName="name" (input)="onNameChange($event.target.value)" required>
+        <input
+          matInput
+          formControlName="name"
+          (input)="onNameChange($event.target.value)"
+          required
+        />
         <mat-icon matSuffix>person</mat-icon>
-        <mat-error *ngIf="f['name'].hasError('required')">
-          Name is required
-        </mat-error>
+        <mat-error *ngIf="f['name'].hasError('required')"> Name is required </mat-error>
         <mat-error *ngIf="f['name'].hasError('minlength')">
           Name must be at least 2 characters
         </mat-error>
@@ -23,14 +26,10 @@
 
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" required>
+        <input matInput type="email" formControlName="email" required />
         <mat-icon matSuffix>email</mat-icon>
-        <mat-error *ngIf="f['email'].hasError('required')">
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="f['email'].hasError('email')">
-          Please enter a valid email
-        </mat-error>
+        <mat-error *ngIf="f['email'].hasError('required')"> Email is required </mat-error>
+        <mat-error *ngIf="f['email'].hasError('email')"> Please enter a valid email </mat-error>
       </mat-form-field>
     </div>
 
@@ -58,14 +57,24 @@
     <div class="form-row">
       <mat-form-field appearance="outline" class="form-field">
         <mat-label>{{ isEditMode ? 'New Password' : 'Password' }}</mat-label>
-        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" [required]="!isEditMode">
-        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          [required]="!isEditMode"
+        />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hidePassword"
+        >
           <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
         <mat-hint *ngIf="isEditMode">Leave blank to keep current password</mat-hint>
-        <mat-error *ngIf="f['password'].hasError('required')">
-          Password is required
-        </mat-error>
+        <mat-error *ngIf="f['password'].hasError('required')"> Password is required </mat-error>
         <mat-error *ngIf="f['password'].hasError('minlength')">
           Password must be at least 6 characters
         </mat-error>
@@ -81,15 +90,14 @@
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">
-    Cancel
-  </button>
-  <button 
-    mat-flat-button 
-    color="primary" 
-    (click)="onSubmit()" 
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onSubmit()"
     [disabled]="userForm.invalid || isSubmitting"
-    [class.spinner]="isSubmitting">
+    [class.spinner]="isSubmitting"
+  >
     {{ isEditMode ? 'Update' : 'Create' }} User
   </button>
 </mat-dialog-actions>

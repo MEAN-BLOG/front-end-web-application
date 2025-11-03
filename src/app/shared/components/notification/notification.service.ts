@@ -46,11 +46,11 @@ export class NotificationService implements OnDestroy {
   constructor(
     private readonly auth: AuthService,
     private readonly http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {
     this.connect();
     this.user = this.auth.getCurrentUser();
-    this.audio.src = 'sounds/notification.wav'; 
+    this.audio.src = 'sounds/notification.wav';
     this.audio.load();
   }
 
@@ -93,7 +93,7 @@ export class NotificationService implements OnDestroy {
     });
   }
 
-    /** Mark notifications as read */
+  /** Mark notifications as read */
   markAsReadReal(): void {
     this._hasUnread$.next(false);
   }
@@ -160,9 +160,12 @@ export class NotificationService implements OnDestroy {
    * @param limit - The number of notifications per page (defaults to 10).
    * @returns An Observable with the notifications data and pagination info.
    */
-  getNotifications(page: number = 1, limit: number = 10): Observable<{ data: Notification[], pagination: any }> {
+  getNotifications(
+    page: number = 1,
+    limit: number = 10,
+  ): Observable<{ data: Notification[]; pagination: any }> {
     const url = `${environment.apiUrl}/notifications?page=${page}&limit=${limit}`;
-    return this.http.get<{ data: Notification[], pagination: any }>(url, this.getAuthHeaders());
+    return this.http.get<{ data: Notification[]; pagination: any }>(url, this.getAuthHeaders());
   }
 
   /**
@@ -177,7 +180,7 @@ export class NotificationService implements OnDestroy {
       },
       error: (error) => {
         console.error('[NotificationService] Error fetching notifications:', error);
-      }
+      },
     });
   }
 
@@ -186,10 +189,12 @@ export class NotificationService implements OnDestroy {
    * @param notificationId - The ID of the notification to be marked as read.
    */
   markAsRead(notificationId: string): void {
-    this._notifications$.getValue().map(n =>
-      n.id === notificationId ? { ...n, read: true } : n
-    );
-    this.http.patch(`${environment.apiUrl}/notifications/${notificationId}`, {}, this.getAuthHeaders()).subscribe();
+    this._notifications$
+      .getValue()
+      .map((n) => (n.id === notificationId ? { ...n, read: true } : n));
+    this.http
+      .patch(`${environment.apiUrl}/notifications/${notificationId}`, {}, this.getAuthHeaders())
+      .subscribe();
   }
 
   /**
@@ -205,8 +210,8 @@ export class NotificationService implements OnDestroy {
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      })
+        Authorization: `Bearer ${token}`,
+      }),
     };
   }
 
@@ -219,11 +224,13 @@ export class NotificationService implements OnDestroy {
     }
   }
 
-    /**Play sound when a new notification arrives */
+  /**Play sound when a new notification arrives */
   private playNotificationSound(): void {
     try {
       this.audio.currentTime = 0;
-      this.audio.play().catch(err => console.warn('[NotificationService] Audio play blocked:', err));
+      this.audio
+        .play()
+        .catch((err) => console.warn('[NotificationService] Audio play blocked:', err));
     } catch (e) {
       console.error('[NotificationService] Error playing notification sound:', e);
     }

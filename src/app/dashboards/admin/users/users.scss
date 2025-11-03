@@ -1,4 +1,4 @@
-@use "../../../../styles//variables.scss" as *;
+@use '../../../../styles//variables.scss' as *;
 
 .overview-container {
   padding: $spacing-unit * 3;
@@ -10,7 +10,7 @@
     font-weight: 600;
     margin-bottom: $spacing-unit * 3;
     color: theme-color($light-theme, text-primary);
-    
+
     :host-context(.dark-theme) & {
       color: theme-color($dark-theme, text-primary);
     }
@@ -29,7 +29,9 @@
       padding: $spacing-unit * 2;
       border-radius: $border-radius-lg;
       box-shadow: $shadow-1;
-      transition: transform $transition-short, box-shadow $transition-short;
+      transition:
+        transform $transition-short,
+        box-shadow $transition-short;
       cursor: pointer;
       background: theme-color($light-theme, surface);
       border: 1px solid theme-color($light-theme, border);
@@ -48,7 +50,7 @@
         justify-content: center;
         margin-right: $spacing-unit * 2;
         background: linear-gradient(135deg, $primary-light, $primary);
-        
+
         mat-icon {
           font-size: 24px;
           color: white;
@@ -114,7 +116,8 @@
         width: 100%;
         border-collapse: collapse;
 
-        th, td {
+        th,
+        td {
           padding: $spacing-unit * 1.5 $spacing-unit * 2;
           text-align: left;
           border-bottom: 1px solid theme-color($light-theme, border);
@@ -131,7 +134,7 @@
 
         tr {
           transition: background-color $transition-short;
-          
+
           &:hover {
             background-color: rgba($primary, 0.04);
           }
@@ -180,12 +183,12 @@
             background-color: rgba($success, 0.1);
             color: $success;
           }
-          
+
           &.pending {
             background-color: rgba($warning, 0.1);
             color: $warning;
           }
-          
+
           &.failed {
             background-color: rgba($error, 0.1);
             color: $error;
@@ -217,9 +220,10 @@
       mat-card {
         overflow-x: auto;
       }
-      
+
       table.activity-table {
-        th, td {
+        th,
+        td {
           padding: $spacing-unit $spacing-unit * 1.5;
           white-space: nowrap;
         }
@@ -268,7 +272,8 @@
       }
 
       table.activity-table {
-        th, td {
+        th,
+        td {
           color: theme-color($dark-theme, text-primary);
           border-bottom-color: theme-color($dark-theme, border);
         }
@@ -304,7 +309,7 @@
 
 .stat-card {
   animation: fadeInUp $transition-standard;
-  
+
   @for $i from 1 through 8 {
     &:nth-child(#{$i}) {
       animation-delay: #{$i * 0.1}s;
@@ -312,9 +317,9 @@
   }
 }
 
-.mat-mdc-menu-content{
+.mat-mdc-menu-content {
   background: white;
 }
-mat-menu{
-  background: red
+mat-menu {
+  background: red;
 }

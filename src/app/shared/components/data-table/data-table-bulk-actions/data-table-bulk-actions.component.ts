@@ -17,15 +17,9 @@ interface BulkAction {
 @Component({
   selector: 'app-data-table-bulk-actions',
   standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatDividerModule
-  ],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatTooltipModule, MatDividerModule],
   templateUrl: './data-table-bulk-actions.component.html',
-  styleUrls: ['./data-table-bulk-actions.component.scss']
+  styleUrls: ['./data-table-bulk-actions.component.scss'],
 })
 export class DataTableBulkActionsComponent {
   @Input() selectedCount = 0;
@@ -35,21 +29,21 @@ export class DataTableBulkActionsComponent {
       label: 'Delete',
       icon: 'delete',
       color: 'warn',
-      tooltip: 'Delete selected items'
-    }
+      tooltip: 'Delete selected items',
+    },
   ];
-  
-  @Output() action = new EventEmitter<{actionId: string, selectedCount: number}>();
+
+  @Output() action = new EventEmitter<{ actionId: string; selectedCount: number }>();
   @Output() clear = new EventEmitter<void>();
-  
+
   onActionClick(action: BulkAction) {
     if (action.disabled) return;
     this.action.emit({
       actionId: action.id,
-      selectedCount: this.selectedCount
+      selectedCount: this.selectedCount,
     });
   }
-  
+
   clearSelection() {
     this.clear.emit();
   }

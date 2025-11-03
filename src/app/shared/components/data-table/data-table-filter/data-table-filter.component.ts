@@ -21,10 +21,10 @@ interface FilterOption {
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatChipsModule
+    MatChipsModule,
   ],
   templateUrl: './data-table-filter.component.html',
-  styleUrls: ['./data-table-filter.component.scss']
+  styleUrls: ['./data-table-filter.component.scss'],
 })
 export class DataTableFilterComponent {
   @Input() searchable = true;
@@ -35,17 +35,17 @@ export class DataTableFilterComponent {
     label: string;
     options: FilterOption[];
   }> = [];
-  
+
   @Output() searchChange = new EventEmitter<string>();
-  @Output() filterChanged = new EventEmitter<{key: string, value: any[], selected: boolean}>();
-  
+  @Output() filterChanged = new EventEmitter<{ key: string; value: any[]; selected: boolean }>();
+
   searchControl = new FormControl('');
-  activeFilters: {[key: string]: Set<any>} = {};
-  
+  activeFilters: { [key: string]: Set<any> } = {};
+
   onSearch() {
     this.searchChange.emit(this.searchControl.value || '');
   }
-  
+
   hasActiveFilters(): boolean {
     return Object.keys(this.activeFilters).length > 0 || !!this.searchControl.value;
   }
@@ -61,7 +61,7 @@ export class DataTableFilterComponent {
     if (!this.activeFilters[key]) {
       this.activeFilters[key] = new Set();
     }
-    
+
     if (selected) {
       this.activeFilters[key].add(value);
     } else {
@@ -70,29 +70,29 @@ export class DataTableFilterComponent {
         delete this.activeFilters[key];
       }
     }
-    
+
     this.filterChanged.emit({
       key,
       value: Array.from(this.activeFilters[key] || []),
-      selected
+      selected,
     });
   }
-  
+
   isSelected(key: string, value: any): boolean {
     return this.activeFilters[key]?.has(value) || false;
   }
-  
+
   clearFilters() {
     this.activeFilters = {};
     this.searchControl.setValue('');
     this.searchChange.emit('');
-    
+
     // Emit empty arrays for all filter keys
     for (const filter of this.filters) {
       this.filterChanged.emit({
         key: filter.key,
         value: [],
-        selected: false
+        selected: false,
       });
     }
   }

@@ -1,12 +1,10 @@
-@use "../../../../../styles/variables.scss" as *;
+@use '../../../../../styles/variables.scss' as *;
 .bulk-actions {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: $spacing-unit $spacing-unit * 2;
-  background: linear-gradient(135deg, 
-    rgba($primary, 0.04) 0%, 
-    rgba($primary-light, 0.02) 100%);
+  background: linear-gradient(135deg, rgba($primary, 0.04) 0%, rgba($primary-light, 0.02) 100%);
   border-bottom: 1px solid theme-color($light-theme, border);
   min-height: 56px;
   box-sizing: border-box;
@@ -39,7 +37,7 @@
       padding: $spacing-unit * 0.5 $spacing-unit;
       border-radius: $border-radius;
       border: 1px solid rgba($primary, 0.2);
-      
+
       .count-number {
         color: $primary;
         font-weight: 700;
@@ -54,7 +52,7 @@
       text-decoration: underline;
       cursor: pointer;
       transition: color $transition-short;
-      
+
       &:hover {
         color: theme-color($light-theme, text-primary);
       }
@@ -88,10 +86,7 @@
         left: -100%;
         width: 100%;
         height: 100%;
-        background: linear-gradient(90deg, 
-          transparent, 
-          rgba(255, 255, 255, 0.4), 
-          transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
         transition: left $transition-long;
       }
 
@@ -152,7 +147,7 @@
         opacity: 0.5;
         cursor: not-allowed;
         transform: none !important;
-        
+
         &::before {
           display: none;
         }
@@ -174,7 +169,7 @@
       button {
         min-width: auto;
         padding: $spacing-unit;
-        
+
         mat-icon {
           margin: 0;
         }
@@ -194,9 +189,7 @@
 
   // Dark theme support
   :host-context(.dark-theme) & {
-    background: linear-gradient(135deg, 
-      rgba($primary-light, 0.08) 0%, 
-      rgba($primary, 0.04) 100%);
+    background: linear-gradient(135deg, rgba($primary-light, 0.08) 0%, rgba($primary, 0.04) 100%);
     border-bottom-color: theme-color($dark-theme, border);
 
     .selected-info {
@@ -204,7 +197,7 @@
         color: theme-color($dark-theme, text-primary);
         background: rgba($primary-light, 0.15);
         border-color: rgba($primary-light, 0.3);
-        
+
         .count-number {
           color: $primary-light;
         }
@@ -212,7 +205,7 @@
 
       .clear-selection {
         color: theme-color($dark-theme, text-secondary);
-        
+
         &:hover {
           color: theme-color($dark-theme, text-primary);
         }
@@ -233,10 +226,7 @@
         }
 
         &::before {
-          background: linear-gradient(90deg, 
-            transparent, 
-            rgba(255, 255, 255, 0.1), 
-            transparent);
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
         }
       }
 
@@ -257,7 +247,7 @@
     .selected-info {
       justify-content: space-between;
       order: 2;
-      
+
       .selected-count {
         font-size: 13px;
       }
@@ -280,7 +270,7 @@
         flex-shrink: 0;
         font-size: 12px;
         padding: $spacing-unit * 0.75 $spacing-unit;
-        
+
         mat-icon {
           font-size: 16px;
           width: 16px;
@@ -305,7 +295,7 @@
 
     .action-buttons {
       gap: $spacing-unit * 0.5;
-      
+
       button {
         font-size: 11px;
         letter-spacing: 0.25px;

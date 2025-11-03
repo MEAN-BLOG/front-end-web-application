@@ -57,17 +57,14 @@ import { UserService } from './user.service';
     DataTableColumnComponent,
     DataTableFilterComponent,
     DataTableBulkActionsComponent,
-
   ],
-  providers: [
-    DatePipe
-  ]
+  providers: [DatePipe],
 })
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableComponent) dataTable!: DataTableComponent<User>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+
   // Table columns configuration
   tableColumns = [
     { columnDef: 'fullName', header: 'Full Name', sortable: true },
@@ -75,12 +72,12 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     { columnDef: 'role', header: 'Role', sortable: true },
     { columnDef: 'status', header: 'Status', sortable: true },
     { columnDef: 'updatedAt', header: 'Last Updated', sortable: true },
-    { columnDef: 'actions', header: 'Actions', sortable: false }
+    { columnDef: 'actions', header: 'Actions', sortable: false },
   ] as const;
-  
+
   // Track if component is initialized
   private isInitialized = false;
-  
+
   // Data
   users: User[] = [];
   dataSource = new MatTableDataSource<User>([]);
@@ -89,28 +86,26 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   pageIndex = 0; // 0-based index for Material paginator
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
-  
+
   // Search and filters
   searchTerm = '';
   statusFilter = new Set<string>();
   roleFilter = new Set<string>();
   isLoading = false;
-  
+
   // Filter options with proper typing
   filterOptions = {
     role: [
       { value: 'admin', label: 'Admin' },
       { value: 'editor', label: 'Editor' },
       { value: 'writer', label: 'Author' },
-      { value: 'guest', label: 'Reader' }
-    ]
+      { value: 'guest', label: 'Reader' },
+    ],
   };
-  
+
   // Bulk actions configuration
-  bulkActions = [
-    { id: 'update_role', label: 'Update Role', icon: 'manage_accounts' }
-  ];
-  
+  bulkActions = [{ id: 'update_role', label: 'Update Role', icon: 'manage_accounts' }];
+
   private readonly searchSubject = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
 
@@ -118,29 +113,26 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly userService: UserService,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
-    private readonly datePipe: DatePipe
-  ) {  }
+    private readonly datePipe: DatePipe,
+  ) {}
 
   ngOnInit(): void {
-    this.searchSubject.pipe(
-      takeUntil(this.destroy$),
-      debounceTime(300),
-      distinctUntilChanged()
-    ).subscribe(() => {
-      this.loadUsers();
-    });
+    this.searchSubject
+      .pipe(takeUntil(this.destroy$), debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.loadUsers();
+      });
   }
 
   ngAfterViewInit(): void {
-    
     if (this.sort) {
       this.dataSource.sort = this.sort;
     }
-    
+
     if (this.paginator) {
       this.dataSource.paginator = this.paginator;
     }
-    
+
     this.isInitialized = true;
     this.loadUsers();
   }
@@ -171,13 +163,13 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
       this.loadUsers();
     }
   }
-  
+
   onRowClick(user: User): void {
     console.log('User clicked:', user);
   }
   getRoleLabel(roleValue: string): string {
     if (!this.filterOptions?.role) return roleValue;
-    const role = this.filterOptions.role.find(r => r.value === roleValue);
+    const role = this.filterOptions.role.find((r) => r.value === roleValue);
     return role ? role.label : roleValue;
   }
 
@@ -187,7 +179,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
         if (response?.success) {
           this.snackBar.open('Role updated successfully', 'Close', {
             duration: 3000,
-            panelClass: ['success-snackbar']
+            panelClass: ['success-snackbar'],
           });
           this.loadUsers();
         }
@@ -196,17 +188,18 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
         console.error('Error updating role:', error);
         this.snackBar.open('Failed to update role', 'Close', {
           duration: 3000,
-          panelClass: ['error-snackbar']
+          panelClass: ['error-snackbar'],
         });
-      }
+      },
     });
   }
 
   // Get user initials for avatar
   getInitials(name: string): string {
     if (!name) return '??';
-    return name.split(' ')
-      .map(part => part[0])
+    return name
+      .split(' ')
+      .map((part) => part[0])
       .join('')
       .toUpperCase()
       .substring(0, 2);
@@ -222,13 +215,13 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   // Generate a consistent color based on the user's name
   getAvatarColor(name: string): string {
     if (!name) return '#cccccc';
-    
+
     // Simple hash function to generate a consistent number from the name
     let hash = 0;
     for (let i = 0; i < name.length; i++) {
       hash = (name.codePointAt(i) || 0) + ((hash << 5) - hash);
     }
-    
+
     // Generate a color from the hash
     const hue = Math.abs(hash) % 360;
     return `hsl(${hue}, 70%, 60%)`;
@@ -238,16 +231,16 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   openCreateDialog(): void {
     const dialogRef = this.dialog.open(UserFormDialogComponent, {
       width: '600px',
-      data: { 
-        mode: 'create'
-      }
+      data: {
+        mode: 'create',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.snackBar.open('User created successfully', 'Close', {
           duration: 3000,
-          panelClass: ['success-snackbar']
+          panelClass: ['success-snackbar'],
         });
         this.loadUsers();
       }
@@ -258,17 +251,17 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   openEditDialog(user: User): void {
     const dialogRef = this.dialog.open(UserFormDialogComponent, {
       width: '600px',
-      data: { 
+      data: {
         mode: 'edit',
-        user: { ...user }
-      }
+        user: { ...user },
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.snackBar.open('User updated successfully', 'Close', {
           duration: 3000,
-          panelClass: ['success-snackbar']
+          panelClass: ['success-snackbar'],
         });
         this.loadUsers();
       }
@@ -278,9 +271,9 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   // Handle selection change
   onSelectionChange(selectedItems: User[]): void {
     this.selection.clear();
-    selectedItems.forEach(item => this.selection.select(item));
+    selectedItems.forEach((item) => this.selection.select(item));
   }
-  
+
   // Clear selection
   clearSelection(): void {
     this.selection.clear();
@@ -289,8 +282,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   // Handle bulk actions
   onBulkAction(event: { actionId: string; selectedCount: number }): void {
     const selectedUsers = this.selection.selected;
-    const selectedIds = selectedUsers.map(user => user._id);
-    
+    const selectedIds = selectedUsers.map((user) => user._id);
+
     if (event.actionId === 'update_role') {
       this.openRoleSelectionDialog(selectedIds);
     } else if (event.actionId === 'delete') {
@@ -302,7 +295,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   openRoleSelectionDialog(userIds: string[]): void {
     const dialogRef = this.dialog.open(RoleSelectionDialog, {
       width: '350px',
-      panelClass: 'role-selection-dialog'
+      panelClass: 'role-selection-dialog',
     });
 
     dialogRef.afterClosed().subscribe((role: string | undefined) => {
@@ -316,48 +309,46 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   bulkUpdateRole(role: string, userIds: string[]): void {
     if (!userIds.length) return;
 
-    const roleDisplay = this.filterOptions.role.find(r => r.value === role)?.label || role;
+    const roleDisplay = this.filterOptions.role.find((r) => r.value === role)?.label || role;
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
       data: {
         title: 'Confirm Role Update',
         message: `Are you sure you want to update ${userIds.length} user(s) to ${roleDisplay}?`,
         confirmText: 'Update',
-        cancelText: 'Cancel'
-      }
+        cancelText: 'Cancel',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        const updateObservables = userIds.map(userId => 
+        const updateObservables = userIds.map((userId) =>
           this.userService.updateUserRole(userId, role as UserRole).pipe(
-            catchError(error => {
+            catchError((error) => {
               console.error(`Error updating user ${userId}:`, error);
               return of({ success: false, message: error.message || 'Failed to update user role' });
-            })
-          )
+            }),
+          ),
         );
 
-        forkJoin(updateObservables).subscribe(results => {
-          const successCount = results.filter(r => r?.success).length;
+        forkJoin(updateObservables).subscribe((results) => {
+          const successCount = results.filter((r) => r?.success).length;
           const failedCount = results.length - successCount;
-          
+
           if (successCount > 0) {
-            this.snackBar.open(
-              `Updated ${successCount} user(s) to ${roleDisplay}`,
-              'Close',
-              { duration: 5000, panelClass: ['success-snackbar'] }
-            );
+            this.snackBar.open(`Updated ${successCount} user(s) to ${roleDisplay}`, 'Close', {
+              duration: 5000,
+              panelClass: ['success-snackbar'],
+            });
           }
-          
+
           if (failedCount > 0) {
-            this.snackBar.open(
-              `Failed to update ${failedCount} user(s)`,
-              'Close',
-              { duration: 5000, panelClass: ['error-snackbar'] }
-            );
+            this.snackBar.open(`Failed to update ${failedCount} user(s)`, 'Close', {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            });
           }
-          
+
           this.loadUsers();
           this.selection.clear();
         });
@@ -367,21 +358,20 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // Update user status
   updateUserStatus(userId: string, status: string): void {
-    const selectedIds = new Set(this.selection.selected.map(user => user._id));
+    const selectedIds = new Set(this.selection.selected.map((user) => user._id));
     this.bulkUpdateStatus(status, Array.from(selectedIds));
   }
 
   bulkUpdateStatus(status: string, userIds?: string[]): void {
-    const selectedIds = new Set(userIds || this.selection.selected.map(user => user._id));
+    const selectedIds = new Set(userIds || this.selection.selected.map((user) => user._id));
 
     this.applyFilters();
     this.selection.clear();
 
-    this.snackBar.open(
-      `${selectedIds.size} user(s) updated to ${status}`,
-      'Close',
-      { duration: 3000, panelClass: ['success-snackbar'] }
-    );
+    this.snackBar.open(`${selectedIds.size} user(s) updated to ${status}`, 'Close', {
+      duration: 3000,
+      panelClass: ['success-snackbar'],
+    });
   }
 
   confirmDelete(user: User): void {
@@ -391,11 +381,11 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
         title: 'Delete User',
         message: `Are you sure you want to delete ${user.fullName}? This action cannot be undone.`,
         confirmText: 'Delete',
-        confirmColor: 'warn'
-      }
+        confirmColor: 'warn',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.deleteUser(user._id);
       }
@@ -403,12 +393,12 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteUser(userId: string): void {
-    this.users = this.users.filter(user => user._id !== userId);
+    this.users = this.users.filter((user) => user._id !== userId);
     this.applyFilters();
 
     this.snackBar.open('User deleted successfully', 'Close', {
       duration: 3000,
-      panelClass: ['success-snackbar']
+      panelClass: ['success-snackbar'],
     });
   }
 
@@ -423,43 +413,42 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
         title: 'Delete Users',
         message: `Are you sure you want to delete ${selectedUsers.length} selected user(s)? This action cannot be undone.`,
         confirmText: 'Delete',
-        confirmColor: 'warn'
-      }
+        confirmColor: 'warn',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
-        const selectedIds = new Set(selectedUsers.map(user => user._id));
-        this.users = this.users.filter(user => !selectedIds.has(user._id));
-        
-        this.snackBar.open(
-          `${selectedUsers.length} user(s) deleted successfully`,
-          'Close',
-          { duration: 3000, panelClass: ['success-snackbar'] }
-        );
-        
+        const selectedIds = new Set(selectedUsers.map((user) => user._id));
+        this.users = this.users.filter((user) => !selectedIds.has(user._id));
+
+        this.snackBar.open(`${selectedUsers.length} user(s) deleted successfully`, 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+
         this.selection.clear();
       }
     });
   }
 
-  loadUsers(): void {   
+  loadUsers(): void {
     if (!this.isInitialized) {
       return; // Skip initial load if not fully initialized
     }
-    
+
     // Use setTimeout to avoid ExpressionChangedAfterItHasBeenCheckedError
     setTimeout(() => {
       this.isLoading = true;
-      
+
       const params = {
         page: this.pageIndex + 1, // Convert to 1-based for API
         limit: this.pageSize,
         search: this.searchTerm,
         role: this.roleFilter.size > 0 ? Array.from(this.roleFilter).join(',') : undefined,
-        status: this.statusFilter.size > 0 ? Array.from(this.statusFilter).join(',') : undefined
+        status: this.statusFilter.size > 0 ? Array.from(this.statusFilter).join(',') : undefined,
       };
-      
+
       this.userService.getUsers(params).subscribe({
         next: (response: any) => {
           try {
@@ -467,25 +456,27 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
             if (response?.success && response.data) {
               // Handle the successful response with the expected structure
               const usersData = response.data.data || [];
-              
+
               // Update the data source
               this.users = Array.isArray(usersData) ? [...usersData] : [];
               this.dataSource.data = this.users;
-              
+
               // Update sorting and pagination after data is loaded
               if (this.sort) {
                 this.dataSource.sort = this.sort;
               }
-              
+
               if (this.paginator) {
                 this.dataSource.paginator = this.paginator;
               }
-                            
+
               // Update pagination info if available
               if (response.data.pagination) {
                 this.totalItems = response.data.pagination.total || 0;
                 // Convert from 1-based to 0-based for Material paginator
-                this.pageIndex = response.data.pagination.page ? response.data.pagination.page - 1 : 0;
+                this.pageIndex = response.data.pagination.page
+                  ? response.data.pagination.page - 1
+                  : 0;
                 this.pageSize = response.data.pagination.limit || this.pageSize;
               } else {
                 this.totalItems = this.users.length;
@@ -511,23 +502,23 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
             name: error.name,
             message: error.message,
             status: error.status,
-            error: error.error
+            error: error.error,
           });
-          
+
           this.snackBar.open(
-            'Failed to load users: ' + (error.error?.message || error.message || 'Unknown error'), 
-            'Close', 
+            'Failed to load users: ' + (error.error?.message || error.message || 'Unknown error'),
+            'Close',
             {
               duration: 5000,
-              panelClass: ['error-snackbar']
-            }
+              panelClass: ['error-snackbar'],
+            },
           );
-          
+
           this.isLoading = false;
           this.users = [];
           this.dataSource.data = [];
           this.totalItems = 0;
-        }
+        },
       });
     });
   }
@@ -566,10 +557,14 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   // Get CSS class for status badge
   getStatusClass(status: string): string {
     switch (status) {
-      case 'active': return 'status-active';
-      case 'inactive': return 'status-inactive';
-      case 'suspended': return 'status-suspended';
-      default: return '';
+      case 'active':
+        return 'status-active';
+      case 'inactive':
+        return 'status-inactive';
+      case 'suspended':
+        return 'status-suspended';
+      default:
+        return '';
     }
   }
 }

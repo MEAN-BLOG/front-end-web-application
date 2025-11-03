@@ -1,5 +1,5 @@
 <mat-toolbar
-class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:from-gray-900 !dark:via-gray-800 !dark:to-gray-900 duration-500 !top-0 !z-40"
+  class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:from-gray-900 !dark:via-gray-800 !dark:to-gray-900 duration-500 !top-0 !z-40"
 >
   <!-- Logo -->
   <a
@@ -18,7 +18,10 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
 
   <!-- Right side -->
   <div class="flex items-center space-x-2">
-    <app-notification-center *ngIf="user$ | async as user" [user$]="user$"></app-notification-center>
+    <app-notification-center
+      *ngIf="user$ | async as user"
+      [user$]="user$"
+    ></app-notification-center>
   </div>
 
   <!-- Mobile Menu Button -->
@@ -33,11 +36,15 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
 
   <!-- Mobile Menu -->
   <div
-    class="bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 fixed top-16 right-0 w-full dark:bg-gray-900/95  transform transition-transform duration-300 ease-in-out overflow-y-auto h-[calc(100vh-4rem)]"
+    class="bg-gradient-to-br from-gray-100 via-blue-50 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500 fixed top-16 right-0 w-full dark:bg-gray-900/95 transform transition-transform duration-300 ease-in-out overflow-y-auto h-[calc(100vh-4rem)]"
     [ngClass]="{ 'translate-x-0': isMobileMenuOpen, 'translate-x-full': !isMobileMenuOpen }"
   >
     <div>
-      <a routerLink="/blog" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+      <a
+        routerLink="/blog"
+        class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+        (click)="closeMobileMenu()"
+      >
         <mat-icon>article</mat-icon>
         Articles
       </a>
@@ -45,23 +52,45 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
       <ng-container *ngIf="user$ | async as user; else guestMobile">
         <div class="flex flex-col gap-2">
           <mat-divider></mat-divider>
-          <a *ngIf="hasRole('writer') | async" routerLink="/writer" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a
+            *ngIf="hasRole('writer') | async"
+            routerLink="/writer"
+            class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+            (click)="closeMobileMenu()"
+          >
             <mat-icon>edit_note</mat-icon>
             Writer Dashboard
           </a>
-          <a *ngIf="hasRole('editor') | async" routerLink="/editor" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a
+            *ngIf="hasRole('editor') | async"
+            routerLink="/editor"
+            class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+            (click)="closeMobileMenu()"
+          >
             <mat-icon>rate_review</mat-icon>
             Editor Dashboard
           </a>
-          <a *ngIf="hasRole('admin') | async" routerLink="/admin" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a
+            *ngIf="hasRole('admin') | async"
+            routerLink="/admin"
+            class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+            (click)="closeMobileMenu()"
+          >
             <mat-icon>admin_panel_settings</mat-icon>
             Admin Dashboard
           </a>
-          <a routerLink="/profile" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a
+            routerLink="/profile"
+            class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+            (click)="closeMobileMenu()"
+          >
             <mat-icon>account_circle</mat-icon>
             Profile
           </a>
-          <button (click)="logout()" class="mobile-link text-red-600 dark:text-red-400 flex items-center gap-2 px-2 py-2 rounded hover:bg-red-100 dark:hover:bg-red-800">
+          <button
+            (click)="logout()"
+            class="mobile-link text-red-600 dark:text-red-400 flex items-center gap-2 px-2 py-2 rounded hover:bg-red-100 dark:hover:bg-red-800"
+          >
             <mat-icon>logout</mat-icon>
             Logout
           </button>
@@ -71,11 +100,19 @@ class="fixed !bg-gradient-to-br !from-gray-100 !via-blue-50 !to-gray-200 !dark:f
       <ng-template #guestMobile>
         <mat-divider></mat-divider>
         <div class="flex flex-col gap-2 w-full my-2">
-          <a routerLink="/auth/login" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a
+            routerLink="/auth/login"
+            class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+            (click)="closeMobileMenu()"
+          >
             <mat-icon>login</mat-icon>
             Login
           </a>
-          <a routerLink="/auth/register" class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white" (click)="closeMobileMenu()">
+          <a
+            routerLink="/auth/register"
+            class="mobile-link flex items-center gap-2 px-2 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white"
+            (click)="closeMobileMenu()"
+          >
             <mat-icon>person_add</mat-icon>
             Sign Up
           </a>

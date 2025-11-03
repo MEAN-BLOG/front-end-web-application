@@ -9,7 +9,9 @@
     "test": "ng test",
     "serve:ssr:collab-blog": "node dist/collab-blog/server/server.mjs",
     "e2e:test": "npx playwright test --headed",
-    "e2e": "npx playwright test"
+    "e2e": "npx playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "prettier": {
     "printWidth": 100,
@@ -81,6 +83,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss": "^8.5.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4.1.16",
     "typescript": "~5.9.2"
   },

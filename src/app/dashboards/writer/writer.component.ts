@@ -18,7 +18,7 @@ import { AuthService } from '../../core/services/auth.service';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
   ],
   template: `
     <div class="container">

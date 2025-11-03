@@ -7,12 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './confirm-dialog.html',
   styleUrls: ['./confirm-dialog.scss'],
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule]
+  imports: [MatDialogModule, MatButtonModule],
 })
 export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { title: string; message: string; confirmText: string; cancelText: string }
+    @Inject(MAT_DIALOG_DATA)
+    public data: { title: string; message: string; confirmText: string; cancelText: string },
   ) {}
 
   onConfirm(): void {

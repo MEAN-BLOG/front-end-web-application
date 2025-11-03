@@ -19,17 +19,17 @@ import { AUTH_ROUTES } from './auth.routes';
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(AUTH_ROUTES),
-    
+
     // Material modules
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
     MatCardModule,
     MatSnackBarModule,
-    
+
     // Feature components
     LoginComponent,
     RegisterComponent,
-  ]
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

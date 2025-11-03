@@ -15,16 +15,12 @@ export interface ConfirmDialogData {
   templateUrl: './confirm-dialog.html',
   styleUrls: ['./confirm-dialog.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatButtonModule
-  ]
+  imports: [CommonModule, MatDialogModule, MatButtonModule],
 })
 export class ConfirmDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData
+    @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData,
   ) {}
 
   onConfirm(): void {

@@ -2,12 +2,12 @@
   min-width: 400px;
   max-width: 100%;
   padding: 24px;
-  
+
   .form-field {
     width: 100%;
     margin-bottom: 16px;
   }
-  
+
   .avatar-preview {
     width: 80px;
     height: 80px;
@@ -21,31 +21,31 @@
     color: #666;
     position: relative;
     overflow: hidden;
-    
+
     .initials {
       font-weight: 500;
     }
-    
+
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
   }
-  
+
   .password-fields {
     margin-top: 16px;
     padding: 16px;
     background-color: #f9f9f9;
     border-radius: 4px;
   }
-  
+
   .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
     margin-top: 24px;
-    
+
     button {
       text-transform: uppercase;
       font-weight: 500;
@@ -59,7 +59,7 @@
     background-color: #424242;
     color: #e0e0e0;
   }
-  
+
   .password-fields {
     background-color: #424242;
   }

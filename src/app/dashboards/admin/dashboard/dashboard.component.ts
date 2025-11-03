@@ -22,8 +22,8 @@ import { AuthService } from '../../../core/services/auth.service';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
-  ]
+    MatMenuModule,
+  ],
 })
 export class DashboardComponent implements OnInit {
   title = 'Admin Dashboard';
@@ -31,12 +31,12 @@ export class DashboardComponent implements OnInit {
     { name: 'Dashboard', icon: 'dashboard', route: '/admin' },
     { name: 'Posts', icon: 'article', route: '/admin/posts' },
     { name: 'Users', icon: 'people', route: '/admin/users' },
-    { name: 'Settings', icon: 'settings', route: '/admin/settings' }
+    { name: 'Settings', icon: 'settings', route: '/admin/settings' },
   ];
 
   constructor(
     private readonly auth: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {

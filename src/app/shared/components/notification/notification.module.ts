@@ -25,12 +25,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
  */
 @Pipe({
   name: 'timeAgo',
-  standalone: true
+  standalone: true,
 })
 export class MockTimeAgoPipe implements PipeTransform {
   /**
    * Transforms a timestamp to a human-readable "time ago" format.
-   * 
+   *
    * @param value The timestamp to convert (can be Date, string, or number).
    * @returns A string representing the time ago in a human-readable format.
    */
@@ -61,7 +61,7 @@ export class MockTimeAgoPipe implements PipeTransform {
     MatBadgeModule,
     MatDividerModule,
     MockTimeAgoPipe,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
@@ -76,14 +76,14 @@ export class NotificationCenterComponent implements OnInit, OnDestroy {
   private sub!: Subscription;
   /**
    * Constructs the NotificationCenterComponent.
-   * 
+   *
    * @param notificationService - The NotificationService to handle fetching and updating notifications
    * @param cdr - The ChangeDetectorRef to trigger change detection for OnPush strategy
    */
   constructor(
     private notificationService: NotificationService,
     private cdr: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
   ) {}
 
   /**
@@ -127,12 +127,12 @@ export class NotificationCenterComponent implements OnInit, OnDestroy {
     });
   }
 
-    onNotificationClick(): void {
+  onNotificationClick(): void {
     this.notificationService.markAsReadReal();
   }
   /**
    * Marks a specific notification as read.
-   * 
+   *
    * @param notificationId - The ID of the notification to mark as read
    */
   markAsRead(notificationId: string): void {
@@ -142,7 +142,7 @@ export class NotificationCenterComponent implements OnInit, OnDestroy {
   /**
    * Handles the event of viewing the details of a notification.
    * Navigates to the blog post and scrolls to the specific comment or reply.
-   * 
+   *
    * @param notification - The notification object to view details for
    */
   viewNotificationDetails(notification: Notification): void {
@@ -150,7 +150,7 @@ export class NotificationCenterComponent implements OnInit, OnDestroy {
     const referenceId = notification?.referenceId;
     this.markAsRead(notification._id);
     this.notificationService.refreshNotifications(1, 100);
-    this.unreadCount = this.notifications.filter(n => !n.read).length;
+    this.unreadCount = this.notifications.filter((n) => !n.read).length;
     this.hasNewRealtimeNotif = this.unreadCount > 0;
     this.cdr.markForCheck();
     if (articleId && referenceId) {

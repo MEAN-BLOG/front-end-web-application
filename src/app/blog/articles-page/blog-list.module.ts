@@ -28,19 +28,19 @@ const routes: Routes = [
   {
     path: '',
     component: BlogListComponent,
-    data: { title: 'Blog' }
-  }
+    data: { title: 'Blog' },
+  },
 ];
 
 /**
  * BlogListModule
- * 
+ *
  * @description
  * Angular module responsible for rendering the blog list page with:
  * - Material cards for displaying blog posts
  * - Search and pagination controls
  * - Reactive forms support
- * 
+ *
  * Provides:
  * - `PostService` for fetching posts from backend API
  * - Custom `MatPaginatorIntl` for user-friendly pagination labels
@@ -56,11 +56,8 @@ const routes: Routes = [
     MatInputModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [
-    PostService,
-    { provide: MatPaginatorIntl, useValue: customPaginatorIntl }
-  ]
+  providers: [PostService, { provide: MatPaginatorIntl, useValue: customPaginatorIntl }],
 })
-export class BlogListModule { }
+export class BlogListModule {}

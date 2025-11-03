@@ -25,9 +25,7 @@ describe('UploadComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [UploadComponent],
-      providers: [
-        { provide: UploadService, useValue: uploadServiceSpy }
-      ]
+      providers: [{ provide: UploadService, useValue: uploadServiceSpy }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UploadComponent);

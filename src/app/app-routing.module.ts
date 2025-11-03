@@ -4,63 +4,68 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { RoleGuard } from './core/guards/role.guard';
 
 const routes: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     redirectTo: 'blog',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'auth',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
     path: 'blog',
-    loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule),
-    data: { title: 'Blog' }
+    loadChildren: () => import('./blog/blog.module').then((m) => m.BlogModule),
+    data: { title: 'Blog' },
   },
   {
-    path: "admin",
-    loadChildren: () => import('./dashboards/admin/admin.module').then(m => m.AdminModule),
+    path: 'admin',
+    loadChildren: () => import('./dashboards/admin/admin.module').then((m) => m.AdminModule),
     canActivate: [AuthGuard, RoleGuard],
-    data: { 
+    data: {
       title: 'Admin',
-      roles: ['admin']
-    }
+      roles: ['admin'],
+    },
   },
   {
     path: 'writer',
-    loadChildren: () => import('./dashboards/writer/writer.module').then(m => m.WriterModule),
+    loadChildren: () => import('./dashboards/writer/writer.module').then((m) => m.WriterModule),
     canActivate: [AuthGuard, RoleGuard],
-    data: { 
+    data: {
       title: 'Writer',
-      roles: ['writer']
-    }
+      roles: ['writer'],
+    },
   },
   {
     path: 'editor',
-    loadChildren: () => import('./dashboards/editor/editor.module').then(m => m.EditorModule),
+    loadChildren: () => import('./dashboards/editor/editor.module').then((m) => m.EditorModule),
     canActivate: [AuthGuard, RoleGuard],
-    data: { 
+    data: {
       title: 'Editor',
-      roles: ['editor']
-    }
+      roles: ['editor'],
+    },
   },
   {
     path: 'access-denied',
-    loadChildren: () => import('./core/components/access-denied/access-denied.module').then(m => m.AccessDeniedModule)
+    loadChildren: () =>
+      import('./core/components/access-denied/access-denied.module').then(
+        (m) => m.AccessDeniedModule,
+      ),
   },
-  { 
-    path: '**', 
-    redirectTo: '' 
-  }
+  {
+    path: '**',
+    redirectTo: '',
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { 
-    scrollPositionRestoration: 'enabled',
-    onSameUrlNavigation: 'reload',
-    enableTracing: true
-  })],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, {
+      scrollPositionRestoration: 'enabled',
+      onSameUrlNavigation: 'reload',
+      enableTracing: true,
+    }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

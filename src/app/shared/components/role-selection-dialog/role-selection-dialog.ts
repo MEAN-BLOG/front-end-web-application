@@ -18,36 +18,36 @@ export interface RoleOption {
   styleUrls: ['./role-selection-dialog.scss'],
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
-    MatListModule, 
-    MatIconModule, 
+    CommonModule,
+    MatButtonModule,
+    MatListModule,
+    MatIconModule,
     MatDialogModule,
     MatDialogTitle,
     MatDialogContent,
-    MatDialogActions
-  ]
+    MatDialogActions,
+  ],
 })
 export class RoleSelectionDialog {
   roles: RoleOption[] = [
     { value: 'admin', label: 'Admin', icon: 'admin_panel_settings' },
     { value: 'editor', label: 'Editor', icon: 'edit_note' },
     { value: 'writer', label: 'Author', icon: 'article' },
-    { value: 'guest', label: 'Reader', icon: 'person' }
+    { value: 'guest', label: 'Reader', icon: 'person' },
   ];
-  
+
   selectedRole: string | null = null;
-  
+
   constructor(
     public dialogRef: MatDialogRef<RoleSelectionDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {}
-  
+
   selectRole(role: string): void {
     this.selectedRole = role;
     this.dialogRef.close(role);
   }
-  
+
   onNoClick(): void {
     this.dialogRef.close();
   }

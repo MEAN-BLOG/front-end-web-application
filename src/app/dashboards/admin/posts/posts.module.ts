@@ -36,8 +36,8 @@ const routes: Routes = [
   {
     path: '',
     component: PostsComponent,
-    data: { title: 'Posts Management' }
-  }
+    data: { title: 'Posts Management' },
+  },
 ];
 
 const materialModules = [
@@ -64,7 +64,7 @@ const materialModules = [
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
 ];
 
 @NgModule({
@@ -75,10 +75,8 @@ const materialModules = [
     SharedModule,
     ...materialModules,
     PostsComponent,
-    PostFormDialogComponent
+    PostFormDialogComponent,
   ],
-  exports: [
-    PostsComponent
-  ]
+  exports: [PostsComponent],
 })
-export class PostsModule { }
+export class PostsModule {}

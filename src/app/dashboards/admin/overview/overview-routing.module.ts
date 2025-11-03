@@ -3,15 +3,15 @@ import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview.component';
 
 const routes: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     component: OverviewComponent,
-    data: { title: 'Dashboard Overview' }
-  }
+    data: { title: 'Dashboard Overview' },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class OverviewRoutingModule { }
+export class OverviewRoutingModule {}

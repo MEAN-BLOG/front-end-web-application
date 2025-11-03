@@ -6,11 +6,6 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    AdminRoutingModule,
-    DashboardComponent
-  ]
+  imports: [CommonModule, RouterModule, AdminRoutingModule, DashboardComponent],
 })
-export class AdminModule { }
+export class AdminModule {}

@@ -1,6 +1,12 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi, withJsonpSupport, withXsrfConfiguration } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withInterceptorsFromDi,
+  withJsonpSupport,
+  withXsrfConfiguration,
+} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
@@ -23,39 +29,35 @@ const corsOptions = {
     'Content-Type',
     'Accept',
     'Authorization',
-    'X-CSRF-Token'
+    'X-CSRF-Token',
   ],
   exposedHeaders: ['Authorization'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  origin: true
+  origin: true,
 };
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ 
+    provideZoneChangeDetection({
       eventCoalescing: true,
-      runCoalescing: true
+      runCoalescing: true,
     }),
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(withEventReplay()),
     provideHttpClient(
-      withInterceptors([
-        authInterceptor,
-        errorInterceptor,
-        loadingInterceptor
-      ]),
+      withInterceptors([authInterceptor, errorInterceptor, loadingInterceptor]),
       withInterceptorsFromDi(),
       withJsonpSupport(),
       withXsrfConfiguration({
         cookieName: 'XSRF-TOKEN',
         headerName: 'X-XSRF-TOKEN',
-      })
+      }),
     ),
     provideAnimations(),
     provideMaterial(),
     provideStore({
-      router: routerReducer
+      router: routerReducer,
     }),
     provideEffects(),
     provideRouterStore(),
@@ -64,11 +66,11 @@ export const appConfig: ApplicationConfig = {
       logOnly: environment.production,
       autoPause: true,
       trace: !environment.production,
-      traceLimit: 75
+      traceLimit: 75,
     }),
     { provide: 'API_BASE_URL', useValue: environment.apiUrl },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService,
-    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS }
-  ]
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+  ],
 };

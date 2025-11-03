@@ -31,8 +31,8 @@ export interface UserFormData {
     MatSelectModule,
     MatIconModule,
     MatTooltipModule,
-    MatDividerModule
-  ]
+    MatDividerModule,
+  ],
 })
 export class UserFormDialogComponent implements OnInit {
   userForm: FormGroup;
@@ -41,7 +41,7 @@ export class UserFormDialogComponent implements OnInit {
   statuses = [
     { value: 'active', viewValue: 'Active' },
     { value: 'inactive', viewValue: 'Inactive' },
-    { value: 'suspended', viewValue: 'Suspended' }
+    { value: 'suspended', viewValue: 'Suspended' },
   ];
   isEditMode = false;
   avatarText = '';
@@ -50,7 +50,7 @@ export class UserFormDialogComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     public dialogRef: MatDialogRef<UserFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: UserFormData
+    @Inject(MAT_DIALOG_DATA) public data: UserFormData,
   ) {
     this.isEditMode = this.data.mode === 'edit';
     this.userForm = this.fb.group({
@@ -60,7 +60,7 @@ export class UserFormDialogComponent implements OnInit {
       status: ['active', Validators.required],
       bio: [''],
       // Password is only required for new users
-      password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(6)]]
+      password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -69,7 +69,7 @@ export class UserFormDialogComponent implements OnInit {
       const { _id, updatedAt, createdAt, ...userData } = this.data.user;
       this.userForm.patchValue({
         ...userData,
-        password: '' // Don't pre-fill password
+        password: '', // Don't pre-fill password
       });
       this.avatarText = this.getInitials(userData.fullName);
     } else {
@@ -88,16 +88,16 @@ export class UserFormDialogComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    
+
     // In a real app, you would call a service here
     setTimeout(() => {
       const formValue = this.userForm.value;
       const result = {
         ...formValue,
         // In a real app, you would hash the password before sending to the server
-        ...(formValue.password ? { password: formValue.password } : {})
+        ...(formValue.password ? { password: formValue.password } : {}),
       };
-      
+
       this.dialogRef.close(result);
     }, 500);
   }
@@ -107,7 +107,7 @@ export class UserFormDialogComponent implements OnInit {
   }
 
   private markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
+    Object.values(formGroup.controls).forEach((control) => {
       control.markAsTouched();
       if (control instanceof FormGroup) {
         this.markFormGroupTouched(control);
@@ -116,8 +116,9 @@ export class UserFormDialogComponent implements OnInit {
   }
 
   private getInitials(name: string): string {
-    return name.split(' ')
-      .map(part => part[0])
+    return name
+      .split(' ')
+      .map((part) => part[0])
       .join('')
       .toUpperCase()
       .substring(0, 2);

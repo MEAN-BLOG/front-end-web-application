@@ -17,12 +17,12 @@ export interface UsersResponse {
       page: number;
       totalPages: number;
       limit: number;
-    }
+    };
   };
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
   private readonly apiUrl = `${environment.apiUrl}/admin/users`;
@@ -30,8 +30,8 @@ export class UserService {
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService,
-    private readonly router: Router
-  ) { }
+    private readonly router: Router,
+  ) {}
 
   private getAuthHeaders(): { headers: HttpHeaders } {
     const token = this.authService.getToken();
@@ -42,19 +42,22 @@ export class UserService {
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      })
+        Authorization: `Bearer ${token}`,
+      }),
     };
   }
 
-  updateUserRole(userId: string, role: UserRole): Observable<{success: boolean; message: string; data: User}> {
+  updateUserRole(
+    userId: string,
+    role: UserRole,
+  ): Observable<{ success: boolean; message: string; data: User }> {
     const url = `${this.apiUrl}/${userId}`;
     const headers = this.getAuthHeaders();
-    
-    return this.http.patch<{success: boolean; message: string; data: User}>(
+
+    return this.http.patch<{ success: boolean; message: string; data: User }>(
       url,
       { role },
-      headers
+      headers,
     );
   }
 
@@ -66,29 +69,28 @@ export class UserService {
     status?: string;
   }): Observable<UsersResponse> {
     const timestamp = Date.now();
-    
-    let httpParams = new HttpParams()
-      .set('_t', timestamp.toString());
-    
+
+    let httpParams = new HttpParams().set('_t', timestamp.toString());
+
     if (params.page) httpParams = httpParams.set('page', params.page.toString());
     if (params.limit) httpParams = httpParams.set('limit', params.limit.toString());
     if (params.search) httpParams = httpParams.set('search', params.search);
     if (params.role) httpParams = httpParams.set('role', params.role);
     if (params.status) httpParams = httpParams.set('status', params.status);
-    
-    const token = localStorage.getItem('cb_access_token');    
-    
+
+    const token = localStorage.getItem('cb_access_token');
+
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
+        Pragma: 'no-cache',
+        Expires: '0',
       }),
       params: httpParams,
-      withCredentials: false
+      withCredentials: false,
     };
     return this.http.get<UsersResponse>(this.apiUrl, options);
   }

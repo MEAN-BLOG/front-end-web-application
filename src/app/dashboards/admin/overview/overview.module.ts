@@ -25,7 +25,7 @@ import { OverviewRoutingModule } from './overview-routing.module';
     MatButtonModule,
     MatChipsModule,
     MatTooltipModule,
-    OverviewComponent  // Import the standalone component here
-  ]
+    OverviewComponent, // Import the standalone component here
+  ],
 })
-export class OverviewModule { }
+export class OverviewModule {}

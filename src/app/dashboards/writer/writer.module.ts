@@ -5,10 +5,6 @@ import { RouterModule } from '@angular/router';
 import { WriterRoutingModule } from './writer-routing.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    WriterRoutingModule,
-  ]
+  imports: [CommonModule, RouterModule, WriterRoutingModule],
 })
-export class WriterModule { }
+export class WriterModule {}

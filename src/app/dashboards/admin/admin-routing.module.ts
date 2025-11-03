@@ -8,37 +8,37 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     canActivate: [AuthGuard],
-    data: { 
+    data: {
       roles: ['Admin'],
-      title: 'Admin Dashboard'
+      title: 'Admin Dashboard',
     },
     children: [
       {
         path: '',
         redirectTo: 'overview',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'overview',
-        loadChildren: () => import('./overview/overview.module').then(m => m.OverviewModule),
-        data: { title: 'Overview' }
+        loadChildren: () => import('./overview/overview.module').then((m) => m.OverviewModule),
+        data: { title: 'Overview' },
       },
       {
         path: 'posts',
-        loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule),
-        data: { title: 'Posts Management' }
+        loadChildren: () => import('./posts/posts.module').then((m) => m.PostsModule),
+        data: { title: 'Posts Management' },
       },
       {
         path: 'users',
-        loadChildren: () => import('./users/users.module').then(m => m.UsersModule),
-        data: { title: 'User Management' }
+        loadChildren: () => import('./users/users.module').then((m) => m.UsersModule),
+        data: { title: 'User Management' },
       },
-    ]
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

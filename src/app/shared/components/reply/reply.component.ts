@@ -30,12 +30,11 @@ import { CreateReplyData, Reply } from '../../../core/models/reply.model';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
-  templateUrl: './reply.component.html'
+  templateUrl: './reply.component.html',
 })
 export class ReplyComponent implements OnInit {
-  
   /**
    * The ID of the comment for which replies will be loaded.
    */
@@ -80,10 +79,10 @@ export class ReplyComponent implements OnInit {
   constructor(
     private readonly replyService: ReplyService,
     private readonly authService: AuthService,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
   ) {
     this.replyForm = this.fb.group({
-      content: ['', [Validators.required, Validators.minLength(1)]]
+      content: ['', [Validators.required, Validators.minLength(1)]],
     });
   }
 
@@ -128,7 +127,7 @@ export class ReplyComponent implements OnInit {
         console.error('Error loading replies:', error);
         this.isLoading = false;
         this.replies = [];
-      }
+      },
     });
   }
 
@@ -141,7 +140,7 @@ export class ReplyComponent implements OnInit {
     this.isAddingReply = true;
     const replyData: CreateReplyData = {
       commentId: this.commentId,
-      content: this.replyForm.get('content')?.value
+      content: this.replyForm.get('content')?.value,
     };
 
     this.replyService.addReply(replyData).subscribe({
@@ -157,7 +156,7 @@ export class ReplyComponent implements OnInit {
       error: (error) => {
         console.error('Error adding reply:', error);
         this.isAddingReply = false;
-      }
+      },
     });
   }
 
@@ -192,7 +191,7 @@ export class ReplyComponent implements OnInit {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   }
 }

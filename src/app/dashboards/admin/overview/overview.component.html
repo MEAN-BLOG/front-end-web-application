@@ -2,22 +2,28 @@
   <div class="dashboard-header">
     <h1>Dashboard Overview</h1>
     <div class="date-range-selector">
-      <button mat-button 
-        [class.active]="dateRange === 'week'" 
+      <button
+        mat-button
+        [class.active]="dateRange === 'week'"
         (click)="onDateRangeChange('week')"
-        [disabled]="loading">
+        [disabled]="loading"
+      >
         This Week
       </button>
-      <button mat-button 
-        [class.active]="dateRange === 'month'" 
+      <button
+        mat-button
+        [class.active]="dateRange === 'month'"
         (click)="onDateRangeChange('month')"
-        [disabled]="loading">
+        [disabled]="loading"
+      >
         This Month
       </button>
-      <button mat-button 
-        [class.active]="dateRange === 'year'" 
+      <button
+        mat-button
+        [class.active]="dateRange === 'year'"
         (click)="onDateRangeChange('year')"
-        [disabled]="loading">
+        [disabled]="loading"
+      >
         This Year
       </button>
     </div>
@@ -32,8 +38,11 @@
       <mat-card-content>
         <div class="stat-value">{{ formatNumber(stats.totalArticles) }}</div>
         <div class="stat-subtitle">
-          <span class="trend" [class.positive]="stats.articlesThisMonth >= stats.articlesLastMonth" 
-                             [class.negative]="stats.articlesThisMonth < stats.articlesLastMonth">
+          <span
+            class="trend"
+            [class.positive]="stats.articlesThisMonth >= stats.articlesLastMonth"
+            [class.negative]="stats.articlesThisMonth < stats.articlesLastMonth"
+          >
             <mat-icon>trending_up</mat-icon>
             {{ stats.articlesThisMonth - stats.articlesLastMonth }} more than last month
           </span>
@@ -42,8 +51,10 @@
             {{ stats.articlesLastMonth - stats.articlesThisMonth }} less than last month
           </span>
           <span class="trend" *ngIf="stats.articlesThisMonth === stats.articlesLastMonth">
-            <mat-icon>{{ stats.articlesThisMonth >= stats.articlesLastMonth ? 'trending_up' : 'trending_down' }}</mat-icon> 
-            {{ Math.abs(stats.articlesThisMonth - stats.articlesLastMonth) }} 
+            <mat-icon>{{
+              stats.articlesThisMonth >= stats.articlesLastMonth ? 'trending_up' : 'trending_down'
+            }}</mat-icon>
+            {{ Math.abs(stats.articlesThisMonth - stats.articlesLastMonth) }}
             {{ stats.articlesThisMonth >= stats.articlesLastMonth ? 'more' : 'fewer' }} this month
           </span>
         </div>
@@ -87,10 +98,7 @@
       </mat-card-header>
       <mat-card-content>
         <div class="chart-container" *ngIf="!chartsLoading; else chartLoading">
-          <canvas baseChart
-            [type]="barChartType"
-            [data]="barChartData"
-            [options]="barChartOptions">
+          <canvas baseChart [type]="barChartType" [data]="barChartData" [options]="barChartOptions">
           </canvas>
         </div>
         <ng-template #chartLoading>
@@ -108,10 +116,12 @@
       </mat-card-header>
       <mat-card-content>
         <div class="chart-container" *ngIf="!chartsLoading; else chartLoading">
-          <canvas baseChart
+          <canvas
+            baseChart
             [type]="lineChartType"
             [data]="lineChartData"
-            [options]="lineChartOptions">
+            [options]="lineChartOptions"
+          >
           </canvas>
         </div>
       </mat-card-content>
@@ -128,7 +138,8 @@
       <mat-list>
         <mat-list-item *ngFor="let article of topViewedArticles" class="list-item">
           <div class="article-title" [matTooltip]="article.title || 'Untitled Article'">
-            {{ (article.title || 'Untitled Article') | slice:0:50 }}{{ (article.title || '').length > 50 ? '...' : '' }}
+            {{ article.title || 'Untitled Article' | slice: 0 : 50
+            }}{{ (article.title || '').length > 50 ? '...' : '' }}
           </div>
           <div class="article-meta">
             <span class="views" matTooltip="Views">
@@ -163,7 +174,7 @@
             <mat-icon>article</mat-icon> {{ comment.articleTitle || 'Untitled Article' }}
           </div>
           <div class="comment-text" matTooltip="{{ comment.text }}">
-            {{ comment.text | slice:0:100 }}{{ comment.text.length > 100 ? '...' : '' }}
+            {{ comment.text | slice: 0 : 100 }}{{ comment.text.length > 100 ? '...' : '' }}
           </div>
         </div>
       </div>
@@ -177,16 +188,15 @@
     </mat-card-header>
     <mat-card-content>
       <div class="tags-container">
-        <mat-chip-option 
-          *ngFor="let tag of popularTags" 
-          [style.fontSize.px]="12 + (tag.count * 0.5)"
+        <mat-chip-option
+          *ngFor="let tag of popularTags"
+          [style.fontSize.px]="12 + tag.count * 0.5"
           [matTooltip]="tag.count + ' articles'"
-          [routerLink]="['/tags', tag.id]">
+          [routerLink]="['/tags', tag.id]"
+        >
           {{ tag.name }} ({{ tag.count }})
         </mat-chip-option>
-        <div *ngIf="!popularTags.length" class="no-data">
-          No tags found
-        </div>
+        <div *ngIf="!popularTags.length" class="no-data">No tags found</div>
       </div>
     </mat-card-content>
   </mat-card>

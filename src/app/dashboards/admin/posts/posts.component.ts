@@ -50,9 +50,9 @@ import { Post, PostListResponse } from '../../../core/models/post.model';
     MatSelectModule,
     MatCheckboxModule,
     MatDividerModule,
-    FormsModule
+    FormsModule,
   ],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class PostsComponent implements OnInit, OnDestroy {
   // Table data
@@ -62,14 +62,14 @@ export class PostsComponent implements OnInit, OnDestroy {
   pageIndex = 0;
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
-  
+
   // Search and filters
   searchTerm = '';
   isLoading = false;
-  
+
   // Table columns
   displayedColumns = ['select', 'title', 'author', 'createdAt', 'updatedAt', 'actions'];
-  
+
   private readonly destroy$ = new Subject<void>();
   private readonly searchSubject = new Subject<string>();
 
@@ -81,14 +81,12 @@ export class PostsComponent implements OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
-    private readonly datePipe: DatePipe
+    private readonly datePipe: DatePipe,
   ) {
     // Debounce search input
-    this.searchSubject.pipe(
-      debounceTime(300),
-      distinctUntilChanged(),
-      takeUntil(this.destroy$)
-    ).subscribe(() => this.loadPosts());
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe(() => this.loadPosts());
   }
 
   ngOnInit(): void {
@@ -114,7 +112,7 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   onSelectionChange(selectedItems: Post[]): void {
     this.selection.clear();
-    selectedItems.forEach(item => this.selection.select(item));
+    selectedItems.forEach((item) => this.selection.select(item));
   }
 
   clearSelection(): void {
@@ -123,18 +121,18 @@ export class PostsComponent implements OnInit, OnDestroy {
 
   loadPosts(): void {
     this.isLoading = true;
-    
+
     const isWriter = this.authService.getUserRole() === 'writer';
     const params = {
       page: this.pageIndex + 1,
       limit: this.pageSize,
-      search: this.searchTerm
+      search: this.searchTerm,
     };
-    
-    const postsObservable = isWriter 
+
+    const postsObservable = isWriter
       ? this.postService.getMyPosts(params)
       : this.postService.getPosts(params);
-    
+
     postsObservable.subscribe({
       next: (response: PostListResponse) => {
         if (response?.success) {
@@ -147,10 +145,10 @@ export class PostsComponent implements OnInit, OnDestroy {
         console.error('Error loading posts:', error);
         this.snackBar.open('Failed to load posts', 'Close', {
           duration: 3000,
-          panelClass: ['error-snackbar']
+          panelClass: ['error-snackbar'],
         });
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -159,10 +157,10 @@ export class PostsComponent implements OnInit, OnDestroy {
       width: '800px',
       maxWidth: '95vw',
       data: { mode: 'create' },
-      disableClose: true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
         // Refresh posts list
         this.loadPosts();
@@ -174,17 +172,17 @@ export class PostsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(PostFormDialogComponent, {
       width: '800px',
       maxWidth: '95vw',
-      data: { 
+      data: {
         mode: 'edit',
-        post: post 
+        post: post,
       },
-      disableClose: true
+      disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result?.success) {
         // Update the post in the table
-        const index = this.dataSource.data.findIndex(p => p._id === result.data._id);
+        const index = this.dataSource.data.findIndex((p) => p._id === result.data._id);
         if (index > -1) {
           const updatedPosts = [...this.dataSource.data];
           updatedPosts[index] = result.data;
@@ -199,7 +197,7 @@ export class PostsComponent implements OnInit, OnDestroy {
     if (!this.isAdmin()) {
       this.snackBar.open('Only administrators can perform this action', 'Close', {
         duration: 3000,
-        panelClass: ['error-snackbar']
+        panelClass: ['error-snackbar'],
       });
       return;
     }
@@ -210,11 +208,11 @@ export class PostsComponent implements OnInit, OnDestroy {
         title: 'Delete Post',
         message: `Are you sure you want to delete "${post.title}"?`,
         confirmText: 'Delete',
-        confirmColor: 'warn'
-      }
+        confirmColor: 'warn',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.deletePost(post._id);
       }
@@ -228,7 +226,7 @@ export class PostsComponent implements OnInit, OnDestroy {
         if (response?.success) {
           this.snackBar.open('Post deleted successfully', 'Close', {
             duration: 3000,
-            panelClass: ['success-snackbar']
+            panelClass: ['success-snackbar'],
           });
           this.loadPosts();
         }
@@ -237,10 +235,10 @@ export class PostsComponent implements OnInit, OnDestroy {
         console.error('Error deleting post:', error);
         this.snackBar.open('Failed to delete post', 'Close', {
           duration: 3000,
-          panelClass: ['error-snackbar']
+          panelClass: ['error-snackbar'],
         });
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -290,12 +288,12 @@ export class PostsComponent implements OnInit, OnDestroy {
     if (!this.isAdmin()) {
       this.snackBar.open('Only administrators can perform this action', 'Close', {
         duration: 3000,
-        panelClass: ['error-snackbar']
+        panelClass: ['error-snackbar'],
       });
       return;
     }
 
-    const selectedIds = this.selection.selected.map(post => post._id);
+    const selectedIds = this.selection.selected.map((post) => post._id);
     if (selectedIds.length === 0) {
       return;
     }
@@ -306,30 +304,30 @@ export class PostsComponent implements OnInit, OnDestroy {
         title: 'Delete Selected Posts',
         message: `Are you sure you want to delete ${selectedIds.length} selected post(s)?`,
         confirmText: 'Delete',
-        confirmColor: 'warn'
-      }
+        confirmColor: 'warn',
+      },
     });
 
-    dialogRef.afterClosed().subscribe(confirmed => {
+    dialogRef.afterClosed().subscribe((confirmed) => {
       if (confirmed) {
         this.isLoading = true;
-        const deleteObservables = selectedIds.map(id => this.postService.deletePost(id));
-        
+        const deleteObservables = selectedIds.map((id) => this.postService.deletePost(id));
+
         // Wait for all delete operations to complete
-        Promise.all(deleteObservables.map(obs => obs.toPromise()))
+        Promise.all(deleteObservables.map((obs) => obs.toPromise()))
           .then(() => {
             this.snackBar.open(`Successfully deleted ${selectedIds.length} post(s)`, 'Close', {
               duration: 3000,
-              panelClass: ['success-snackbar']
+              panelClass: ['success-snackbar'],
             });
             this.selection.clear();
             this.loadPosts();
           })
-          .catch(error => {
+          .catch((error) => {
             console.error('Error deleting posts:', error);
             this.snackBar.open('Failed to delete some posts', 'Close', {
               duration: 3000,
-              panelClass: ['error-snackbar']
+              panelClass: ['error-snackbar'],
             });
             this.isLoading = false;
           });

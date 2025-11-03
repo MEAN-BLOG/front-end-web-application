@@ -31,9 +31,9 @@ declare const globalThis: Window;
     MatIconModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit, OnDestroy {
   form: FormGroup;
@@ -48,13 +48,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
   ) {
     const returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.returnUrl = returnUrl ? returnUrl.toString() : '/';
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -63,7 +63,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const savedEmail = localStorage.getItem('savedEmail');
     if (savedEmail) {
       this.form.patchValue({
-        email: savedEmail
+        email: savedEmail,
       });
     }
 
@@ -91,32 +91,35 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     this.subscriptions.add(
-      this.authService.login(email, password).pipe(
-        finalize(() => {
-          this.loading = false;
-        })
-      ).subscribe({
-        next: (response) => {
-          this.snackBar.open('Login successful!', 'Dismiss', {
-            duration: 3000,
-            panelClass: ['success-snackbar']
-          });
-          
-          // Navigate to return URL or home
-          const targetUrl = this.returnUrl || '/';
-          this.router.navigateByUrl(targetUrl).then(() => {
-            // Reload to ensure all app state is properly initialized
-            globalThis.location.reload();
-          });
-        },
-        error: (error: Error) => {
-          this.error = error.message || 'An error occurred during login';
-          this.snackBar.open(this.error, 'Dismiss', {
-            duration: 5000,
-            panelClass: ['error-snackbar']
-          });
-        }
-      })
+      this.authService
+        .login(email, password)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+          }),
+        )
+        .subscribe({
+          next: (response) => {
+            this.snackBar.open('Login successful!', 'Dismiss', {
+              duration: 3000,
+              panelClass: ['success-snackbar'],
+            });
+
+            // Navigate to return URL or home
+            const targetUrl = this.returnUrl || '/';
+            this.router.navigateByUrl(targetUrl).then(() => {
+              // Reload to ensure all app state is properly initialized
+              globalThis.location.reload();
+            });
+          },
+          error: (error: Error) => {
+            this.error = error.message || 'An error occurred during login';
+            this.snackBar.open(this.error, 'Dismiss', {
+              duration: 5000,
+              panelClass: ['error-snackbar'],
+            });
+          },
+        }),
     );
   }
 

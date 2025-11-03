@@ -1,18 +1,21 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { 
-  FormBuilder, 
-  FormControl, 
-  FormGroup, 
-  Validators, 
-  FormArray, 
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+  FormArray,
   AbstractControl,
-  ValidatorFn, 
-  ReactiveFormsModule
+  ValidatorFn,
+  ReactiveFormsModule,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent, MatAutocompleteModule } from '@angular/material/autocomplete';
+import {
+  MatAutocompleteSelectedEvent,
+  MatAutocompleteModule,
+} from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -57,9 +60,9 @@ export interface PostFormData {
     MatTooltipModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
-    UploadComponent
+    UploadComponent,
   ],
-  templateUrl: './post-form-dialog.html'
+  templateUrl: './post-form-dialog.html',
 })
 export class PostFormDialogComponent implements OnInit {
   /**
@@ -73,7 +76,7 @@ export class PostFormDialogComponent implements OnInit {
    * When true, UI shows saving spinner and disables submit controls.
    */
   isSubmitting = false;
-  
+
   /**
    * Predefined tag suggestions used by the autocomplete.
    */
@@ -106,7 +109,7 @@ export class PostFormDialogComponent implements OnInit {
     private readonly dialogRef: MatDialogRef<PostFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: PostFormData,
     private readonly postService: PostService,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
   ) {
     this.postForm = this.fb.group({});
     this.initForm();
@@ -121,14 +124,14 @@ export class PostFormDialogComponent implements OnInit {
   ngOnInit(): void {
     this.filteredTags = this.tagInputControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || ''))
+      map((value) => this._filter(value || '')),
     );
 
     if (this.data.mode === 'edit' && this.data.post) {
       this.populateForm(this.data.post);
     }
   }
-  
+
   /**
    * Filter helper for tag autocomplete.
    *
@@ -137,25 +140,27 @@ export class PostFormDialogComponent implements OnInit {
    */
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.availableTags.filter(tag => 
-      tag.toLowerCase().includes(filterValue)
-    );
+    return this.availableTags.filter((tag) => tag.toLowerCase().includes(filterValue));
   }
 
   /**
    * Validator: ensures the control value does not include leading/trailing whitespace.
    * Returns `{ trim: true }` when the raw value differs from trimmed value.
    */
-  private readonly trimValidator: ValidatorFn = (control: AbstractControl): { [key: string]: boolean } | null => {
+  private readonly trimValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): { [key: string]: boolean } | null => {
     const value = control.value;
     return value && value.trim() !== value ? { trim: true } : null;
-  }
+  };
 
   /**
    * Validator: optional URL validator for the image field.
    * Returns `{ url: true }` if value is present and not a valid URL.
    */
-  private readonly urlValidator: ValidatorFn = (control: AbstractControl): { [key: string]: boolean } | null => {
+  private readonly urlValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): { [key: string]: boolean } | null => {
     if (!control.value) return null;
     try {
       new URL(control.value);
@@ -163,24 +168,28 @@ export class PostFormDialogComponent implements OnInit {
     } catch {
       return { url: true };
     }
-  }
+  };
 
   /**
    * Validator: ensures tag value does not include forbidden characters (commas or new lines).
    * Returns `{ invalidChars: true }` when forbidden characters are detected.
    */
-  private readonly tagValidator: ValidatorFn = (control: AbstractControl): { [key: string]: boolean } | null => {
+  private readonly tagValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): { [key: string]: boolean } | null => {
     const val = control.value;
     return /[,\n]/.test(val) ? { invalidChars: true } : null;
-  }
+  };
 
   /**
    * Validator: prohibits having more than 10 tags on the FormArray.
    * Returns `{ maxTags: true }` when the array length exceeds 10.
    */
-  private readonly maxTagsValidator: ValidatorFn = (control: AbstractControl): { [key: string]: boolean } | null => {
+  private readonly maxTagsValidator: ValidatorFn = (
+    control: AbstractControl,
+  ): { [key: string]: boolean } | null => {
     return control.value.length > 10 ? { maxTags: true } : null;
-  }
+  };
 
   /**
    * Initialize the reactive form with validators that match backend constraints.
@@ -193,27 +202,17 @@ export class PostFormDialogComponent implements OnInit {
   private initForm(): void {
     this.postForm = this.fb.group({
       title: [
-        '', 
+        '',
         [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(200),
-          this.trimValidator
-        ]
+          this.trimValidator,
+        ],
       ],
-      content: [
-        '', 
-        [
-          Validators.required,
-          Validators.minLength(50),
-          Validators.maxLength(20000)
-        ]
-      ],
-      image: [
-        '',
-        [this.urlValidator]
-      ],
-      tags: this.fb.array([], [this.maxTagsValidator])
+      content: ['', [Validators.required, Validators.minLength(50), Validators.maxLength(20000)]],
+      image: ['', [this.urlValidator]],
+      tags: this.fb.array([], [this.maxTagsValidator]),
     });
   }
 
@@ -239,7 +238,7 @@ export class PostFormDialogComponent implements OnInit {
   addTag(event: MatChipInputEvent | MatAutocompleteSelectedEvent): void {
     let value: string;
     let input: HTMLInputElement | undefined;
-    
+
     if ('option' in event) {
       value = event.option.value;
     } else {
@@ -254,13 +253,10 @@ export class PostFormDialogComponent implements OnInit {
     }
 
     if (value && !this.tagsArray.value.includes(value)) {
-      this.tagsArray.push(new FormControl(value, [
-        Validators.required,
-        this.tagValidator
-      ]));
+      this.tagsArray.push(new FormControl(value, [Validators.required, this.tagValidator]));
       this.tagsArray.updateValueAndValidity();
     }
-    
+
     if (input) {
       input.value = '';
       this.tagInputControl.setValue(null);
@@ -289,12 +285,12 @@ export class PostFormDialogComponent implements OnInit {
     }
 
     this.isSubmitting = true;
-    
+
     const formData = {
       title: this.postForm.get('title')?.value.trim(),
       content: this.postForm.get('content')?.value,
       image: this.postForm.get('image')?.value || '',
-      tags: (this.postForm.get('tags')?.value || []).map((tag: string) => tag.trim())
+      tags: (this.postForm.get('tags')?.value || []).map((tag: string) => tag.trim()),
     };
 
     if (this.data.mode === 'create') {
@@ -320,7 +316,9 @@ export class PostFormDialogComponent implements OnInit {
           this.dialogRef.close({ success: true, data: response.data });
         } else {
           console.error('Failed to create post:', response.message);
-          this.snackBar.open(`Failed to create post: ${response.message}`, 'Close', { duration: 5000 });
+          this.snackBar.open(`Failed to create post: ${response.message}`, 'Close', {
+            duration: 5000,
+          });
           this.isSubmitting = false;
         }
       },
@@ -329,7 +327,7 @@ export class PostFormDialogComponent implements OnInit {
         const errorMessage = error.error?.message || 'An unexpected error occurred';
         this.snackBar.open(`Error: ${errorMessage}`, 'Close', { duration: 5000 });
         this.isSubmitting = false;
-      }
+      },
     });
   }
 
@@ -350,7 +348,9 @@ export class PostFormDialogComponent implements OnInit {
           this.dialogRef.close({ success: true, data: response.data });
         } else {
           console.error('Failed to update post:', response.message);
-          this.snackBar.open(`Failed to update post: ${response.message}`, 'Close', { duration: 5000 });
+          this.snackBar.open(`Failed to update post: ${response.message}`, 'Close', {
+            duration: 5000,
+          });
           this.isSubmitting = false;
         }
       },
@@ -359,7 +359,7 @@ export class PostFormDialogComponent implements OnInit {
         const errorMessage = error.error?.message || 'An unexpected error occurred';
         this.snackBar.open(`Error: ${errorMessage}`, 'Close', { duration: 5000 });
         this.isSubmitting = false;
-      }
+      },
     });
   }
 
@@ -380,7 +380,7 @@ export class PostFormDialogComponent implements OnInit {
   openMediaLibrary(): void {
     const sampleImageUrl = 'https://via.placeholder.com/800x400?text=Featured+Image';
     this.postForm.patchValue({
-      image: sampleImageUrl
+      image: sampleImageUrl,
     });
   }
 
@@ -396,19 +396,14 @@ export class PostFormDialogComponent implements OnInit {
     this.postForm.patchValue({
       title: post.title,
       content: post.content,
-      image: post.image || ''
+      image: post.image || '',
     });
 
     if (post.tags && post.tags.length > 0) {
-      const tagControls = post.tags.map(tag => 
-        new FormControl(tag, [
-          Validators.required,
-          this.tagValidator
-        ])
+      const tagControls = post.tags.map(
+        (tag) => new FormControl(tag, [Validators.required, this.tagValidator]),
       );
-      this.postForm.setControl('tags', this.fb.array(tagControls, [
-        this.maxTagsValidator
-      ]));
+      this.postForm.setControl('tags', this.fb.array(tagControls, [this.maxTagsValidator]));
     }
   }
 
@@ -420,7 +415,7 @@ export class PostFormDialogComponent implements OnInit {
    */
   onImageUploaded(url: string) {
     this.postForm.patchValue({
-      image: url
+      image: url,
     });
   }
 }

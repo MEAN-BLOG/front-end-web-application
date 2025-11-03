@@ -73,7 +73,7 @@ export interface AuthorTrend {
 export interface AuthorTrendsResponse extends ApiResponse<AuthorTrend[]> {}
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StatisticsService {
   private readonly apiUrl = `${environment.apiUrl}/statistics`;
@@ -81,8 +81,8 @@ export class StatisticsService {
   constructor(
     private readonly http: HttpClient,
     private readonly authService: AuthService,
-    private readonly router: Router
-  ) { }
+    private readonly router: Router,
+  ) {}
 
   /**
    * Get overview statistics
@@ -97,9 +97,7 @@ export class StatisticsService {
    */
   getArticlesPerMonth(): Observable<MonthlyArticlesResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<MonthlyArticlesResponse>(
-      `${this.apiUrl}/articles/monthly`, headers
-    );
+    return this.http.get<MonthlyArticlesResponse>(`${this.apiUrl}/articles/monthly`, headers);
   }
 
   /**
@@ -108,7 +106,8 @@ export class StatisticsService {
   getAverageArticlesPerAuthor(): Observable<ApiResponse<{ average: number }>> {
     const headers = this.getAuthHeaders();
     return this.http.get<ApiResponse<{ average: number }>>(
-      `${this.apiUrl}/articles/average`, headers
+      `${this.apiUrl}/articles/average`,
+      headers,
     );
   }
 
@@ -117,9 +116,7 @@ export class StatisticsService {
    */
   getTopViewedArticles(): Observable<TopArticlesResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<TopArticlesResponse>(
-      `${this.apiUrl}/articles/top-viewed`, headers
-    );
+    return this.http.get<TopArticlesResponse>(`${this.apiUrl}/articles/top-viewed`, headers);
   }
 
   /**
@@ -127,9 +124,7 @@ export class StatisticsService {
    */
   getMostCommentedArticles(): Observable<TopArticlesResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<TopArticlesResponse>(
-      `${this.apiUrl}/articles/most-commented`, headers
-    );
+    return this.http.get<TopArticlesResponse>(`${this.apiUrl}/articles/most-commented`, headers);
   }
 
   /**
@@ -137,9 +132,7 @@ export class StatisticsService {
    */
   getTopTags(): Observable<TopTagsResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<TopTagsResponse>(
-      `${this.apiUrl}/tags/top`, headers
-    );
+    return this.http.get<TopTagsResponse>(`${this.apiUrl}/tags/top`, headers);
   }
 
   /**
@@ -147,9 +140,7 @@ export class StatisticsService {
    */
   getTopAuthors(): Observable<TopAuthorsResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<TopAuthorsResponse>(
-      `${this.apiUrl}/authors/top`, headers
-    );
+    return this.http.get<TopAuthorsResponse>(`${this.apiUrl}/authors/top`, headers);
   }
 
   /**
@@ -157,9 +148,7 @@ export class StatisticsService {
    */
   getAuthorFrequency(): Observable<AuthorFrequencyResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<AuthorFrequencyResponse>(
-      `${this.apiUrl}/authors/frequency`, headers
-    );
+    return this.http.get<AuthorFrequencyResponse>(`${this.apiUrl}/authors/frequency`, headers);
   }
 
   /**
@@ -167,9 +156,7 @@ export class StatisticsService {
    */
   getAuthorTrends(): Observable<AuthorTrendsResponse> {
     const headers = this.getAuthHeaders();
-    return this.http.get<AuthorTrendsResponse>(
-      `${this.apiUrl}/authors/trend`, headers
-    );
+    return this.http.get<AuthorTrendsResponse>(`${this.apiUrl}/authors/trend`, headers);
   }
 
   private getAuthHeaders(): { headers: HttpHeaders } {
@@ -182,8 +169,8 @@ export class StatisticsService {
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      })
+        Authorization: `Bearer ${token}`,
+      }),
     };
   }
 }

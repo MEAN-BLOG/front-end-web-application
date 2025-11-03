@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 @use './styles/variables' as *;
-@use "tailwindcss";
+@use 'tailwindcss';
 
 /* -------------------------------------------
    BASE COLORS
@@ -62,7 +62,6 @@ $warn: #f44336;
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary);
 }
-
 
 ::ng-deep .mat-snack-bar-container {
   position: fixed !important;
@@ -143,7 +142,9 @@ mat-form-field.mat-mdc-form-field .mdc-notched-outline__leading,
 mat-form-field.mat-mdc-form-field .mdc-notched-outline__notch,
 mat-form-field.mat-mdc-form-field .mdc-notched-outline__trailing {
   border-color: transparent !important;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 /* ✨ On focus or hover: show clean border */

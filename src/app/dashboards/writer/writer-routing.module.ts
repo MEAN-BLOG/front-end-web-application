@@ -11,15 +11,15 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('../admin/posts/posts.module').then(m => m.PostsModule),
-        data: { title: 'Posts Management' }
+        loadChildren: () => import('../admin/posts/posts.module').then((m) => m.PostsModule),
+        data: { title: 'Posts Management' },
       },
-    ]
-  }
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class WriterRoutingModule { }
+export class WriterRoutingModule {}

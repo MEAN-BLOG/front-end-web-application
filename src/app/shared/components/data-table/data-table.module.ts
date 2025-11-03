@@ -31,7 +31,7 @@ import { DataTableBulkActionsComponent } from './data-table-bulk-actions/data-ta
     DataTableComponent,
     DataTableColumnComponent,
     DataTableFilterComponent,
-    DataTableBulkActionsComponent
+    DataTableBulkActionsComponent,
   ],
   exports: [
     // Re-export the standalone components
@@ -47,7 +47,7 @@ import { DataTableBulkActionsComponent } from './data-table-bulk-actions/data-ta
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+  ],
 })
-export class DataTableModule { }
+export class DataTableModule {}

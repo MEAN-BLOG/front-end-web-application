@@ -40,8 +40,8 @@ export class NotificationService {
   }
 
   markRead(id: string) {
-    const updated = this.notificationsSubject.value.map(n => 
-      n.id === id ? { ...n, read: true } : n  
+    const updated = this.notificationsSubject.value.map((n) =>
+      n.id === id ? { ...n, read: true } : n,
     );
     this.notificationsSubject.next(updated);
   }

@@ -40,7 +40,7 @@ interface Comment {
 }
 
 interface Tag extends TagStats {
-  id?: string;  // Optional for backward compatibility
+  id?: string; // Optional for backward compatibility
   name?: string; // Optional for backward compatibility
 }
 
@@ -62,8 +62,8 @@ type DateRange = 'week' | 'month' | 'year';
     MatProgressSpinnerModule,
     MatButtonModule,
     MatChipsModule,
-    MatTooltipModule
-  ]
+    MatTooltipModule,
+  ],
 })
 export class OverviewComponent implements OnInit {
   // Statistics data
@@ -74,7 +74,7 @@ export class OverviewComponent implements OnInit {
     totalTags: 0,
     totalViews: 0,
     articlesThisMonth: 0,
-    articlesLastMonth: 0
+    articlesLastMonth: 0,
   };
 
   // Top content
@@ -84,20 +84,22 @@ export class OverviewComponent implements OnInit {
   popularTags: Tag[] = [];
   topTags: Tag[] = [];
   topAuthors: TopAuthor[] = [];
-  
+
   // Loading states
   loading = true;
   chartsLoading = true;
-  
+
   // Doughnut chart data
   public doughnutChartData: ChartData<'doughnut'> = {
     labels: [],
-    datasets: [{
-      data: [],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-    }]
+    datasets: [
+      {
+        data: [],
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+      },
+    ],
   };
-  
+
   // Date range for filters
   dateRange: DateRange = 'month';
 
@@ -107,7 +109,7 @@ export class OverviewComponent implements OnInit {
     maintainAspectRatio: false,
     animation: {
       duration: 1000,
-      easing: 'easeInOutQuart'
+      easing: 'easeInOutQuart',
     },
     scales: {
       x: {
@@ -117,16 +119,16 @@ export class OverviewComponent implements OnInit {
           text: 'Month',
           color: '#666',
           font: {
-            weight: 'bold'
-          }
+            weight: 'bold',
+          },
         },
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
-          color: '#666'
+          color: '#666',
         },
-        offset: true
+        offset: true,
       },
       y: {
         type: 'linear',
@@ -135,21 +137,21 @@ export class OverviewComponent implements OnInit {
           stepSize: 1,
           precision: 0,
           color: '#666',
-          callback: (value) => Number.isInteger(value) ? value : ''
+          callback: (value) => (Number.isInteger(value) ? value : ''),
         },
         title: {
           display: true,
           text: 'Number of Articles',
           color: '#666',
           font: {
-            weight: 'bold'
-          }
+            weight: 'bold',
+          },
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
+          color: 'rgba(0, 0, 0, 0.05)',
         },
-        min: 0
-      }
+        min: 0,
+      },
     },
     plugins: {
       legend: {
@@ -158,19 +160,19 @@ export class OverviewComponent implements OnInit {
         labels: {
           color: '#666',
           font: {
-            size: 12
+            size: 12,
           },
-          padding: 20
-        }
+          padding: 20,
+        },
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         titleFont: {
           size: 14,
-          weight: 'bold'
+          weight: 'bold',
         },
         bodyFont: {
-          size: 13
+          size: 13,
         },
         padding: 12,
         displayColors: false,
@@ -179,33 +181,35 @@ export class OverviewComponent implements OnInit {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             return `${label}: ${value} article${value !== 1 ? 's' : ''}`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     layout: {
       padding: {
         top: 20,
         right: 20,
         bottom: 20,
-        left: 20
-      }
-    }
+        left: 20,
+      },
+    },
   };
   public barChartType: ChartType = 'bar';
   public barChartData: ChartData<'bar'> = {
     labels: [],
-    datasets: [{
-      data: [],
-      label: 'Articles Published',
-      backgroundColor: 'rgba(63, 81, 181, 0.7)',
-      borderColor: 'rgba(63, 81, 181, 1)',
-      borderWidth: 1,
-      barThickness: 'flex' as const,
-      borderRadius: 4,
-      barPercentage: 0.8,
-      categoryPercentage: 0.9
-    }]
+    datasets: [
+      {
+        data: [],
+        label: 'Articles Published',
+        backgroundColor: 'rgba(63, 81, 181, 0.7)',
+        borderColor: 'rgba(63, 81, 181, 1)',
+        borderWidth: 1,
+        barThickness: 'flex' as const,
+        borderRadius: 4,
+        barPercentage: 0.8,
+        categoryPercentage: 0.9,
+      },
+    ],
   };
 
   public lineChartOptions: ChartConfiguration['options'] = {
@@ -215,40 +219,42 @@ export class OverviewComponent implements OnInit {
       x: {
         title: {
           display: true,
-          text: 'Month'
-        }
+          text: 'Month',
+        },
       },
       y: {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Views'
-        }
-      }
+          text: 'Views',
+        },
+      },
     },
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)'
-      }
-    }
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      },
+    },
   };
   public lineChartType: ChartType = 'line';
   public lineChartData: ChartData<'line'> = {
     labels: [],
-    datasets: [{
-      data: [],
-      label: 'Views',
-      borderColor: 'rgba(63, 81, 181, 1)',
-      backgroundColor: 'rgba(63, 81, 181, 0.2)',
-      pointBackgroundColor: 'rgba(63, 81, 181, 1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(63, 81, 181, 0.8)',
-      fill: 'origin',
-    }]
+    datasets: [
+      {
+        data: [],
+        label: 'Views',
+        borderColor: 'rgba(63, 81, 181, 1)',
+        backgroundColor: 'rgba(63, 81, 181, 0.2)',
+        pointBackgroundColor: 'rgba(63, 81, 181, 1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(63, 81, 181, 0.8)',
+        fill: 'origin',
+      },
+    ],
   };
 
   formatNumber(num: number | undefined): string {
@@ -265,22 +271,22 @@ export class OverviewComponent implements OnInit {
     const value = ((current - previous) / previous) * 100;
     return {
       value: Math.round(value * 10) / 10,
-      isPositive: value >= 0
+      isPositive: value >= 0,
     };
   }
 
   constructor(private readonly statsService: StatisticsService) {}
-  
+
   formatDate(dateString: string | Date): string {
     if (!dateString) return '';
     const date = new Date(dateString);
     if (Number.isNaN(date.getTime())) return '';
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   }
 
@@ -296,31 +302,30 @@ export class OverviewComponent implements OnInit {
   private loadDashboardData(): void {
     this.loading = true;
     this.chartsLoading = true;
-    
+
     this.resetStats();
     this.topViewedArticles = [];
     this.recentComments = [];
     this.topTags = [];
     this.topAuthors = [];
-    
+
     Promise.all([
       this.loadOverview(),
       this.loadMonthlyArticles(),
       this.loadTopViewedArticles(),
       this.loadTopTags(),
       this.loadTopAuthors(),
-      this.loadRecentComments()
+      this.loadRecentComments(),
     ]).finally(() => {
       this.loading = false;
       this.chartsLoading = false;
     });
   }
-  
+
   private loadOverview(): Promise<void> {
     return new Promise((resolve) => {
       this.statsService.getOverview().subscribe({
         next: (response) => {
-          
           if (response?.success) {
             if (response.data) {
               const { totalArticles, totalAuthors, totalComments, totalTags } = response.data;
@@ -331,7 +336,7 @@ export class OverviewComponent implements OnInit {
                 totalTags: totalTags || 0,
                 totalViews: 0,
                 articlesThisMonth: 0,
-                articlesLastMonth: 0
+                articlesLastMonth: 0,
               };
             } else {
               this.resetStats();
@@ -344,7 +349,7 @@ export class OverviewComponent implements OnInit {
         error: (error) => {
           this.resetStats();
           resolve(error);
-        }
+        },
       });
     });
   }
@@ -357,39 +362,40 @@ export class OverviewComponent implements OnInit {
       totalTags: 0,
       totalViews: 0,
       articlesThisMonth: 0,
-      articlesLastMonth: 0
+      articlesLastMonth: 0,
     };
   }
-  
+
   private loadMonthlyArticles(): Promise<void> {
     return new Promise((resolve) => {
       this.statsService.getArticlesPerMonth().subscribe({
         next: (response) => {
-          
           if (response?.success && Array.isArray(response.data) && response.data.length > 0) {
             try {
               const sortedData = [...response.data]
-                .map(item => ({
+                .map((item) => ({
                   ...item,
-                  date: new Date(item.date).toISOString().split('T')[0]
+                  date: new Date(item.date).toISOString().split('T')[0],
                 }))
                 .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-              
-              const labels = sortedData.map(item => {
+
+              const labels = sortedData.map((item) => {
                 const date = new Date(item.date);
-                return date.toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  year: 'numeric' 
+                return date.toLocaleDateString('en-US', {
+                  month: 'short',
+                  year: 'numeric',
                 });
               });
-              
+
               this.barChartData = {
                 labels: labels,
-                datasets: [{
-                  ...this.barChartData.datasets[0],
-                  data: sortedData.map(item => item.count || 0)
-                }]
-              };              
+                datasets: [
+                  {
+                    ...this.barChartData.datasets[0],
+                    data: sortedData.map((item) => item.count || 0),
+                  },
+                ],
+              };
             } catch (error) {
               this.setEmptyChartData();
             }
@@ -401,7 +407,7 @@ export class OverviewComponent implements OnInit {
         error: (error) => {
           this.setEmptyChartData();
           resolve();
-        }
+        },
       });
     });
   }
@@ -409,13 +415,15 @@ export class OverviewComponent implements OnInit {
   private setEmptyChartData(): void {
     this.barChartData = {
       labels: ['No data'],
-      datasets: [{
-        label: 'No Data',
-        data: [0],
-        backgroundColor: 'rgba(200, 200, 200, 0.5)',
-        borderColor: 'rgba(200, 200, 200, 1)',
-        borderWidth: 1
-      }]
+      datasets: [
+        {
+          label: 'No Data',
+          data: [0],
+          backgroundColor: 'rgba(200, 200, 200, 0.5)',
+          borderColor: 'rgba(200, 200, 200, 1)',
+          borderWidth: 1,
+        },
+      ],
     };
   }
 
@@ -424,11 +432,11 @@ export class OverviewComponent implements OnInit {
       this.statsService.getTopViewedArticles().subscribe({
         next: (response) => {
           if (response.success && Array.isArray(response.data)) {
-            this.topViewedArticles = response.data.map(article => ({
+            this.topViewedArticles = response.data.map((article) => ({
               ...article,
               id: article._id,
               views: article.views || 0,
-              commentCount: article.commentCount || 0
+              commentCount: article.commentCount || 0,
             }));
           } else {
             this.topViewedArticles = [];
@@ -439,7 +447,7 @@ export class OverviewComponent implements OnInit {
           console.error('Error loading top viewed articles:', error);
           this.topViewedArticles = [];
           resolve();
-        }
+        },
       });
     });
   }
@@ -449,27 +457,31 @@ export class OverviewComponent implements OnInit {
       this.statsService.getTopTags().subscribe({
         next: (response) => {
           if (response?.success && Array.isArray(response.data)) {
-            this.popularTags = response.data.map(tag => ({
+            this.popularTags = response.data.map((tag) => ({
               count: tag.count || 0,
               tag: tag.tag,
               name: tag.tag,
-              id: tag.tag
+              id: tag.tag,
             }));
             this.doughnutChartData = {
-              labels: response.data.map(tag => tag.tag),
-              datasets: [{
-                data: response.data.map(tag => tag.count || 0),
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-              }]
+              labels: response.data.map((tag) => tag.tag),
+              datasets: [
+                {
+                  data: response.data.map((tag) => tag.count || 0),
+                  backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                },
+              ],
             };
           } else {
             this.popularTags = [];
             this.doughnutChartData = {
               labels: [],
-              datasets: [{
-                data: [],
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-              }]
+              datasets: [
+                {
+                  data: [],
+                  backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+                },
+              ],
             };
           }
           resolve();
@@ -478,51 +490,53 @@ export class OverviewComponent implements OnInit {
           this.topTags = [];
           this.doughnutChartData = {
             labels: [],
-            datasets: [{
-              data: [],
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
-            }]
+            datasets: [
+              {
+                data: [],
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'],
+              },
+            ],
           };
           resolve();
-        }
+        },
       });
     });
   }
 
-private loadTopAuthors(): Promise<void> {
-  return new Promise((resolve) => {
-    this.statsService.getTopAuthors().subscribe({
-      next: (response) => {
-        if (response?.success && Array.isArray(response.data)) {
-          this.topAuthors = response.data.map(author => ({
-            ...author,
-            name: author.name || 'Unknown Author'
-          }));
-        } else {
+  private loadTopAuthors(): Promise<void> {
+    return new Promise((resolve) => {
+      this.statsService.getTopAuthors().subscribe({
+        next: (response) => {
+          if (response?.success && Array.isArray(response.data)) {
+            this.topAuthors = response.data.map((author) => ({
+              ...author,
+              name: author.name || 'Unknown Author',
+            }));
+          } else {
+            this.topAuthors = [];
+          }
+          resolve();
+        },
+        error: (error) => {
           this.topAuthors = [];
-        }
-        resolve();
-      },
-      error: (error) => {
-        this.topAuthors = [];
-        resolve();
-      }
+          resolve();
+        },
+      });
     });
-  });
-}
+  }
 
-private loadRecentComments(): Promise<void> {
-  return new Promise((resolve) => {
-    this.recentComments = [
-      {
-        id: '1',
-        author: 'John Doe',
-        text: 'This is a sample comment',
-        articleTitle: 'Sample Article',
-        date: new Date().toISOString()
-      }
-    ];
-    resolve();
-  });
-}
+  private loadRecentComments(): Promise<void> {
+    return new Promise((resolve) => {
+      this.recentComments = [
+        {
+          id: '1',
+          author: 'John Doe',
+          text: 'This is a sample comment',
+          articleTitle: 'Sample Article',
+          date: new Date().toISOString(),
+        },
+      ];
+      resolve();
+    });
+  }
 }

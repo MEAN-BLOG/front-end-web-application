@@ -15,7 +15,6 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD!;
  * create a comment
  */
 test.describe('Admin Blog Details & Comment E2E Test', () => {
-
   /**
    * Navigate to login page before each test
    */
@@ -27,7 +26,6 @@ test.describe('Admin Blog Details & Comment E2E Test', () => {
    * @test login, open first blog card, verify header, post comment
    */
   test('login, open first blog card, verify header, post comment', async ({ page }) => {
-
     // --- Step 1: Login ---
     await page.getByLabel('Email').fill(ADMIN_EMAIL);
     await page.getByLabel('Password').fill(ADMIN_PASSWORD);
@@ -46,7 +44,10 @@ test.describe('Admin Blog Details & Comment E2E Test', () => {
     // --- Step 4: Save first card info ---
     const firstCard = blogCards.nth(0);
     const cardTitle = await firstCard.locator('h2').innerText();
-    const cardAuthor = await firstCard.locator('span:has(mat-icon:text("person"))').first().innerText();
+    const cardAuthor = await firstCard
+      .locator('span:has(mat-icon:text("person"))')
+      .first()
+      .innerText();
 
     // --- Step 5: Click "Read More" ---
     await firstCard.locator('button:has-text("Read More")').click();

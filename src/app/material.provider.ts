@@ -46,13 +46,13 @@ export const MATERIAL_MODULES = [
   MatTableModule,
   MatTabsModule,
   MatToolbarModule,
-  MatTooltipModule
+  MatTooltipModule,
 ];
 
 export function provideMaterial(): Provider[] {
   return [
     ...MATERIAL_MODULES,
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
   ];
 }

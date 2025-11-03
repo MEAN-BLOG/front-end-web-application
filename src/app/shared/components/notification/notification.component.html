@@ -16,10 +16,11 @@
     >
       {{ unreadCount > 9 ? '9+' : unreadCount }}
     </span>
-
   </button>
   <mat-menu #notificationsMenu="matMenu" class="p-0 w-80 rounded-xl overflow-hidden">
-    <div class="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700">
+    <div
+      class="flex justify-between items-center p-3 border-b border-gray-200 dark:border-gray-700"
+    >
       <h3 class="text-sm font-semibold">Notifications</h3>
       <button mat-icon-button>
         <mat-icon>settings</mat-icon>
@@ -28,7 +29,10 @@
 
     <div class="max-h-80 overflow-y-auto">
       <!-- Empty state -->
-      <div *ngIf="notifications.length === 0" class="p-8 text-center text-gray-500 dark:text-gray-400">
+      <div
+        *ngIf="notifications.length === 0"
+        class="p-8 text-center text-gray-500 dark:text-gray-400"
+      >
         <mat-icon class="text-4xl mb-2">notifications_none</mat-icon>
         <p class="text-sm">No notifications yet</p>
       </div>
@@ -40,7 +44,7 @@
         class="p-3 text-sm cursor-pointer border-l-4 transition-all"
         [ngClass]="{
           'bg-blue-50 border-primary-600 dark:bg-blue-900/20': !n.read,
-          'bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-700': n.read
+          'bg-transparent border-transparent hover:bg-gray-100 dark:hover:bg-gray-700': n.read,
         }"
       >
         <div class="font-medium">{{ n.title || n.type }}</div>
@@ -52,7 +56,10 @@
     </div>
 
     <div class="p-2 text-center border-t border-gray-200 dark:border-gray-700">
-      <a routerLink="/notifications" class="text-primary-600 dark:text-primary-400 text-sm font-medium">
+      <a
+        routerLink="/notifications"
+        class="text-primary-600 dark:text-primary-400 text-sm font-medium"
+      >
         View All
       </a>
     </div>

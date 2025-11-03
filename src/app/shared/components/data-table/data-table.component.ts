@@ -1,8 +1,19 @@
-import { Component, Input, Output, EventEmitter, ViewChildren, QueryList, ContentChildren, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChildren,
+  QueryList,
+  ContentChildren,
+  AfterViewInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatSort, Sort, MatSortModule } from '@angular/material/sort';
-import {  PageEvent, MatPaginatorModule } from '@angular/material/paginator';
+import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -21,10 +32,10 @@ import { DataTableColumnComponent } from './data-table-column/data-table-column.
     MatCheckboxModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss']
+  styleUrls: ['./data-table.component.scss'],
 })
 export class DataTableComponent<T> implements AfterViewInit, OnChanges {
   @Input() set data(value: T[]) {
@@ -64,7 +75,7 @@ export class DataTableComponent<T> implements AfterViewInit, OnChanges {
   selection = new SelectionModel<T>(true, []);
   displayedColumns: string[] = [];
   columns: DataTableColumnComponent[] = [];
-  
+
   private updateDataSource(): void {
     if (this.dataSource) {
       this.dataSource.data = this.data;
@@ -76,12 +87,12 @@ export class DataTableComponent<T> implements AfterViewInit, OnChanges {
   ngAfterViewInit() {
     // Initial update of columns
     this.updateDisplayedColumns();
-    
+
     // Subscribe to column changes
     this.columnDefs.changes.subscribe(() => {
       this.updateDisplayedColumns();
     });
-    
+
     // Initial data update
     this.updateDataSource();
   }
@@ -97,7 +108,7 @@ export class DataTableComponent<T> implements AfterViewInit, OnChanges {
       this.columns = this.columnDefs.toArray();
       this.displayedColumns = [
         ...(this.selectable ? ['select'] : []),
-        ...this.columns.map(c => c.columnDef)
+        ...this.columns.map((c) => c.columnDef),
       ];
     }
   }
@@ -126,7 +137,7 @@ export class DataTableComponent<T> implements AfterViewInit, OnChanges {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else {
-      this.dataSource.data.forEach(row => this.selection.select(row));
+      this.dataSource.data.forEach((row) => this.selection.select(row));
     }
     this.selectionChange.emit(this.selection.selected);
   }

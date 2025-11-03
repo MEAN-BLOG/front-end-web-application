@@ -14,7 +14,7 @@ import { PostsModule } from '../admin/posts/posts.module';
     EditorRoutingModule,
     SharedModule,
     PostsModule,
-    DashboardComponent
-  ]
+    DashboardComponent,
+  ],
 })
-export class EditorModule { }
+export class EditorModule {}

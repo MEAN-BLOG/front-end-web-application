@@ -20,7 +20,7 @@ import { ReplyComponent } from '../../shared/components/reply/reply.component';
  * Displays the details of a single blog post including title, content, featured image, tags, and comments.
  * Allows authenticated users to add comments.
  * Supports scrolling to a specific comment via a query parameter (`referenceId`).
- * 
+ *
  * @example
  * <app-blog-detail></app-blog-detail>
  */
@@ -38,9 +38,9 @@ import { ReplyComponent } from '../../shared/components/reply/reply.component';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    ReplyComponent
+    ReplyComponent,
   ],
-  templateUrl: './article-details-page.component.html'
+  templateUrl: './article-details-page.component.html',
 })
 export class BlogDetailComponent implements OnInit {
   /** The blog post object to display */
@@ -71,10 +71,10 @@ export class BlogDetailComponent implements OnInit {
     private readonly postService: PostService,
     private readonly authService: AuthService,
     private readonly fb: FormBuilder,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
   ) {
     this.commentForm = this.fb.group({
-      content: ['', [Validators.required, Validators.minLength(3)]]
+      content: ['', [Validators.required, Validators.minLength(3)]],
     });
   }
 
@@ -112,7 +112,7 @@ export class BlogDetailComponent implements OnInit {
       error: (error) => {
         this.error = error.error?.message || 'Failed to load post. Please try again later.';
         this.isLoading = false;
-      }
+      },
     });
   }
 
@@ -136,7 +136,7 @@ export class BlogDetailComponent implements OnInit {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   }
 
@@ -149,7 +149,7 @@ export class BlogDetailComponent implements OnInit {
     this.isSubmittingComment = true;
     const commentData = {
       content: this.commentForm.get('content')?.value,
-      postId: this.post._id
+      postId: this.post._id,
     };
 
     this.postService.addComment(commentData).subscribe({
@@ -159,7 +159,7 @@ export class BlogDetailComponent implements OnInit {
           this.commentForm.reset();
           this.snackBar.open('Comment added successfully!', 'Close', {
             duration: 3000,
-            panelClass: ['success-snackbar']
+            panelClass: ['success-snackbar'],
           });
         }
         this.isSubmittingComment = false;
@@ -168,10 +168,10 @@ export class BlogDetailComponent implements OnInit {
         this.snackBar.open(
           error.error?.message || 'Failed to add comment. Please try again.',
           'Close',
-          { duration: 5000, panelClass: ['error-snackbar'] }
+          { duration: 5000, panelClass: ['error-snackbar'] },
         );
         this.isSubmittingComment = false;
-      }
+      },
     });
   }
 

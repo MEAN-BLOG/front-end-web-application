@@ -12,14 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-access-denied',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule
-  ],
-  templateUrl: './access-denied.component.html'
+  imports: [CommonModule, RouterModule, MatButtonModule, MatCardModule, MatIconModule],
+  templateUrl: './access-denied.component.html',
 })
 export class AccessDeniedComponent implements OnInit {
   /** Message describing the reason for access denial */
@@ -33,14 +27,14 @@ export class AccessDeniedComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   /**
    * Initializes component and reads query parameters for returnUrl, message, and login status.
    */
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.subscribe((params) => {
       this.returnUrl = params.get('returnUrl');
       const message = params.get('message');
       if (message) {
@@ -61,8 +55,8 @@ export class AccessDeniedComponent implements OnInit {
    * Navigates the user to the login page, preserving the returnUrl.
    */
   goToLogin(): void {
-    this.router.navigate(['/auth/login'], { 
-      queryParams: { returnUrl: this.returnUrl || '/' } 
+    this.router.navigate(['/auth/login'], {
+      queryParams: { returnUrl: this.returnUrl || '/' },
     });
   }
 }
